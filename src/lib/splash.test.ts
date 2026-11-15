@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { readFileSync } from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { SPLASH_ATTR, SPLASH_FADE_MS, SPLASH_MAX_MS, SPLASH_SCRIPT, SPLASH_STORAGE_KEY } from "./splash";
+import { SPLASH_ATTR, SPLASH_FADE_MS, SPLASH_MAX_MS, SPLASH_SCRIPT, SPLASH_SEEN_KEY } from "./splash";
 
 const root = () => document.documentElement;
 
@@ -18,17 +18,27 @@ describe("first-visit splash", () => {
   });
   afterEach(() => vi.useRealTimers());
 
-  it("shows on the first visit and remembers it at once", () => {
+  it("shows on the first visit and stores nothing itself (storage only after consent)", () => {
     run();
     expect(root().hasAttribute(SPLASH_ATTR)).toBe(true);
-    expect(localStorage.getItem(SPLASH_STORAGE_KEY)).toBe("1");
+    expect(localStorage.length).toBe(0);
   });
 
-  it("never shows twice", () => {
-    run();
-    root().removeAttribute(SPLASH_ATTR);
+  it("stays away once the cookie notice has been answered", () => {
+    localStorage.setItem(SPLASH_SEEN_KEY, "{}");
     run();
     expect(root().hasAttribute(SPLASH_ATTR)).toBe(false);
+  });
+
+  it("stays away on a reload and after a link from this site", () => {
+    const entries = vi.spyOn(performance, "getEntriesByType").mockReturnValue([{ type: "reload" }] as never);
+    run();
+    expect(root().hasAttribute(SPLASH_ATTR)).toBe(false);
+    entries.mockRestore();
+    const referrer = vi.spyOn(document, "referrer", "get").mockReturnValue(`${location.origin}/leistungen`);
+    run();
+    expect(root().hasAttribute(SPLASH_ATTR)).toBe(false);
+    referrer.mockRestore();
   });
 
   it("stays away under reduced motion, the site's motion switch and an internal navigation", () => {

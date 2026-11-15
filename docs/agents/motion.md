@@ -78,8 +78,9 @@ Scroll reveal stays `lib/reveal.ts` (`[data-reveal]`).
 
 ## First-visit splash (2026-11-13)
 
-`lib/splash.ts` + `components/Splash.astro`: an inline head script sets `html[data-splash]` once per browser
-(`localStorage["lp-splash"]`), never under reduced motion, the motion switch, after an internal navigation, on
+`lib/splash.ts` + `components/Splash.astro`: an inline head script sets `html[data-splash]` while the cookie notice is unanswered
+(no `tds-consent` record; the splash itself stores nothing, so nothing is kept before consent), never on a reload or
+after a same-origin referrer, never under reduced motion, the motion switch, after an internal navigation, on
 `bare` pages or without JS. A navy layer with the wordmark covers the finished page until fonts and the images in
 the first screen have loaded (min 450 ms, max 1.6 s), then fades. It is a layer ON TOP: nothing underneath is hidden,
 it holds no image and its type is small, so `h1#hero-heading` stays the LCP element (`audit:perf`). Tests:
