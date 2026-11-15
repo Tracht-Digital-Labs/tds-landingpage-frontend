@@ -540,7 +540,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "shop-erstellen",
             title: "Shopware-6-Shop erstellen",
-            text: "Einrichtung eines neuen Shops, oder der Umzug von Shopware 5.",
+            text: "Einrichtung eines neuen Shops oder der Umzug von Shopware 5.",
             points: [
               "Einrichtung und Verkaufskanäle",
               "Produkte anlegen oder importieren",
@@ -789,7 +789,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         },
         outcomesTitle: "Ergebnis",
         outcomes: [
-          "Die Seite läuft wieder, und bleibt aktuell",
+          "Die Seite läuft wieder und bleibt aktuell",
           "Updates mit Sicherung vorher",
           "Eine Seite, die auf dem Handy funktioniert",
         ],
@@ -1221,7 +1221,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         label: "Webauftritt",
         title: "Hilfe für STRATO-Websites, vom Baukasten bis WordPress",
         summary:
-          "Homepage-Baukasten oder WordPress bei STRATO? Tracht Digital Solutions hilft bei Aufbau, Fehlern und Design, und beim Umzug zu WordPress.",
+          "Homepage-Baukasten oder WordPress bei STRATO? Tracht Digital Solutions hilft bei Aufbau, Fehlern und Design und beim Umzug zu WordPress.",
         answer:
           "Tracht Digital Solutions ist ein Unternehmen aus Schwarzenbek bei Hamburg. Es hilft bei Websites auf STRATO, ob Homepage-Baukasten oder WordPress: bei Aufbau, Fehlern und Gestaltung und *beim Umzug zu WordPress*.",
         situationsTitle: "Typische Ausgangslagen",
@@ -1320,7 +1320,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
           {
             q: "Kann die Domain bei STRATO bleiben?",
-            a: "Ja. Die Domain kann bei STRATO bleiben und auf die neue Seite zeigen, oder mit umziehen.",
+            a: "Ja. Die Domain kann bei STRATO bleiben und auf die neue Seite zeigen oder mit umziehen.",
           },
           {
             q: "Was kostet die Hilfe bei einer STRATO-Website?",

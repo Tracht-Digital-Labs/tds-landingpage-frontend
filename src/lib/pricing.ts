@@ -56,7 +56,7 @@ export interface PricingContent {
 
 const defaults: Record<Lang, PricingContent> = {
   de: {
-    label: "— Preise",
+    label: "Preise",
     // "Preise ohne Überraschungen." bis 2026-09-29. Eine Beteuerung, und eine,
     // die nur jemand ausspricht, der mit Überraschungen rechnet — die drei
     // Festpreise darunter sagen dasselbe, nur als Tatsache. Die Überschrift
@@ -75,7 +75,7 @@ const defaults: Record<Lang, PricingContent> = {
     back: "Zurück zur Startseite",
   },
   en: {
-    label: "— Pricing",
+    label: "Pricing",
     headline: "What it",
     headlineAccent: "costs.",
     sub: "Three website packages at a *fixed price*. Everything else gets its own quote.",

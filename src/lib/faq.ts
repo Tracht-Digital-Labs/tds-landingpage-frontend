@@ -159,7 +159,7 @@ export function getFaqPageCopy(lang: "de" | "en") {
 export function getFaqContent(lang: "de" | "en"): FaqContent {
   return lang === "de"
     ? {
-        label: "— FAQ",
+        label: "FAQ",
         headline: "Häufige",
         headlineAccent: "Fragen.",
         intro:
@@ -320,7 +320,7 @@ export function getFaqContent(lang: "de" | "en"): FaqContent {
         ],
       }
     : {
-        label: "— FAQ",
+        label: "FAQ",
         headline: "Common",
         headlineAccent: "questions.",
         intro:
