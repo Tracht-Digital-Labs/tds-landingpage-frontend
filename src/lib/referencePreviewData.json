@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-14T11:29:18.321Z",
+  "generatedAt": "2026-11-15T11:58:18.458Z",
   "previews": {
     "hof-meerheck": {
       "status": "ok",
       "preview": "/references/hof-meerheck.webp",
       "width": 1440,
       "height": 900,
-      "capturedAt": "2026-11-14T11:29:15.394Z"
+      "capturedAt": "2026-11-15T11:58:15.306Z"
     },
     "astera": {
       "status": "ok",
       "preview": "/references/astera.webp",
       "width": 1440,
       "height": 900,
-      "capturedAt": "2026-11-14T11:29:18.304Z"
+      "capturedAt": "2026-11-15T11:58:18.435Z"
     }
   }
 }
