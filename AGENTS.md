@@ -32,6 +32,7 @@ Full list and what each audit checks: [docs/agents/verification.md](docs/agents/
 - `public/llms.txt` stays deleted; `TDS_SITE_KEY` and `TDS_CACHE_TOKEN` are never `PUBLIC_*`.
 - A new public route updates cache event mapping, `alwaysPaths`, the sitemap inventory and tests together.
 - Every production deploy restarts Node.
+- Follows the TDS quality standard (`../tds-ops/standards/quality.md`): no AI slop, clean code.
 
 ## Topic files
 
