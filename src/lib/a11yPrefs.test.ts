@@ -67,7 +67,7 @@ describe("accessibility preferences", () => {
 });
 
 describe("the floating group's own box", () => {
-  it("never takes pointer events — only its visible children do", () => {
+  it("never takes pointer events, only its visible children do", () => {
     // The group stays on screen for the accessibility button while the CTA
     // parts stand down, so its empty area must not swallow clicks on the page
     // underneath (it did: the footer's cookie settings link).

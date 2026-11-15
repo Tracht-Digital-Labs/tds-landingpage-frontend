@@ -33,7 +33,7 @@ describe("llms.txt", () => {
     const faq = getFaqContent("de").items;
     const withFaq = renderLlmsTxt({ entries: SITEMAP_ENTRIES, faq });
     // It said "alle zwölf" while the page held seventeen.
-    expect(withFaq).toContain(`Häufige Fragen — alle ${faq.length},`);
+    expect(withFaq).toContain(`Häufige Fragen, alle ${faq.length},`);
     expect(llms).not.toMatch(/alle (zwölf|\d+),/);
     for (const item of faq.slice(0, HOME_FAQ_COUNT)) expect(withFaq).toContain(`- **${item.q}** ${item.a}`);
     expect(withFaq).not.toContain(faq[HOME_FAQ_COUNT]!.q);

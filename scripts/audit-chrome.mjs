@@ -33,7 +33,7 @@ import { chromium } from "playwright-core";
 const base = process.argv[2] ?? "http://localhost:4321";
 const browser = await chromium.launch({ channel: "chrome" });
 const out = [];
-const check = (label, ok, detail) => out.push(`${ok ? "PASS" : "FAIL"}  ${label}${detail ? " — " + detail : ""}`);
+const check = (label, ok, detail) => out.push(`${ok ? "PASS" : "FAIL"}  ${label}${detail ? ", " + detail : ""}`);
 
 // ── 1. Bookmarks: is the whole icon on screen while parked? ──────────────────
 {

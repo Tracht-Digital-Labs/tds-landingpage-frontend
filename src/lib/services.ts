@@ -94,7 +94,7 @@ export interface ServiceDefinition {
    * Code-owned like `slug` and `keywords`. The H1 stays the service's short
    * name ("Webauftritt"), which is what the rest of the site calls it; the
    * title is where the search words go ("Website & Onlineshop erstellen
-   * lassen") — a bare "Webauftritt — Tracht Digital Solutions" matched no
+   * lassen") — a bare "Webauftritt | Tracht Digital Solutions" matched no
    * query anybody makes.
    */
   seoTitle: Record<Lang, string>;
@@ -181,8 +181,8 @@ export const serviceDefinitions = [
     cmsKey: "service_panels",
     slug: { de: "kundenportale", en: "customer-portals" },
     seoTitle: {
-      de: "Kundenportal & Verwaltungspanel erstellen lassen — Tracht Digital",
-      en: "Customer Portal & Admin Panel Development — Tracht Digital",
+      de: "Kundenportal & Verwaltungspanel erstellen lassen | Tracht Digital",
+      en: "Customer Portal & Admin Panel Development | Tracht Digital",
     },
     seoDescription: {
       de: "Kundenportal und Verwaltungspanel erstellen lassen: Aufträge, Kunden und Termine in einem System. Tracht Digital Solutions aus Schwarzenbek bei Hamburg.",
@@ -196,8 +196,8 @@ export const serviceDefinitions = [
       en: ["Customer portal", "Project management", "Automation", "Admin panel"],
     },
     tagline: {
-      de: "Betrieb strukturieren – vom Projekt bis zur Automatisierung",
-      en: "Structure the business – from projects to automation",
+      de: "Betrieb strukturieren, vom Projekt bis zur Automatisierung",
+      en: "Structure the business, from projects to automation",
     },
     image: "/images/services/05-kundenportale-editorial.webp",
     fallback: {
@@ -207,7 +207,7 @@ export const serviceDefinitions = [
         summary:
           "Ein eigenes Panel, das den Betrieb strukturiert: von Projektmanagement über Kunden und Aufträge bis zu Automatisierungen.",
         intro:
-          "In vielen Betrieben laufen Tabellen, Mails und Notizen nebeneinander. Ein Panel bringt *Struktur* hinein: Projekte, Aufgaben, Kunden und Unterlagen an einem Ort, wiederkehrende Schritte laufen automatisch. Das Team sieht, was zu tun ist, Kunden finden ihre Unterlagen selbst. Grundlage ist ein erprobtes System, das Tracht Digital Solutions selbst einsetzt – kein Neubau von null.",
+          "In vielen Betrieben laufen Tabellen, Mails und Notizen nebeneinander. Ein Panel bringt *Struktur* hinein: Projekte, Aufgaben, Kunden und Unterlagen an einem Ort, wiederkehrende Schritte laufen automatisch. Das Team sieht, was zu tun ist, Kunden finden ihre Unterlagen selbst. Grundlage ist ein erprobtes System, das Tracht Digital Solutions selbst einsetzt, kein Neubau von null.",
         situationsTitle: "Typische Ausgangslagen",
         situations: [
           "Aufträge und Kundendaten liegen verteilt in Tabellen, Mails und Ordnern.",
@@ -253,7 +253,7 @@ export const serviceDefinitions = [
         summary:
           "A panel of its own that structures the business: from project management through customers and orders to automation.",
         intro:
-          "Many businesses run spreadsheets, emails and notes side by side. A panel brings *structure*: projects, tasks, customers and documents in one place, recurring steps run automatically. The team sees what needs doing, customers find their documents themselves. It is built on a proven system that Tracht Digital Solutions runs itself – not from scratch.",
+          "Many businesses run spreadsheets, emails and notes side by side. A panel brings *structure*: projects, tasks, customers and documents in one place, recurring steps run automatically. The team sees what needs doing, customers find their documents themselves. It is built on a proven system that Tracht Digital Solutions runs itself, not from scratch.",
         situationsTitle: "Typical situations",
         situations: [
           "Orders and customer data are spread across spreadsheets, emails and folders.",
@@ -307,8 +307,8 @@ export const serviceDefinitions = [
     // chip and inside the title, because it IS what people search for.
     slug: { de: "prozessoptimierung", en: "process-optimization" },
     seoTitle: {
-      de: "Digitale Buchführung & Projektmanagement — Tracht Digital",
-      en: "Digital Bookkeeping & Project Management — Tracht Digital",
+      de: "Digitale Buchführung & Projektmanagement | Tracht Digital",
+      en: "Digital Bookkeeping & Project Management | Tracht Digital",
     },
     seoDescription: {
       de: "Abläufe digitalisieren: digitale Buchführung, Projektmanagement und passende Werkzeuge im Betrieb einführen. Tracht Digital Solutions bei Hamburg.",
@@ -345,7 +345,7 @@ export const serviceDefinitions = [
           "Digitale Buchführung einbinden: Belege, Rechnungen, Übergabe an die Kanzlei",
           "Projektmanagementsystem auswählen, einrichten und im Team einführen",
           "Bestehende Abläufe mit dem Team aufnehmen, Zeitfresser und Fehlerquellen finden",
-          "Einen einfacheren Ablauf einrichten – mit passender Automatisierung",
+          "Einen einfacheren Ablauf einrichten, mit passender Automatisierung",
         ],
         outcomesTitle: "Ergebnis",
         outcomes: [
@@ -391,7 +391,7 @@ export const serviceDefinitions = [
           "Integrate digital bookkeeping: receipts, invoices, hand-over to the accountant",
           "Choose a project management system, set it up and introduce it to the team",
           "Map existing workflows with the team, find time sinks and error sources",
-          "Set up a simpler workflow – with the right automation",
+          "Set up a simpler workflow, with the right automation",
         ],
         outcomesTitle: "Results",
         outcomes: [
@@ -427,8 +427,8 @@ export const serviceDefinitions = [
     cmsKey: "service_consulting",
     slug: { de: "beratung-konzeption", en: "consulting-planning" },
     seoTitle: {
-      de: "IT- & Digitalisierungsberatung, Konzeption — Tracht Digital",
-      en: "IT & Digital Consulting and Planning — Tracht Digital",
+      de: "IT- & Digitalisierungsberatung, Konzeption | Tracht Digital",
+      en: "IT & Digital Consulting and Planning | Tracht Digital",
     },
     seoDescription: {
       de: "IT- und Digitalisierungsberatung für Betriebe: was digital gebraucht wird, was es kostet, womit es losgeht. Tracht Digital Solutions aus Schwarzenbek.",
@@ -442,8 +442,8 @@ export const serviceDefinitions = [
       en: ["Needs assessment", "Expertise", "Concept", "Roadmap"],
     },
     tagline: {
-      de: "Klären, was gebraucht wird – mit Fachwissen und Konzept",
-      en: "Work out what is needed – with expertise and a plan",
+      de: "Klären, was gebraucht wird, mit Fachwissen und Konzept",
+      en: "Work out what is needed, with expertise and a plan",
     },
     image: "/images/services/01-beratung-editorial.webp",
     fallback: {
@@ -482,7 +482,7 @@ export const serviceDefinitions = [
         process: [
           "Ausgangslage und Ziel aufnehmen",
           "Möglichkeiten bewerten",
-          "Fahrplan festhalten – dann umsetzen oder übergeben",
+          "Fahrplan festhalten, dann umsetzen oder übergeben",
         ],
         priceLabel: "Preis",
         priceText: "Auf Anfrage. Für ein klar abgegrenztes Konzept gibt es einen Festpreis.",
@@ -508,7 +508,7 @@ export const serviceDefinitions = [
         ],
         responsibilitiesTitle: "Scope of services",
         responsibilities: [
-          "Work out what the business needs digitally – and what not",
+          "Work out what the business needs digitally, and what not",
           "Capture goals, workflows and existing technology",
           "Compare options and costs in plain language",
           "Concept with an actionable roadmap",
@@ -528,7 +528,7 @@ export const serviceDefinitions = [
         process: [
           "Capture the situation and the goal",
           "Weigh the options",
-          "Write down the roadmap – then build or hand over",
+          "Write down the roadmap, then build or hand over",
         ],
         priceLabel: "Price",
         priceText: "On request. A clearly bounded concept gets a fixed price.",
@@ -547,8 +547,8 @@ export const serviceDefinitions = [
     cmsKey: "service_solutions",
     slug: { de: "individuelle-loesungen", en: "tailored-solutions" },
     seoTitle: {
-      de: "Auftragsprogrammierung & Automatisierung — Tracht Digital",
-      en: "Custom Programming & Automation — Tracht Digital",
+      de: "Auftragsprogrammierung & Automatisierung | Tracht Digital",
+      en: "Custom Programming & Automation | Tracht Digital",
     },
     seoDescription: {
       de: "Auftragsprogrammierung und Automatisierung für Betriebe: Tools und Skripte übernehmen Datenpflege und Klickarbeit. Tracht Digital Solutions bei Hamburg.",
@@ -676,8 +676,8 @@ export const serviceDefinitions = [
     cmsKey: "service_web_presence",
     slug: { de: "webauftritt", en: "web-presence" },
     seoTitle: {
-      de: "Individuelle Website erstellen lassen — Tracht Digital",
-      en: "Custom Websites Built Around Each Business — Tracht Digital",
+      de: "Individuelle Website erstellen lassen | Tracht Digital",
+      en: "Custom Websites Built Around Each Business | Tracht Digital",
     },
     seoDescription: {
       de: "Website und Onlineshop erstellen lassen: nach Maß, ohne Baukasten-Vorlage und ohne KI-Einheitstext. Tracht Digital Solutions aus Schwarzenbek bei Hamburg.",
@@ -708,10 +708,10 @@ export const serviceDefinitions = [
         summary:
           "Websites und Shops nach Maß: ausgerichtet auf die Kunden und passend zum Firmenbild, ohne Baukasten-Vorlage und ohne KI-Einheitstext.",
         intro:
-          "Viele Websites sehen gleich aus: dieselbe Vorlage, dieselben Floskeln, oft von einer KI geschrieben. Eine Website von Tracht Digital Solutions sieht nach dem Betrieb aus, für den sie gebaut ist. Am Anfang steht die Frage, *wer die Kunden sind* und was sie suchen – Gestaltung, Texte und Funktionen folgen daraus. Bestehende Seiten werden auch übernommen; ersetzt wird nur, was im Weg steht.",
+          "Viele Websites sehen gleich aus: dieselbe Vorlage, dieselben Floskeln, oft von einer KI geschrieben. Eine Website von Tracht Digital Solutions sieht nach dem Betrieb aus, für den sie gebaut ist. Am Anfang steht die Frage, *wer die Kunden sind* und was sie suchen: Gestaltung, Texte und Funktionen folgen daraus. Bestehende Seiten werden auch übernommen; ersetzt wird nur, was im Weg steht.",
         situationsTitle: "Typische Ausgangslagen",
         situations: [
-          "Die Website sieht aus wie viele andere – Texte und Bilder wirken austauschbar.",
+          "Die Website sieht aus wie viele andere: Texte und Bilder wirken austauschbar.",
           "Die Seite ist veraltet oder der Shop macht Ärger.",
           "Die Seite sieht gut aus, aber kaum jemand fragt an.",
         ],
@@ -727,13 +727,13 @@ export const serviceDefinitions = [
         outcomes: [
           "Eine Website, die auf den ersten Blick zum Betrieb gehört",
           "Besucher verstehen sofort das Angebot",
-          "Gefunden werden – bei Google und in KI-Antworten",
+          "Gefunden werden, bei Google und in KI-Antworten",
         ],
         boundariesTitle: "Nicht enthalten",
         boundaries: [
           "Das Werbebudget für Anzeigen geht direkt an Google.",
           "Texte, Fotos und Rechtstexte brauchen Zuarbeit aus dem Betrieb.",
-          "Platzierungen bei Google lassen sich nicht kaufen – in KI-Antworten genauso wenig.",
+          "Platzierungen bei Google lassen sich nicht kaufen, in KI-Antworten genauso wenig.",
         ],
         processTitle: "Vorgehen",
         process: [
@@ -757,10 +757,10 @@ export const serviceDefinitions = [
         summary:
           "Made-to-measure websites and shops: built around the customers and true to the brand, without site-builder templates or generic AI copy.",
         intro:
-          "Many websites look the same: the same template, the same phrases, often written by an AI. A website by Tracht Digital Solutions looks like the business it is built for. It starts with *who the customers are* and what they look for – design, copy and features follow from that. Existing sites are taken over too; only what stands in the way is replaced.",
+          "Many websites look the same: the same template, the same phrases, often written by an AI. A website by Tracht Digital Solutions looks like the business it is built for. It starts with *who the customers are* and what they look for, design, copy and features follow from that. Existing sites are taken over too; only what stands in the way is replaced.",
         situationsTitle: "Typical situations",
         situations: [
-          "The website looks like many others – copy and images feel interchangeable.",
+          "The website looks like many others, copy and images feel interchangeable.",
           "The site is outdated or the shop is causing problems.",
           "The site looks good, but hardly anyone gets in touch.",
         ],
@@ -776,13 +776,13 @@ export const serviceDefinitions = [
         outcomes: [
           "A website that recognisably belongs to the business",
           "Visitors understand the offer straight away",
-          "Being found – on Google and in AI answers",
+          "Being found, on Google and in AI answers",
         ],
         boundariesTitle: "Not included",
         boundaries: [
           "The ad budget goes to Google directly.",
           "Copy, photos and legal texts need input from the business.",
-          "Google rankings cannot be bought – nor can a mention in an AI answer.",
+          "Google rankings cannot be bought, nor can a mention in an AI answer.",
         ],
         processTitle: "Approach",
         process: [

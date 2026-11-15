@@ -127,7 +127,7 @@ describe("platform search and answer-engine signals", () => {
       const title = platform.seoTitle[lang];
       expect(title.length, title).toBeLessThanOrEqual(65);
       expect(title.startsWith(platform.name.split(" ")[0]), title).toBe(true);
-      expect(title.endsWith("— Tracht Digital"), title).toBe(true);
+      expect(title.endsWith("| Tracht Digital"), title).toBe(true);
     }
   });
 
@@ -167,7 +167,7 @@ describe("platform search and answer-engine signals", () => {
     }
   });
 
-  it("links only journal articles it has words for — and never the anonymous shop case", () => {
+  it("links only journal articles it has words for, and never the anonymous shop case", () => {
     // `vom-baukasten-shop-zum-eigenen-shop` is close to the anonymous retail
     // case. Linked from the page of the systems involved, it would identify
     // the client (see `lib/platforms.ts`).

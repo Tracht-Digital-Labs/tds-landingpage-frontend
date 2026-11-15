@@ -113,7 +113,7 @@ const ui = cardActionUi[lang];
         data-preview-views={cta.preview.views ? JSON.stringify(cta.preview.views) : undefined}
       >
         {cta.label}
-        {cta.detail && <span class="sr-only"> — {cta.detail}</span>}
+        {cta.detail && <span class="sr-only">: {cta.detail}</span>}
         <span aria-hidden="true"><Arrow dir="right" /></span>
       </button>
     )
@@ -129,7 +129,7 @@ const ui = cardActionUi[lang];
         hreflang={cta.hreflang}
       >
         {cta.label}
-        {cta.detail && <span class="sr-only"> — {cta.detail}</span>}
+        {cta.detail && <span class="sr-only">: {cta.detail}</span>}
         {cta.external && <span class="sr-only"> ({ui.newTab})</span>}
         {cta.external ? (
           /* The outward mark, never the internal "→": this one leaves the

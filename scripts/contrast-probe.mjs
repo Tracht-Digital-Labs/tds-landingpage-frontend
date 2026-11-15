@@ -245,7 +245,7 @@ async function probeTheme(browser, theme) {
       `  ${ok ? "·" : "✗"} ${probe.label}: ${value.toFixed(2)}:1` +
         `  text ${rgb.join(",")} on ${sample.rgb.join(",")}` +
         ` (${Math.round(sample.share * 100)}% of the box)` +
-        `${ok ? "" : " — below 4.5:1"}`,
+        `${ok ? "" : ", below 4.5:1"}`,
     );
   }
   await context.close();

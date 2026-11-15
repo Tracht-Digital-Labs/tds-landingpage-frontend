@@ -50,7 +50,7 @@ describe("peakOvershoot", () => {
     }
   });
 
-  it("keeps the brand bounce gentle — a few percent, not a spring", () => {
+  it("keeps the brand bounce gentle, a few percent, not a spring", () => {
     expect(peakOvershoot(MAX_OVERSHOOT)).toBeGreaterThan(0.03);
     expect(peakOvershoot(MAX_OVERSHOOT)).toBeLessThan(0.05);
   });

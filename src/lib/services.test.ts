@@ -98,7 +98,7 @@ describe("service titles and dates", () => {
       for (const service of serviceDefinitions) {
         const title = service.seoTitle[lang];
         expect(title.length, `${service.id} (${lang}): ${title}`).toBeLessThanOrEqual(TITLE_MAX);
-        expect(title, `${service.id} (${lang})`).toMatch(/\S — Tracht Digital$/);
+        expect(title, `${service.id} (${lang})`).toMatch(/\S \| Tracht Digital$/);
         expect(title.trim(), `${service.id} (${lang})`).toBe(title);
       }
     });

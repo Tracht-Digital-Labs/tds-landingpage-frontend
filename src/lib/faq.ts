@@ -122,7 +122,7 @@ export function getFaqPageCopy(lang: "de" | "en") {
         // the first thing a reader needs in order to trust the rest.
         answer:
           "Die Fragen auf dieser Seite beantwortet Tracht Digital Solutions aus Schwarzenbek bei Hamburg, tätig für Unternehmen in ganz Deutschland. Es geht um Websites und eigene Software, um Festpreise und Dauer, um den Umgang mit KI und um die Betreuung nach dem Start.",
-        seoTitle: "Häufige Fragen zu Website, Preis und Ablauf — Tracht Digital",
+        seoTitle: "Häufige Fragen zu Website, Preis und Ablauf | Tracht Digital",
         description:
           "Antworten zu Websites, eigener Software, Festpreisen, Dauer, KI und Betreuung, kurz beantwortet und ohne Fachsprache.",
         groups: {
@@ -142,7 +142,7 @@ export function getFaqPageCopy(lang: "de" | "en") {
           "Takeovers, pricing and working together: the questions Tracht Digital Solutions is asked most often.",
         answer:
           "The questions on this page are answered by Tracht Digital Solutions from Schwarzenbek near Hamburg, working with companies across Germany. They cover websites and custom software, fixed prices and timelines, the use of AI and support after launch.",
-        seoTitle: "Common Questions on Websites and Pricing — Tracht Digital",
+        seoTitle: "Common Questions on Websites and Pricing | Tracht Digital",
         description:
           "Answers on websites, custom software, fixed prices, timelines, AI and ongoing support, answered briefly and without jargon.",
         groups: {
@@ -215,7 +215,7 @@ export function getFaqContent(lang: "de" | "en"): FaqContent {
             // the boundary the Webauftritt page draws for Google and this one
             // draws for the same reason.
             q: "Findet ChatGPT meine Seite, und kann man das beeinflussen?",
-            a: "Ja, und ja. KI-Suchen lesen dieselbe Seite wie Google, achten aber auf anderes: eine klare Antwort im ersten Absatz, Fragen als Überschriften, prüfbare Angaben mit Quelle, Datum und Autor. Außerdem dürfen die KI-Crawler nicht ausgesperrt sein. Das nennt sich GEO – eine Platzierung kann trotzdem niemand versprechen.",
+            a: "Ja, und ja. KI-Suchen lesen dieselbe Seite wie Google, achten aber auf anderes: eine klare Antwort im ersten Absatz, Fragen als Überschriften, prüfbare Angaben mit Quelle, Datum und Autor. Außerdem dürfen die KI-Crawler nicht ausgesperrt sein. Das nennt sich GEO, eine Platzierung kann trotzdem niemand versprechen.",
             group: "takeover",
           },
           {
@@ -364,7 +364,7 @@ export function getFaqContent(lang: "de" | "en"): FaqContent {
           },
           {
             q: "Does ChatGPT find my site, and can that be influenced?",
-            a: "Yes, and yes. AI search reads the same page Google does, but weighs different things: a clear answer in the first paragraph, questions as headings, checkable facts with sources, a date and an author. And the AI crawlers must not be shut out. It is called GEO – but nobody can promise a placement.",
+            a: "Yes, and yes. AI search reads the same page Google does, but weighs different things: a clear answer in the first paragraph, questions as headings, checkable facts with sources, a date and an author. And the AI crawlers must not be shut out. It is called GEO, but nobody can promise a placement.",
             group: "takeover",
           },
           {

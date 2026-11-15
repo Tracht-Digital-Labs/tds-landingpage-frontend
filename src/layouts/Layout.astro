@@ -202,7 +202,7 @@ const showCookieNotice = !bare;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href={url} />
 
-    <!-- Resource hints — connect to the API origins we know we'll
+    <!-- Resource hints, connect to the API origins we know we'll
          hit (the contact form on submit, the content API on every
          page that has a Journal section). `preconnect`
          opens the TLS handshake early; `dns-prefetch` is the cheap
@@ -213,7 +213,7 @@ const showCookieNotice = !bare;
     <link rel="preconnect" href="https://blog.tracht-digital.de" crossorigin />
     <link rel="dns-prefetch" href="https://blog.tracht-digital.de" />
 
-    <!-- i18n alternates — only emitted when the page is indexable.
+    <!-- i18n alternates, only emitted when the page is indexable.
          Legal pages opt out of both search and hreflang. -->
     {!hidden && (
       <>
@@ -227,7 +227,7 @@ const showCookieNotice = !bare;
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={lang === "en" ? "Tracht Digital — Ratgeber" : "Tracht Digital — Ratgeber (Feed)"}
+      title={lang === "en" ? "Tracht Digital | Ratgeber" : "Tracht Digital | Ratgeber (Feed)"}
       href={`${siteConfig.blogUrl}/rss.xml`}
     />
     <link rel="me" href={siteConfig.blogUrl} />
@@ -405,8 +405,8 @@ const showCookieNotice = !bare;
         future section id that doesn't have a map entry yet. */}
     <script>
       const ORIGINAL_TITLE = document.title;
-      const BRAND = ORIGINAL_TITLE.includes(" — ")
-        ? ORIGINAL_TITLE.split(" — ")[0]
+      const BRAND = ORIGINAL_TITLE.includes(" | ")
+        ? ORIGINAL_TITLE.split(" | ")[0]
         : ORIGINAL_TITLE;
 
       const lang = document.documentElement.lang.startsWith("en")

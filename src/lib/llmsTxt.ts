@@ -83,18 +83,18 @@ const PAGE_LABELS: Record<string, string> = {
   "/": "Startseite",
   // The count is the FAQ's own length (see `faqLabel`); it said "alle zwölf"
   // long after the page held seventeen.
-  "/fragen": "Häufige Fragen — nach Übernahme, Preisen und Zusammenarbeit gruppiert",
+  "/fragen": "Häufige Fragen, nach Übernahme, Preisen und Zusammenarbeit gruppiert",
   "/visitenkarte": "Digitale Visitenkarte",
-  "/bildrechte": "Bildrechte — Herkunft der Bilder, Nutzung, Erlaubnis anfragen",
-  "/projekte": "Projekte und Referenzen — Kundenprojekte, eigene Projekte, Beispielseiten und Designstudien",
-  "/qualifikationen": "Qualifikationen — abgeschlossene Weiterbildungen, jedes Zertifikat im Original",
+  "/bildrechte": "Bildrechte: Herkunft der Bilder, Nutzung, Erlaubnis anfragen",
+  "/projekte": "Projekte und Referenzen: Kundenprojekte, eigene Projekte, Beispielseiten und Designstudien",
+  "/qualifikationen": "Qualifikationen, abgeschlossene Weiterbildungen, jedes Zertifikat im Original",
 };
 
 export function renderLlmsTxt(input: LlmsInput): string {
   const { entries, serviceContent = {}, faq = [] } = input;
   const label = (path: string): string =>
     path === "/fragen" && faq.length > 0
-      ? `Häufige Fragen — alle ${faq.length}, nach Übernahme, Preisen und Zusammenarbeit gruppiert`
+      ? `Häufige Fragen, alle ${faq.length}, nach Übernahme, Preisen und Zusammenarbeit gruppiert`
       : (PAGE_LABELS[path] ?? path);
 
   const serviceByPath = new Map(serviceDefinitions.map((service) => [serviceHref(service, "de"), service]));
@@ -109,7 +109,7 @@ export function renderLlmsTxt(input: LlmsInput): string {
   out();
   out("> Kundenportale, Verwaltungspanels und Digitalisierung für Unternehmen.");
   out("> Julian Tracht baut Betrieben ein eigenes Panel für Aufträge, Kunden und");
-  out("> Termine, vereinfacht Abläufe und betreut Websites und Shops – auch mit");
+  out("> Termine, vereinfacht Abläufe und betreut Websites und Shops, auch mit");
   out("> WordPress, WooCommerce, Shopware 6, TYPO3 und STRATO. Ein fester");
   out("> Ansprechpartner aus Schwarzenbek bei Hamburg, für Unternehmen in ganz");
   out("> Deutschland.");
@@ -139,7 +139,7 @@ export function renderLlmsTxt(input: LlmsInput): string {
     for (const entry of serviceEntries) {
       const service = serviceByPath.get(entry.de)!;
       const content = serviceContent[service.id] ?? service.fallback.de;
-      out(`- **${content.title}** (${priceNote(content.priceText)}) — ${content.summary}`);
+      out(`- **${content.title}** (${priceNote(content.priceText)}): ${content.summary}`);
       out(pair(entry));
     }
     out();
@@ -151,13 +151,13 @@ export function renderLlmsTxt(input: LlmsInput): string {
     out("## Shopsysteme und CMS");
     out();
     out("Eine eigene Seite je System: typische Probleme, was übernommen wird,");
-    out("Entscheidungshilfen mit Quellen und häufige Fragen. Unabhängig – kein");
+    out("Entscheidungshilfen mit Quellen und häufige Fragen. Unabhängig, kein");
     out("offizieller Partner der Hersteller. Abgerechnet wird zum Festpreis oder");
     out("nach einem eigenen Angebot, bevor die Arbeit beginnt.");
     out();
     for (const entry of platformEntries) {
       const platform = platformByPath.get(entry.de)!;
-      out(`- **${platform.name}** — ${platform.keywords.de.join(", ")}.`);
+      out(`- **${platform.name}**: ${platform.keywords.de.join(", ")}.`);
       out(pair(entry));
     }
     out();

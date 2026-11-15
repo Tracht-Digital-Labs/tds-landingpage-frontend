@@ -104,7 +104,7 @@ export async function legalDocBytes(key: string, lang: "de" | "en"): Promise<Uin
         // A truthful PDF or nothing: an error page or an HTML SPA fallback
         // served with a 200 would otherwise be written out as "the AGB".
         if (bytes.subarray(0, 1024).includes("%PDF-")) return bytes;
-        console.warn(`[tds-landingpage] /content/legal/${key}.pdf did not return a PDF — using committed fallback`);
+        console.warn(`[tds-landingpage] /content/legal/${key}.pdf did not return a PDF, using committed fallback`);
       }
     } catch (err) {
       console.warn(`[tds-landingpage] legal document "${key}" fetch failed, using committed fallback:`, err);
@@ -122,7 +122,7 @@ export const legalCopy = {
     agbTitle: "Allgemeine Geschäftsbedingungen",
     agbShort: "AGB",
     agbDescription:
-      "Allgemeine Geschäftsbedingungen von Tracht Digital Solutions — als Seite lesen oder als PDF herunterladen.",
+      "Allgemeine Geschäftsbedingungen von Tracht Digital Solutions, als Seite lesen oder als PDF herunterladen.",
     back: "← Zurück",
     download: "AGB als PDF herunterladen",
     viewerLabel: "AGB als PDF",
@@ -135,7 +135,7 @@ export const legalCopy = {
     agbTitle: "Terms and Conditions",
     agbShort: "Terms",
     agbDescription:
-      "Terms and Conditions of Tracht Digital Solutions — read them as a page or download the PDF.",
+      "Terms and Conditions of Tracht Digital Solutions, read them as a page or download the PDF.",
     back: "← Back",
     download: "Download the Terms as a PDF",
     viewerLabel: "Terms and Conditions as a PDF",

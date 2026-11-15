@@ -86,7 +86,7 @@ function readMeta(doc: Document, demo: DemoDefinition): { title: string | null; 
   const harvested = firstMeta(doc, ['meta[name="description"]', 'meta[property="og:description"]']);
   const description = harvested && hasBannedWord(harvested) ? null : harvested;
   if (harvested && description === null) {
-    console.warn(`  ${demo.id}  description dropped — banned word: ${JSON.stringify(harvested)}`);
+    console.warn(`  ${demo.id}  description dropped, banned word: ${JSON.stringify(harvested)}`);
   }
   return { title, description };
 }
@@ -447,7 +447,7 @@ if (photogenic.length > 0) {
         result.preview = null;
         await removeAssets(demo);
         // eslint-disable-next-line no-console
-        console.log(`failed — ${result.note}`);
+        console.log(`failed: ${result.note}`);
       }
     }
   } finally {

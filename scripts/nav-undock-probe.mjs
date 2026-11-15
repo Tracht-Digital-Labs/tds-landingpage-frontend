@@ -140,7 +140,7 @@ for (const theme of ["light", "dark"]) {
     // The fill must never be meaningfully darker than the colour it ends on.
     if (worstHue.drop > 0.12) {
       failures.push(
-        `${label}: the fill passes ${worstHue.drop.toFixed(3)} darker than its end colour — ` +
+        `${label}: the fill passes ${worstHue.drop.toFixed(3)} darker than its end colour: ` +
           "a docked state of `transparent` interpolates from black",
       );
     }

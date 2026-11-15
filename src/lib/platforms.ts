@@ -290,8 +290,8 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
     kind: "shop",
     slug: "woocommerce",
     seoTitle: {
-      de: "WooCommerce: Shop erstellen & Fehler beheben — Tracht Digital",
-      en: "WooCommerce: Shop Builds, Themes and Fixes — Tracht Digital",
+      de: "WooCommerce: Shop erstellen & Fehler beheben | Tracht Digital",
+      en: "WooCommerce: Shop Builds, Themes and Fixes | Tracht Digital",
     },
     updatedAt: "2026-10-12",
     wikipedia: {
@@ -309,9 +309,9 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         label: "Webauftritt",
         title: "WooCommerce-Shop erstellen, reparieren und anpassen",
         summary:
-          "Tracht Digital Solutions baut WooCommerce-Shops, behebt Fehler und passt Themes update-sicher an – aus Schwarzenbek bei Hamburg.",
+          "Tracht Digital Solutions baut WooCommerce-Shops, behebt Fehler und passt Themes update-sicher an, aus Schwarzenbek bei Hamburg.",
         answer:
-          "Tracht Digital Solutions ist ein Unternehmen aus Schwarzenbek bei Hamburg. Für WooCommerce richtet es Shops ein, behebt Fehler und passt Themes so an, dass Updates möglich bleiben – mit *einem festen Ansprechpartner*.",
+          "Tracht Digital Solutions ist ein Unternehmen aus Schwarzenbek bei Hamburg. Für WooCommerce richtet es Shops ein, behebt Fehler und passt Themes so an, dass Updates möglich bleiben, mit *einem festen Ansprechpartner*.",
         situationsTitle: "Typische Ausgangslagen",
         situations: [
           "Nach einem Update zeigt der Shop eine weiße Seite oder einen kritischen Fehler.",
@@ -333,7 +333,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "shop-erstellen",
             title: "WooCommerce-Shop erstellen",
-            text: "Einrichtung des Shops auf WordPress – bereit für den deutschen Markt.",
+            text: "Einrichtung des Shops auf WordPress, bereit für den deutschen Markt.",
             points: [
               "WordPress und WooCommerce einrichten",
               "Produkte anlegen oder importieren",
@@ -343,7 +343,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "theme",
             title: "WooCommerce-Theme anpassen",
-            text: "Änderungen kommen in ein Child-Theme – so bleiben Updates möglich.",
+            text: "Änderungen kommen in ein Child-Theme, so bleiben Updates möglich.",
             points: [
               "Design passend zur Marke",
               "Produktseiten, Kategorien und Warenkorb",
@@ -354,19 +354,19 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         comparison: SHOP_COMPARISON.de,
         outcomesTitle: "Ergebnis",
         outcomes: [
-          "Der Shop läuft wieder – mit klarer Ursache",
+          "Der Shop läuft wieder, mit klarer Ursache",
           "Kunden kommen ohne Hürden durch den Checkout",
           "Das Design übersteht das nächste Update",
         ],
         boundariesTitle: "Nicht enthalten",
         boundaries: [
-          "Rechtstexte liefert eine Kanzlei oder ein Rechtstexte-Dienst – eingebaut werden sie hier.",
+          "Rechtstexte liefert eine Kanzlei oder ein Rechtstexte-Dienst, eingebaut werden sie hier.",
           "Gebühren und Premium-Plugins werden direkt an den Anbieter gezahlt.",
           "Tracht Digital Solutions arbeitet unabhängig und ist kein offizieller Partner von WooCommerce oder Automattic.",
         ],
         processTitle: "Vorgehen",
         process: [
-          "Kurze Beschreibung des Problems – gern mit Link",
+          "Kurze Beschreibung des Problems, gern mit Link",
           "Prüfung des Shops mit Ursache und Aufwand",
           "Änderungen werden auf einer Kopie getestet, dann gehen sie live",
         ],
@@ -378,7 +378,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         faq: [
           {
             q: "Wer behebt Fehler in einem WooCommerce-Shop?",
-            a: "Tracht Digital Solutions findet die Ursache – meist ein Plugin, ein Update oder das Theme – und behebt sie.",
+            a: "Tracht Digital Solutions findet die Ursache (meist ein Plugin, ein Update oder das Theme) und behebt sie.",
           },
           {
             q: "Was kostet ein WooCommerce-Shop?",
@@ -394,16 +394,16 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "Der Shop braucht Hilfe?",
-        ctaText: "Eine kurze Nachricht, was nicht läuft, genügt – gern mit Link.",
+        ctaText: "Eine kurze Nachricht, was nicht läuft, genügt, gern mit Link.",
         ctaButton: "Erstgespräch vereinbaren",
       },
       en: {
         label: "Web presence",
         title: "Building, fixing and customising WooCommerce shops",
         summary:
-          "Tracht Digital Solutions builds WooCommerce shops, fixes errors and customises themes in an update-safe way – from Schwarzenbek near Hamburg.",
+          "Tracht Digital Solutions builds WooCommerce shops, fixes errors and customises themes in an update-safe way, from Schwarzenbek near Hamburg.",
         answer:
-          "Tracht Digital Solutions is a company based in Schwarzenbek near Hamburg. For WooCommerce it sets up shops, fixes errors and customises themes so that updates stay possible – with *one steady point of contact*.",
+          "Tracht Digital Solutions is a company based in Schwarzenbek near Hamburg. For WooCommerce it sets up shops, fixes errors and customises themes so that updates stay possible, with *one steady point of contact*.",
         situationsTitle: "Typical situations",
         situations: [
           "After an update the shop shows a white page or a critical error.",
@@ -425,7 +425,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "build-shop",
             title: "Building a WooCommerce shop",
-            text: "Setting up the shop on WordPress – ready for the German market.",
+            text: "Setting up the shop on WordPress, ready for the German market.",
             points: [
               "Setting up WordPress and WooCommerce",
               "Adding or importing products",
@@ -435,7 +435,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "theme",
             title: "Customising the WooCommerce theme",
-            text: "Changes go into a child theme – so updates stay possible.",
+            text: "Changes go into a child theme, so updates stay possible.",
             points: [
               "A design that fits the brand",
               "Product pages, categories and cart",
@@ -446,19 +446,19 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         comparison: SHOP_COMPARISON.en,
         outcomesTitle: "Results",
         outcomes: [
-          "The shop works again – with a clear cause",
+          "The shop works again, with a clear cause",
           "Customers get through checkout without obstacles",
           "The design survives the next update",
         ],
         boundariesTitle: "Not included",
         boundaries: [
-          "Legal texts come from a law firm or a legal text service – they are put in place here.",
+          "Legal texts come from a law firm or a legal text service, they are put in place here.",
           "Fees and premium plugins go to the provider directly.",
           "Tracht Digital Solutions works independently and is not an official partner of WooCommerce or Automattic.",
         ],
         processTitle: "Approach",
         process: [
-          "A short description of the problem – a link helps",
+          "A short description of the problem, a link helps",
           "A review of the shop with cause and effort",
           "Changes are tested on a copy, then they go live",
         ],
@@ -470,7 +470,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         faq: [
           {
             q: "Who fixes errors in a WooCommerce shop?",
-            a: "Tracht Digital Solutions finds the cause – usually a plugin, an update or the theme – and fixes it.",
+            a: "Tracht Digital Solutions finds the cause (usually a plugin, an update or the theme) and fixes it.",
           },
           {
             q: "What does a WooCommerce shop cost?",
@@ -486,7 +486,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "Shop needs help?",
-        ctaText: "A short note on what is not working is enough – a link helps.",
+        ctaText: "A short note on what is not working is enough, a link helps.",
         ctaButton: "Arrange an initial consultation",
       },
     },
@@ -497,8 +497,8 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
     kind: "shop",
     slug: "shopware",
     seoTitle: {
-      de: "Shopware 6: Shop, Theme & Fehlerbehebung — Tracht Digital",
-      en: "Shopware 6: Shops, Themes and Fixes — Tracht Digital",
+      de: "Shopware 6: Shop, Theme & Fehlerbehebung | Tracht Digital",
+      en: "Shopware 6: Shops, Themes and Fixes | Tracht Digital",
     },
     updatedAt: "2026-10-12",
     wikipedia: {
@@ -516,14 +516,14 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         label: "Webauftritt",
         title: "Shopware-6-Shop erstellen, reparieren und anpassen",
         summary:
-          "Tracht Digital Solutions richtet Shopware-6-Shops ein, behebt Fehler nach Updates und baut Themes – auch beim Umstieg von Shopware 5.",
+          "Tracht Digital Solutions richtet Shopware-6-Shops ein, behebt Fehler nach Updates und baut Themes, auch beim Umstieg von Shopware 5.",
         answer:
           "Tracht Digital Solutions ist ein Unternehmen aus Schwarzenbek bei Hamburg. Für Shopware 6 richtet es Shops ein, behebt Fehler und baut Themes. Es begleitet auch den Umstieg von Shopware 5, dessen Sicherheitsupdates *am 31. Juli 2024 endeten*.",
         situationsTitle: "Typische Ausgangslagen",
         situations: [
           "Nach einem Update lädt die Storefront oder die Administration nicht mehr richtig.",
           "Eine Erweiterung verträgt sich nicht mit der neuen Version.",
-          "Der Shop läuft noch auf Shopware 5 – ohne Sicherheitsupdates.",
+          "Der Shop läuft noch auf Shopware 5, ohne Sicherheitsupdates.",
         ],
         offersTitle: "Leistungsumfang",
         offers: [
@@ -540,7 +540,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "shop-erstellen",
             title: "Shopware-6-Shop erstellen",
-            text: "Einrichtung eines neuen Shops – oder der Umzug von Shopware 5.",
+            text: "Einrichtung eines neuen Shops, oder der Umzug von Shopware 5.",
             points: [
               "Einrichtung und Verkaufskanäle",
               "Produkte anlegen oder importieren",
@@ -573,7 +573,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         ],
         processTitle: "Vorgehen",
         process: [
-          "Kurze Beschreibung des Problems – mit Shop-Version, falls bekannt",
+          "Kurze Beschreibung des Problems, mit Shop-Version, falls bekannt",
           "Prüfung des Shops mit Ursache und Aufwand",
           "Updates werden auf einer Kopie getestet, dann gehen sie live",
         ],
@@ -584,7 +584,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         faqTitle: "Häufige Fragen zu Shopware 6",
         faq: [
           {
-            q: "Shopware 5 bekommt keine Sicherheitsupdates mehr – was jetzt?",
+            q: "Shopware 5 bekommt keine Sicherheitsupdates mehr, was jetzt?",
             a: "Die Sicherheitsupdates endeten am 31. Juli 2024. Sinnvoll ist der Umstieg auf Shopware 6: Die Daten ziehen mit dem Migrationsassistenten um, Theme und Erweiterungen entstehen neu.",
           },
           {
@@ -601,21 +601,21 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "Der Shopware-Shop braucht Hilfe?",
-        ctaText: "Eine kurze Nachricht, was nicht läuft, genügt – gern mit Shop-Version und Link.",
+        ctaText: "Eine kurze Nachricht, was nicht läuft, genügt, gern mit Shop-Version und Link.",
         ctaButton: "Erstgespräch vereinbaren",
       },
       en: {
         label: "Web presence",
         title: "Building, fixing and customising Shopware 6 shops",
         summary:
-          "Tracht Digital Solutions sets up Shopware 6 shops, fixes errors after updates and builds themes – including the move from Shopware 5.",
+          "Tracht Digital Solutions sets up Shopware 6 shops, fixes errors after updates and builds themes, including the move from Shopware 5.",
         answer:
           "Tracht Digital Solutions is a company based in Schwarzenbek near Hamburg. For Shopware 6 it sets up shops, fixes errors and builds themes. It also handles the move from Shopware 5, whose security updates *ended on 31 July 2024*.",
         situationsTitle: "Typical situations",
         situations: [
           "After an update the storefront or the administration no longer loads properly.",
           "An extension does not work with the new version.",
-          "The shop still runs on Shopware 5 – without security updates.",
+          "The shop still runs on Shopware 5, without security updates.",
         ],
         offersTitle: "Scope of services",
         offers: [
@@ -632,7 +632,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "build-shop",
             title: "Building a Shopware 6 shop",
-            text: "Setting up a new shop – or moving it over from Shopware 5.",
+            text: "Setting up a new shop, or moving it over from Shopware 5.",
             points: [
               "Setup and sales channels",
               "Adding or importing products",
@@ -665,7 +665,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         ],
         processTitle: "Approach",
         process: [
-          "A short description of the problem – with the shop version if known",
+          "A short description of the problem, with the shop version if known",
           "A review of the shop with cause and effort",
           "Updates are tested on a copy, then they go live",
         ],
@@ -676,7 +676,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         faqTitle: "Common questions about Shopware 6",
         faq: [
           {
-            q: "Shopware 5 no longer gets security updates – what now?",
+            q: "Shopware 5 no longer gets security updates, what now?",
             a: "Security updates ended on 31 July 2024. Moving to Shopware 6 makes sense: the data moves with the migration assistant, while theme and extensions are rebuilt.",
           },
           {
@@ -693,7 +693,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "Shopware shop needs help?",
-        ctaText: "A short note on what is not working is enough – shop version and a link help.",
+        ctaText: "A short note on what is not working is enough, shop version and a link help.",
         ctaButton: "Arrange an initial consultation",
       },
     },
@@ -704,8 +704,8 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
     kind: "cms",
     slug: "wordpress",
     seoTitle: {
-      de: "WordPress: Website, Wartung & Fehlerhilfe — Tracht Digital",
-      en: "WordPress: Websites, Maintenance and Fixes — Tracht Digital",
+      de: "WordPress: Website, Wartung & Fehlerhilfe | Tracht Digital",
+      en: "WordPress: Websites, Maintenance and Fixes | Tracht Digital",
     },
     updatedAt: "2026-10-12",
     wikipedia: {
@@ -723,7 +723,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         label: "Webauftritt",
         title: "WordPress-Website erstellen, reparieren und pflegen",
         summary:
-          "Tracht Digital Solutions baut WordPress-Websites, behebt Fehler, passt Themes an und übernimmt Updates und Pflege – aus Schwarzenbek bei Hamburg.",
+          "Tracht Digital Solutions baut WordPress-Websites, behebt Fehler, passt Themes an und übernimmt Updates und Pflege, aus Schwarzenbek bei Hamburg.",
         answer:
           "Tracht Digital Solutions ist ein Unternehmen aus Schwarzenbek bei Hamburg. Es betreut WordPress-Websites: Fehler beheben, Updates, neue Seiten, Themes und Umzüge. WordPress läuft laut W3Techs auf *40,3 % aller Websites* (September 2026).",
         situationsTitle: "Typische Ausgangslagen",
@@ -747,7 +747,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "relaunch",
             title: "Neue Website oder Relaunch",
-            text: "Neubau oder Überarbeitung der Seite – mit klarer Struktur.",
+            text: "Neubau oder Überarbeitung der Seite, mit klarer Struktur.",
             points: [
               "Seiten und Inhalte ordnen",
               "Für Handy und Bildschirm",
@@ -757,7 +757,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "theme",
             title: "Themes und Templates",
-            text: "Anpassungen kommen in ein Child-Theme – so bleiben sie bei Updates erhalten.",
+            text: "Anpassungen kommen in ein Child-Theme, so bleiben sie bei Updates erhalten.",
             points: [
               "Bestehendes Theme anpassen",
               "Block-Themes und klassische Themes",
@@ -767,7 +767,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "umzug",
             title: "Umzug und Upgrades",
-            text: "Umzug der Seite – mit Domain, E-Mail und Weiterleitungen.",
+            text: "Umzug der Seite, mit Domain, E-Mail und Weiterleitungen.",
             points: [
               "Vom Baukasten zu WordPress",
               "Umzug zu einem anderen Hoster",
@@ -789,7 +789,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         },
         outcomesTitle: "Ergebnis",
         outcomes: [
-          "Die Seite läuft wieder – und bleibt aktuell",
+          "Die Seite läuft wieder, und bleibt aktuell",
           "Updates mit Sicherung vorher",
           "Eine Seite, die auf dem Handy funktioniert",
         ],
@@ -801,7 +801,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         ],
         processTitle: "Vorgehen",
         process: [
-          "Kurze Beschreibung des Problems – ein Link genügt",
+          "Kurze Beschreibung des Problems, ein Link genügt",
           "Prüfung der Seite mit Ursache und Aufwand",
           "Vor jedem Eingriff entsteht eine Sicherung",
         ],
@@ -812,12 +812,12 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         faqTitle: "Häufige Fragen zu WordPress",
         faq: [
           {
-            q: "Eine WordPress-Seite zeigt einen kritischen Fehler – was tun?",
+            q: "Eine WordPress-Seite zeigt einen kritischen Fehler, was tun?",
             a: "Meist steckt ein Plugin, das Theme oder ein Update dahinter. Tracht Digital Solutions findet die Ursache und bringt die Seite wieder zum Laufen.",
           },
           {
             q: "Wer übernimmt Updates und Wartung für WordPress?",
-            a: "Tracht Digital Solutions hält WordPress, Themes und Plugins aktuell und sichert vorher – nach Bedarf oder als Monatsmodell.",
+            a: "Tracht Digital Solutions hält WordPress, Themes und Plugins aktuell und sichert vorher, nach Bedarf oder als Monatsmodell.",
           },
           {
             q: "Was kostet eine WordPress-Website?",
@@ -829,14 +829,14 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "Die WordPress-Seite braucht Hilfe?",
-        ctaText: "Eine kurze Nachricht, was nicht läuft, genügt – ein Link reicht.",
+        ctaText: "Eine kurze Nachricht, was nicht läuft, genügt, ein Link reicht.",
         ctaButton: "Erstgespräch vereinbaren",
       },
       en: {
         label: "Web presence",
         title: "Building, fixing and maintaining WordPress websites",
         summary:
-          "Tracht Digital Solutions builds WordPress websites, fixes errors, customises themes and takes care of updates and upkeep – from Schwarzenbek near Hamburg.",
+          "Tracht Digital Solutions builds WordPress websites, fixes errors, customises themes and takes care of updates and upkeep, from Schwarzenbek near Hamburg.",
         answer:
           "Tracht Digital Solutions is a company based in Schwarzenbek near Hamburg. It looks after WordPress websites: fixing errors, updates, new sites, themes and migrations. According to W3Techs, WordPress runs *40.3% of all websites* (September 2026).",
         situationsTitle: "Typical situations",
@@ -860,7 +860,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "relaunch",
             title: "New website or relaunch",
-            text: "Rebuilding or reworking the site – with a clear structure.",
+            text: "Rebuilding or reworking the site, with a clear structure.",
             points: [
               "Ordering pages and content",
               "Built for phones and screens",
@@ -870,7 +870,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "theme",
             title: "Themes and templates",
-            text: "Customisations go into a child theme – so they survive updates.",
+            text: "Customisations go into a child theme, so they survive updates.",
             points: [
               "Customising an existing theme",
               "Block themes and classic themes",
@@ -880,7 +880,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "migration",
             title: "Migrations and upgrades",
-            text: "Moving the site – with domain, email and redirects.",
+            text: "Moving the site, with domain, email and redirects.",
             points: [
               "From a site builder to WordPress",
               "Moving to another host",
@@ -902,7 +902,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         },
         outcomesTitle: "Results",
         outcomes: [
-          "The site works again – and stays up to date",
+          "The site works again, and stays up to date",
           "Updates with a backup first",
           "A site that works on phones",
         ],
@@ -914,7 +914,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         ],
         processTitle: "Approach",
         process: [
-          "A short description of the problem – a link is enough",
+          "A short description of the problem, a link is enough",
           "A review of the site with cause and effort",
           "A backup before every change",
         ],
@@ -925,12 +925,12 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         faqTitle: "Common questions about WordPress",
         faq: [
           {
-            q: "A WordPress site shows a critical error – what now?",
+            q: "A WordPress site shows a critical error, what now?",
             a: "Usually a plugin, the theme or an update is behind it. Tracht Digital Solutions finds the cause and gets the site running again.",
           },
           {
             q: "Who takes care of WordPress updates and maintenance?",
-            a: "Tracht Digital Solutions keeps WordPress, themes and plugins up to date and backs up first – as needed or as a monthly arrangement.",
+            a: "Tracht Digital Solutions keeps WordPress, themes and plugins up to date and backs up first, as needed or as a monthly arrangement.",
           },
           {
             q: "What does a WordPress website cost?",
@@ -942,7 +942,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "WordPress site needs help?",
-        ctaText: "A short note on what is not working is enough – a link will do.",
+        ctaText: "A short note on what is not working is enough, a link will do.",
         ctaButton: "Arrange an initial consultation",
       },
     },
@@ -953,8 +953,8 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
     kind: "cms",
     slug: "typo3",
     seoTitle: {
-      de: "TYPO3: Update, Relaunch & Wartung — Tracht Digital",
-      en: "TYPO3: Upgrades, Relaunches and Maintenance — Tracht Digital",
+      de: "TYPO3: Update, Relaunch & Wartung | Tracht Digital",
+      en: "TYPO3: Upgrades, Relaunches and Maintenance | Tracht Digital",
     },
     updatedAt: "2026-10-12",
     wikipedia: {
@@ -972,7 +972,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         label: "Webauftritt",
         title: "TYPO3-Website updaten, reparieren und pflegen",
         summary:
-          "Tracht Digital Solutions bringt TYPO3-Websites auf eine unterstützte Version, behebt Fehler und übernimmt die Pflege – aus Schwarzenbek bei Hamburg.",
+          "Tracht Digital Solutions bringt TYPO3-Websites auf eine unterstützte Version, behebt Fehler und übernimmt die Pflege, aus Schwarzenbek bei Hamburg.",
         answer:
           "Tracht Digital Solutions ist ein Unternehmen aus Schwarzenbek bei Hamburg. Es betreut TYPO3-Websites: Upgrades, Fehlerbehebung, Templates und Relaunches. Wichtig: TYPO3 v12 bekommt *seit dem 1. Mai 2026 keine Community-Updates mehr*.",
         situationsTitle: "Typische Ausgangslagen",
@@ -996,7 +996,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "relaunch",
             title: "Neue Website oder Relaunch",
-            text: "Die Seite wird neu aufgesetzt – mit aktuellem TYPO3 und einem Backend, das die Redaktion gut bedienen kann.",
+            text: "Die Seite wird neu aufgesetzt, mit aktuellem TYPO3 und einem Backend, das die Redaktion gut bedienen kann.",
             points: [
               "Seitenbaum und Inhalte neu ordnen",
               "Für Handy und Bildschirm",
@@ -1006,7 +1006,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "templates",
             title: "Templates und Extensions",
-            text: "Templates entstehen in einem eigenen Site-Package – getrennt vom TYPO3-Kern.",
+            text: "Templates entstehen in einem eigenen Site-Package, getrennt vom TYPO3-Kern.",
             points: [
               "Fluid-Templates im Site-Package",
               "Extensions prüfen, anpassen oder ersetzen",
@@ -1032,7 +1032,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           rows: [
             ["TYPO3 v11 LTS", "Community-Support endete im Oktober 2024", "Upgrade dringend einplanen"],
             ["TYPO3 v12 LTS", "Seit dem 1. Mai 2026 keine Community-Updates", "Upgrade planen oder übergangsweise kostenpflichtiges ELTS"],
-            ["TYPO3 v13 LTS", "Sicherheitsupdates bis Ende 2027", "Unterstützt – nächster Schritt ist v14"],
+            ["TYPO3 v13 LTS", "Sicherheitsupdates bis Ende 2027", "Unterstützt, nächster Schritt ist v14"],
             ["TYPO3 v14 LTS", "Sicherheitsupdates bis Juni 2029", "Aktuelle Version für neue Projekte"],
           ],
         },
@@ -1078,14 +1078,14 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "Die TYPO3-Seite braucht ein Update?",
-        ctaText: "Link und TYPO3-Version genügen – danach ist klar, welcher Weg sinnvoll ist.",
+        ctaText: "Link und TYPO3-Version genügen, danach ist klar, welcher Weg sinnvoll ist.",
         ctaButton: "Erstgespräch vereinbaren",
       },
       en: {
         label: "Web presence",
         title: "Upgrading, fixing and maintaining TYPO3 websites",
         summary:
-          "Tracht Digital Solutions brings TYPO3 websites onto a supported version, fixes errors and takes over the upkeep – from Schwarzenbek near Hamburg.",
+          "Tracht Digital Solutions brings TYPO3 websites onto a supported version, fixes errors and takes over the upkeep, from Schwarzenbek near Hamburg.",
         answer:
           "Tracht Digital Solutions is a company based in Schwarzenbek near Hamburg. It looks after TYPO3 websites: upgrades, fixing errors, templates and relaunches. Important: TYPO3 v12 has had *no community updates since 1 May 2026*.",
         situationsTitle: "Typical situations",
@@ -1109,7 +1109,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "relaunch",
             title: "New website or relaunch",
-            text: "The site is rebuilt – on current TYPO3, with a backend the editors can work with.",
+            text: "The site is rebuilt, on current TYPO3, with a backend the editors can work with.",
             points: [
               "Reorganising the page tree and content",
               "Built for phones and screens",
@@ -1119,7 +1119,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "templates",
             title: "Templates and extensions",
-            text: "Templates live in a site package of their own – separate from the TYPO3 core.",
+            text: "Templates live in a site package of their own, separate from the TYPO3 core.",
             points: [
               "Fluid templates in a site package",
               "Checking, adapting or replacing extensions",
@@ -1145,7 +1145,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           rows: [
             ["TYPO3 v11 LTS", "Community support ended in October 2024", "Plan the upgrade urgently"],
             ["TYPO3 v12 LTS", "No community updates since 1 May 2026", "Plan the upgrade or use paid ELTS for now"],
-            ["TYPO3 v13 LTS", "Security updates until the end of 2027", "Supported – the next step is v14"],
+            ["TYPO3 v13 LTS", "Security updates until the end of 2027", "Supported, the next step is v14"],
             ["TYPO3 v14 LTS", "Security updates until June 2029", "The current version for new projects"],
           ],
         },
@@ -1191,7 +1191,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "TYPO3 site needs an upgrade?",
-        ctaText: "The link and the TYPO3 version are enough – then it is clear which way makes sense.",
+        ctaText: "The link and the TYPO3 version are enough, then it is clear which way makes sense.",
         ctaButton: "Arrange an initial consultation",
       },
     },
@@ -1202,8 +1202,8 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
     kind: "builder",
     slug: "strato",
     seoTitle: {
-      de: "STRATO-Website: Hilfe & Umzug zu WordPress — Tracht Digital",
-      en: "STRATO Websites: Help and Moving to WordPress — Tracht Digital",
+      de: "STRATO-Website: Hilfe & Umzug zu WordPress | Tracht Digital",
+      en: "STRATO Websites: Help and Moving to WordPress | Tracht Digital",
     },
     updatedAt: "2026-10-12",
     wikipedia: {
@@ -1219,11 +1219,11 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
     content: {
       de: {
         label: "Webauftritt",
-        title: "Hilfe für STRATO-Websites – vom Baukasten bis WordPress",
+        title: "Hilfe für STRATO-Websites, vom Baukasten bis WordPress",
         summary:
-          "Homepage-Baukasten oder WordPress bei STRATO? Tracht Digital Solutions hilft bei Aufbau, Fehlern und Design – und beim Umzug zu WordPress.",
+          "Homepage-Baukasten oder WordPress bei STRATO? Tracht Digital Solutions hilft bei Aufbau, Fehlern und Design, und beim Umzug zu WordPress.",
         answer:
-          "Tracht Digital Solutions ist ein Unternehmen aus Schwarzenbek bei Hamburg. Es hilft bei Websites auf STRATO – ob Homepage-Baukasten oder WordPress: bei Aufbau, Fehlern und Gestaltung und *beim Umzug zu WordPress*.",
+          "Tracht Digital Solutions ist ein Unternehmen aus Schwarzenbek bei Hamburg. Es hilft bei Websites auf STRATO, ob Homepage-Baukasten oder WordPress: bei Aufbau, Fehlern und Gestaltung und *beim Umzug zu WordPress*.",
         situationsTitle: "Typische Ausgangslagen",
         situations: [
           "Der Homepage-Baukasten ist eingerichtet, aber die Seite wirkt nicht professionell.",
@@ -1255,7 +1255,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "vorlagen",
             title: "Vorlagen und Gestaltung",
-            text: "Vorlage, Farben, Schriften und Bilder werden angepasst – bei WordPress mit einem Child-Theme.",
+            text: "Vorlage, Farben, Schriften und Bilder werden angepasst, bei WordPress mit einem Child-Theme.",
             points: [
               "Passende Vorlage auswählen",
               "Farben und Schriften nach der Marke",
@@ -1280,7 +1280,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           columns: ["Kriterium", "Homepage-Baukasten", "WordPress, z. B. mit Hosting für WordPress"],
           rows: [
             ["Einstieg", "Vorlage wählen und Inhalte einfügen", "Theme, Plugins und Struktur einrichten"],
-            ["Technik", "STRATO kümmert sich um die Technik", "Braucht Updates – Hosting für WordPress aktualisiert WordPress automatisch"],
+            ["Technik", "STRATO kümmert sich um die Technik", "Braucht Updates: Hosting für WordPress aktualisiert WordPress automatisch"],
             ["Gestaltung", "Vorlagen des Baukastens", "Viele Themes oder ein eigenes Design"],
             ["Shop", "Über den SmartWebshop", "Über Plugins, z. B. WooCommerce"],
             ["Passt, wenn", "schnell eine übersichtliche Seite gebraucht wird", "mehr Gestaltung oder Funktionen gebraucht werden"],
@@ -1289,18 +1289,18 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         outcomesTitle: "Ergebnis",
         outcomes: [
           "Die Seite wirkt professionell",
-          "Fehler sind behoben – mit klarer Ursache",
+          "Fehler sind behoben, mit klarer Ursache",
           "Ein Umzug zu WordPress, bei dem Domain und E-Mail mitkommen",
         ],
         boundariesTitle: "Nicht enthalten",
         boundaries: [
           "Verträge und Tarife bleiben bei STRATO.",
-          "Nicht jede Baukasten-Funktion lässt sich eins zu eins nachbauen – das wird vorher geklärt.",
+          "Nicht jede Baukasten-Funktion lässt sich eins zu eins nachbauen, das wird vorher geklärt.",
           "Tracht Digital Solutions arbeitet unabhängig und ist kein Partner von STRATO.",
         ],
         processTitle: "Vorgehen",
         process: [
-          "Kurze Beschreibung, was genutzt wird und was nicht klappt – ein Link genügt",
+          "Kurze Beschreibung, was genutzt wird und was nicht klappt, ein Link genügt",
           "Prüfung der Seite mit Weg und Aufwand",
           "Vor einem Umzug werden alle Inhalte gesichert",
         ],
@@ -1320,7 +1320,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
           {
             q: "Kann die Domain bei STRATO bleiben?",
-            a: "Ja. Die Domain kann bei STRATO bleiben und auf die neue Seite zeigen – oder mit umziehen.",
+            a: "Ja. Die Domain kann bei STRATO bleiben und auf die neue Seite zeigen, oder mit umziehen.",
           },
           {
             q: "Was kostet die Hilfe bei einer STRATO-Website?",
@@ -1328,16 +1328,16 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "Die STRATO-Website soll mehr können?",
-        ctaText: "Eine kurze Nachricht zu System und Vorhaben genügt – ein Link reicht.",
+        ctaText: "Eine kurze Nachricht zu System und Vorhaben genügt, ein Link reicht.",
         ctaButton: "Erstgespräch vereinbaren",
       },
       en: {
         label: "Web presence",
-        title: "Help with STRATO websites – from site builder to WordPress",
+        title: "Help with STRATO websites, from site builder to WordPress",
         summary:
-          "STRATO website builder or WordPress at STRATO? Tracht Digital Solutions helps with setup, errors and design – and with moving to WordPress.",
+          "STRATO website builder or WordPress at STRATO? Tracht Digital Solutions helps with setup, errors and design, and with moving to WordPress.",
         answer:
-          "Tracht Digital Solutions is a company based in Schwarzenbek near Hamburg. It helps with websites at STRATO – on the Homepage-Baukasten website builder or WordPress: with setup, errors and design, and *with moving to WordPress*.",
+          "Tracht Digital Solutions is a company based in Schwarzenbek near Hamburg. It helps with websites at STRATO, on the Homepage-Baukasten website builder or WordPress: with setup, errors and design, and *with moving to WordPress*.",
         situationsTitle: "Typical situations",
         situations: [
           "The website builder is set up, but the site does not look professional.",
@@ -1369,7 +1369,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           {
             id: "templates",
             title: "Templates and design",
-            text: "Template, colours, fonts and images are adjusted – on WordPress with a child theme.",
+            text: "Template, colours, fonts and images are adjusted, on WordPress with a child theme.",
             points: [
               "Choosing a suitable template",
               "Colours and fonts to match the brand",
@@ -1394,7 +1394,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           columns: ["Criterion", "Homepage-Baukasten (website builder)", "WordPress, e.g. with WordPress hosting"],
           rows: [
             ["Getting started", "Pick a template and add content", "Set up theme, plugins and structure"],
-            ["Technology", "STRATO takes care of the technology", "Needs updates – STRATO's WordPress hosting updates WordPress automatically"],
+            ["Technology", "STRATO takes care of the technology", "Needs updates: STRATO's WordPress hosting updates WordPress automatically"],
             ["Design", "The builder's templates", "Many themes or a custom design"],
             ["Shop", "Via the SmartWebshop", "Via plugins, e.g. WooCommerce"],
             ["Fits if", "a clear site is needed quickly", "more design or features are needed"],
@@ -1403,18 +1403,18 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
         outcomesTitle: "Results",
         outcomes: [
           "The site looks professional",
-          "Errors are fixed – with a clear cause",
+          "Errors are fixed, with a clear cause",
           "A move to WordPress in which domain and email come along",
         ],
         boundariesTitle: "Not included",
         boundaries: [
           "Contracts and plans stay with STRATO.",
-          "Not every builder feature can be rebuilt one to one – that is clarified first.",
+          "Not every builder feature can be rebuilt one to one, that is clarified first.",
           "Tracht Digital Solutions works independently and is not a STRATO partner.",
         ],
         processTitle: "Approach",
         process: [
-          "A short note on what is used and what is not working – a link is enough",
+          "A short note on what is used and what is not working, a link is enough",
           "A review of the site with the way forward and the effort",
           "All content is backed up before a move",
         ],
@@ -1434,7 +1434,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
           {
             q: "Can the domain stay at STRATO?",
-            a: "Yes. It can stay at STRATO and point to the new site – or move along.",
+            a: "Yes. It can stay at STRATO and point to the new site, or move along.",
           },
           {
             q: "What does help with a STRATO website cost?",
@@ -1442,7 +1442,7 @@ export const platformDefinitions: readonly PlatformDefinition[] = [
           },
         ],
         ctaTitle: "STRATO website should do more?",
-        ctaText: "A short note on the system and the plan is enough – a link will do.",
+        ctaText: "A short note on the system and the plan is enough, a link will do.",
         ctaButton: "Arrange an initial consultation",
       },
     },

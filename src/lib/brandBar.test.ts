@@ -60,7 +60,7 @@ describe("<tds-brand-bar>", () => {
     expect(source).not.toMatch(/^\s*(import|export)\s/m);
   });
 
-  it("uses legible type — no 8 px labels", () => {
+  it("uses legible type, no 8 px labels", () => {
     for (const [, size] of source.matchAll(/font-size:\s*(\d+)px/g)) {
       expect(Number(size)).toBeGreaterThanOrEqual(11);
     }

@@ -511,7 +511,7 @@ const ui =
             choice.textContent = view.label;
             choice.setAttribute("aria-pressed", index === 0 ? "true" : "false");
             choice.addEventListener("click", () => {
-              show(view.src, view.ratio, `${alt} — ${view.label}`);
+              show(view.src, view.ratio, `${alt}: ${view.label}`);
               for (const sibling of strip.querySelectorAll("[aria-pressed]")) {
                 sibling.setAttribute("aria-pressed", sibling === choice ? "true" : "false");
               }

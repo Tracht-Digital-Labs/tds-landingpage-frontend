@@ -216,7 +216,7 @@ export function pricingSchema(packages: PackageOffering[]): WithContext {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: `${siteConfig.name} — Festpreise`,
+    name: `${siteConfig.name}: Festpreise`,
     provider: { "@id": `${siteConfig.url}/#organization` },
     serviceType: "Software development & digital consulting",
     areaServed: areaServedNodes(),

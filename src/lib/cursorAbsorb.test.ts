@@ -11,7 +11,7 @@ describe("the drawn cursor over controls (2026-10-05)", () => {
     expect(css).toMatch(/html\[data-cursor-absorb\] \*,[\s\S]*?cursor: none !important;/);
   });
 
-  it("turns white on a dark control and blue on a light one — never an inverse", () => {
+  it("turns white on a dark control and blue on a light one, never an inverse", () => {
     expect(tintForFill([5, 15, 104, 1])).toBe(CURSOR_ON_DARK); // navy
     expect(tintForFill([130, 9, 51, 1])).toBe(CURSOR_ON_DARK); // bordeaux
     expect(tintForFill([255, 122, 156, 1])).toBe(CURSOR_ON_LIGHT); // pink

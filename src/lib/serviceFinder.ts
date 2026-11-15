@@ -302,7 +302,7 @@ export const FINDER_COPY: Record<Lang, FinderCopy> = {
     topicsHelp: "Mehrfachauswahl möglich.",
     unsure: { label: "Noch unklar", hint: "Dann wird zuerst gemeinsam sortiert." },
     situationsQuestion: "Was davon kommt im Betrieb vor?",
-    situationsHelp: "Mehrfachauswahl möglich – oder einfach weiter.",
+    situationsHelp: "Mehrfachauswahl möglich, oder einfach weiter.",
     stageQuestion: "Wie weit ist das Vorhaben?",
     stageHelp: "Eine Antwort.",
     stages: {
@@ -347,7 +347,7 @@ export const FINDER_COPY: Record<Lang, FinderCopy> = {
     topicsHelp: "Choose as many as apply.",
     unsure: { label: "Not clear yet", hint: "Then things get sorted out together first." },
     situationsQuestion: "Which of these happen in the business?",
-    situationsHelp: "Choose as many as apply – or just continue.",
+    situationsHelp: "Choose as many as apply, or just continue.",
     stageQuestion: "How far along is the project?",
     stageHelp: "One answer.",
     stages: {

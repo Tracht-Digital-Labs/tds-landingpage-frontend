@@ -357,12 +357,12 @@ try {
       const r = await page.evaluate(layoutAudit);
       const tag = `${path} @${width}×${height}${touch ? " touch" : ""}`;
 
-      if (!r.probeBites && width < 1000) fail(`${tag}: overflow probe did not register — measurement unreliable`);
+      if (!r.probeBites && width < 1000) fail(`${tag}: overflow probe did not register, measurement unreliable`);
       if (r.overflow.length > 0) fail(`${tag}: horizontal overflow ${r.overflow.join("; ")}`);
       for (const [key, rect] of Object.entries(r.controls)) {
         if (rect && (rect.left < 0 || rect.right > r.vw)) fail(`${tag}: header ${key} outside the viewport (${rect.left}..${rect.right})`);
       }
-      if (r.decorOverlaps.length > 0) fail(`${tag}: decoration over content — ${r.decorOverlaps.join("; ")}`);
+      if (r.decorOverlaps.length > 0) fail(`${tag}: decoration over content: ${r.decorOverlaps.join("; ")}`);
       const controls = Object.entries(r.controls)
         .map(([key, rect]) => (rect ? `${key} ${rect.w}×${rect.h}` : `${key} –`))
         .join(", ");
@@ -407,7 +407,7 @@ try {
       await page.waitForTimeout(2_000);
       const scan = await focusScan(page, 80);
       const tag = `${path} focus @${width}×${height}`;
-      if (scan.hidden > 0) fail(`${tag}: ${scan.hidden} focus stop(s) completely hidden — ${scan.examples.join("; ")}`);
+      if (scan.hidden > 0) fail(`${tag}: ${scan.hidden} focus stop(s) completely hidden: ${scan.examples.join("; ")}`);
       info(`${tag}: hidden ${scan.hidden} · partly ${scan.partly}`);
       await context.close();
     }

@@ -299,7 +299,7 @@ export default function ContactForm({
   const subjectFor = (subject: string | undefined) => {
     const reason = String(subject ?? "").trim();
     if (!urgent) return reason || undefined;
-    return (reason ? `${copy.urgentSubject} – ${reason}` : copy.urgentSubject).slice(0, 200);
+    return (reason ? `${copy.urgentSubject}: ${reason}` : copy.urgentSubject).slice(0, 200);
   };
 
   const onSubmit = async (data: ContactFormData) => {

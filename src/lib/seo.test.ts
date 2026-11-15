@@ -233,7 +233,7 @@ describe("every indexable page's own description", () => {
 
   it.each(INDEXABLE_PAGES)("%s stays inside what Google renders", (rel) => {
     for (const text of renderedDescriptions(rel)) {
-      expect(text.length, `${rel}: ${text.length} chars — ${text}`).toBeLessThanOrEqual(
+      expect(text.length, `${rel}: ${text.length} chars: ${text}`).toBeLessThanOrEqual(
         RENDERED,
       );
     }
@@ -245,7 +245,7 @@ describe("every indexable page's own description", () => {
     // routinely discard it and synthesise their own from the page body — the
     // copy was doing no work at all.
     for (const text of renderedDescriptions(rel)) {
-      expect(text.length, `${rel}: ${text.length} chars — ${text}`).toBeGreaterThan(
+      expect(text.length, `${rel}: ${text.length} chars: ${text}`).toBeGreaterThan(
         MIN_USEFUL,
       );
     }

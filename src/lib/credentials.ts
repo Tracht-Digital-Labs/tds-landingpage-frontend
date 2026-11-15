@@ -130,8 +130,8 @@ export const credentials: readonly Credential[] = [
     skills: ["AI for Marketing", "Search Engine Optimization (SEO)", "SEO Copywriting"],
     certificateId: "cae4d56b67d967880a57a63d13fea751f8eef40b2f29447f0f918a80347f511c",
     note: {
-      de: "Suchmaschinen, Inhalte und Technik — die Grundlage der Arbeit an Sichtbarkeit.",
-      en: "Search engines, content and the technical side — the groundwork for being found.",
+      de: "Suchmaschinen, Inhalte und Technik, die Grundlage der Arbeit an Sichtbarkeit.",
+      en: "Search engines, content and the technical side, the groundwork for being found.",
     },
   },
 
@@ -202,7 +202,7 @@ export const credentials: readonly Credential[] = [
     skills: ["Product Management", "Product Road Mapping", "Product Strategy"],
     certificateId: "25d633b13b4728fb458fed1edf67a1b4ebcc05ba3ce47cba9993160916067284",
     note: {
-      de: "Entscheiden, was zuerst gebaut wird — und was gar nicht.",
+      de: "Entscheiden, was zuerst gebaut wird, und was gar nicht.",
       en: "Deciding what gets built first, and what does not get built at all.",
     },
   },
@@ -260,7 +260,7 @@ export const credentials: readonly Credential[] = [
     skills: ["Microsoft Azure", "Cloud Computing"],
     certificateId: "076b9073ba155aead6499fb42bab73365bd905202fe346a29615ab5f2e748e1a",
     note: {
-      de: "Wann eine Cloud die passende Antwort ist — und wann ein Server genügt.",
+      de: "Wann eine Cloud die passende Antwort ist, und wann ein Server genügt.",
       en: "When the cloud is the right answer, and when a server will do.",
     },
   },
@@ -304,7 +304,7 @@ export const credentials: readonly Credential[] = [
     skills: ["AI for Business", "AI Productivity", "Generative AI"],
     certificateId: "b38e4a4843623e7474d286baf88563bf7711f8bac463d9ec7f2c3d98246e5130",
     note: {
-      de: "Wo KI im Alltag Zeit spart — und wo sie nur Arbeit verlagert.",
+      de: "Wo KI im Alltag Zeit spart, und wo sie nur Arbeit verlagert.",
       en: "Where AI saves time day to day, and where it only moves the work.",
     },
   },

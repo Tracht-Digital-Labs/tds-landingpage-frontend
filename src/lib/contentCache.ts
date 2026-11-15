@@ -45,6 +45,6 @@ export const contentCache = createGenerationCache();
  */
 export function memoisedOr<T>(key: string, load: () => Promise<T>, fallback: T, label: string): Promise<T> {
   return sharedMemoisedOr(contentCache, key, load, fallback, (_message, err) =>
-    console.warn(`[tds-landingpage] ${label} unavailable — using the fallback:`, err),
+    console.warn(`[tds-landingpage] ${label} unavailable, using the fallback:`, err),
   );
 }

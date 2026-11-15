@@ -96,9 +96,9 @@ const meaning =
     200: "accepted",
     202: "accepted, key verification still pending",
     400: "bad request",
-    403: "key not valid — is the key file deployed?",
+    403: "key not valid, is the key file deployed?",
     422: "a URL is not on the host, or the key does not match it",
-    429: "too many requests — try again later",
+    429: "too many requests, try again later",
   }[res.status] ?? "unexpected answer";
 console.log(`\nIndexNow answered ${res.status}: ${meaning}`);
 if (res.status !== 200 && res.status !== 202) process.exit(1);

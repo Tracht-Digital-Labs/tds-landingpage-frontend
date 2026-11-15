@@ -214,7 +214,7 @@ for (const path of paths) {
     pageBudget.lcpElement ??
     ((budgets.lcpElementPaths ?? []).includes(path) ? (deviceBudget.lcpElement ?? budgets.lcpElement) : undefined);
   if (page.lcpInCookieNotice) {
-    console.log(`  ✗ LCP-Element liegt im Cookie-Hinweis — der Hinweis malt vor dem Inhalt`);
+    console.log(`  ✗ LCP-Element liegt im Cookie-Hinweis, der Hinweis malt vor dem Inhalt`);
     failed++;
   }
   for (const [key, limit] of Object.entries(budget)) {
@@ -227,7 +227,7 @@ for (const path of paths) {
   }
   if (expectedElement && page.lcpElement !== expectedElement) {
     console.log(
-      `  ✗ LCP-Element ist ${page.lcpElement}, erwartet ${expectedElement} — etwas hat die Ueberschrift verdraengt`,
+      `  ✗ LCP-Element ist ${page.lcpElement}, erwartet ${expectedElement}, etwas hat die Ueberschrift verdraengt`,
     );
     failed++;
   }

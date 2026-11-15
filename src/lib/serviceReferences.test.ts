@@ -26,7 +26,7 @@ beforeEach(() => {
   vi.mocked(cms.fetchBlocks).mockResolvedValue({});
 });
 
-describe("resolveServiceContent — references", () => {
+describe("resolveServiceContent, references", () => {
   it("has the committed cases the assertions below assume", () => {
     // Guards the fixture: every assertion below is vacuous without this, and
     // the shape matters as much as the count. Position 0 must be the anonymous

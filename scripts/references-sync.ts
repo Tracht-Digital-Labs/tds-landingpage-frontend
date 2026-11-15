@@ -70,7 +70,7 @@ const captured = new Set<string>();
 
 if (eligible.length === 0) {
   // eslint-disable-next-line no-console
-  console.log("No reference is cleared for a preview — nothing to capture.");
+  console.log("No reference is cleared for a preview, nothing to capture.");
 } else {
   await fs.mkdir(assetDir, { recursive: true });
   const browser = await chromium.launch();
@@ -103,7 +103,7 @@ if (eligible.length === 0) {
           note: describe(error),
         };
         // eslint-disable-next-line no-console
-        console.log(`failed — ${describe(error)}`);
+        console.log(`failed: ${describe(error)}`);
       }
     }
   } finally {

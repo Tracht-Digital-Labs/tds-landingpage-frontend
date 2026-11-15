@@ -62,8 +62,8 @@ export const siteConfig = {
     // No amount since 2026-11-11: the home page states no price (2026-11-02,
     // prices live in the shop), and a snippet must not promise what the page
     // it leads to does not show.
-    de: "Kundenportale, Verwaltungspanels und Digitalisierung für Unternehmen – dazu Websites und Shops nach Maß. Aus Schwarzenbek bei Hamburg.",
-    en: "Customer portals, admin panels and digitalization for businesses – plus made-to-measure websites and shops. From Schwarzenbek near Hamburg.",
+    de: "Kundenportale, Verwaltungspanels und Digitalisierung für Unternehmen, dazu Websites und Shops nach Maß. Aus Schwarzenbek bei Hamburg.",
+    en: "Customer portals, admin panels and digitalization for businesses, plus made-to-measure websites and shops. From Schwarzenbek near Hamburg.",
   },
   /** Verified contact channel. Safe to publish in schema. */
   email: "kontakt@tracht-digital.de",
