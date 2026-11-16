@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-15T11:58:07.596Z",
+  "generatedAt": "2026-11-16T12:46:05.829Z",
   "demos": {
     "demo1": {
       "status": "ok",
       "title": "Demo & Partner Rechtsanwälte",
-      "description": "Hochwertige Demonstrationsseite einer fiktiven deutschen Wirtschaftskanzlei. Keine Rechtsberatung, keine gültigen Kontaktdaten.",
+      "description": "Demonstrationsseite einer fiktiven Wirtschaftskanzlei für den Mittelstand in Musterstadt. Keine Rechtsberatung, keine gültigen Kontaktdaten.",
       "siteLang": "de",
       "favicon": "/demos/demo1-favicon.svg",
       "preview": "/demos/demo1.webp",
       "previewWidth": 1440,
       "previewHeight": 900,
-      "checkedAt": "2026-11-15T11:57:40.021Z"
+      "checkedAt": "2026-11-16T12:45:36.545Z"
     },
     "demo2": {
       "status": "ok",
@@ -28,7 +28,7 @@
       "preview": "/demos/demo2.webp",
       "previewWidth": 1440,
       "previewHeight": 900,
-      "checkedAt": "2026-11-15T11:57:41.276Z"
+      "checkedAt": "2026-11-16T12:45:37.824Z"
     },
     "demo3": {
       "status": "ok",
@@ -39,7 +39,7 @@
       "preview": "/demos/demo3.webp",
       "previewWidth": 1440,
       "previewHeight": 900,
-      "checkedAt": "2026-11-15T11:57:42.893Z"
+      "checkedAt": "2026-11-16T12:45:39.165Z"
     },
     "demo4": {
       "status": "ok",
@@ -50,7 +50,7 @@
       "preview": "/demos/demo4.webp",
       "previewWidth": 1440,
       "previewHeight": 900,
-      "checkedAt": "2026-11-15T11:57:43.793Z"
+      "checkedAt": "2026-11-16T12:45:40.355Z"
     },
     "demo5": {
       "status": "tls-invalid",
@@ -61,7 +61,7 @@
       "preview": null,
       "previewWidth": null,
       "previewHeight": null,
-      "checkedAt": "2026-11-15T11:57:44.645Z"
+      "checkedAt": "2026-11-16T12:45:40.939Z"
     },
     "shop": {
       "status": "ok",
@@ -79,7 +79,7 @@
       "preview": "/demos/shop.webp",
       "previewWidth": 1440,
       "previewHeight": 900,
-      "checkedAt": "2026-11-15T11:57:47.373Z"
+      "checkedAt": "2026-11-16T12:45:42.484Z"
     }
   }
 }
