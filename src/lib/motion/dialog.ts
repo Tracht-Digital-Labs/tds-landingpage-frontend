@@ -20,11 +20,11 @@
  */
 import { lessMotion } from "~/lib/a11yPrefs";
 
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 let runtime: Promise<Dom | null> | null = null;
 function load(): Promise<Dom | null> {
-  runtime ??= import("@tracht-digital-solutions/tds-shared/motion/dom").catch(() => null);
+  runtime ??= import("@tracht-digital-labs/tds-shared/motion/dom").catch(() => null);
   return runtime;
 }
 

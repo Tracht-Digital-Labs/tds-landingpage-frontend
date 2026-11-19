@@ -155,7 +155,7 @@ describe("motion on the landing page", () => {
 
   it("loads the Motion runtime lazily, through tds-shared, and not under reduced motion", () => {
     const boot = src("lib/motion/boot.ts");
-    expect(boot).toContain('import("@tracht-digital-solutions/tds-shared/motion/dom")');
+    expect(boot).toContain('import("@tracht-digital-labs/tds-shared/motion/dom")');
     expect(boot).not.toMatch(/^import .*motion\/dom/m);
     expect(boot).toContain("prefers-reduced-motion: reduce");
     for (const file of ["boot", "cta", "images", "pageTransition", "businessCard", "ux", "tilt"]) {
@@ -209,7 +209,7 @@ describe("motion on the landing page", () => {
 
   it("animates the contact form only through the shared primitives", () => {
     const form = src("components/islands/ContactForm.tsx");
-    expect(form).toContain('from "@tracht-digital-solutions/tds-shared/motion/react"');
+    expect(form).toContain('from "@tracht-digital-labs/tds-shared/motion/react"');
     expect(form).not.toMatch(/from ["'](motion|framer-motion)/);
   });
 

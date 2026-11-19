@@ -23,7 +23,7 @@ import { PROJECTS_SLUG, PROJECTS_UPDATED_AT } from "./projects";
 import { siteConfig } from "./seo";
 import { serviceDefinitions, serviceHref } from "./services";
 import { canonicalPath, exclusionPatterns, groupExcluded } from "./sitemapExclusions";
-import { newestDay, renderSectionedSitemapIndex, renderUrlset as renderUrlsetXml } from "@tracht-digital-solutions/tds-shared/site";
+import { newestDay, renderSectionedSitemapIndex, renderUrlset as renderUrlsetXml } from "@tracht-digital-labs/tds-shared/site";
 import { SITEMAP_SECTIONS, sectionPath, type SitemapSection } from "./sitemapSections";
 
 /** One indexable page, in both languages. */

@@ -23,8 +23,8 @@
  * a content fetch has no business importing the sitemap of the site.
  */
 
-import { createGenerationCache } from "@tracht-digital-solutions/tds-shared/cache";
-import { memoisedOr as sharedMemoisedOr } from "@tracht-digital-solutions/tds-shared/site";
+import { createGenerationCache } from "@tracht-digital-labs/tds-shared/cache";
+import { memoisedOr as sharedMemoisedOr } from "@tracht-digital-labs/tds-shared/site";
 
 export const contentCache = createGenerationCache();
 

@@ -7,7 +7,7 @@
  * the first viewport — its icon pops in on a spring, so the eye sees WHICH
  * button just arrived. Transform only, on the icon, never on the pill.
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 const SPRING = { type: "spring", bounce: 0.45, visualDuration: 0.42 } as const;
 

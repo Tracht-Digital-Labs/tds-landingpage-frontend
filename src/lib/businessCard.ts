@@ -258,7 +258,7 @@ export function businessCardLinks(lang: Lang): BusinessCardLink[] {
       id: "github",
       group: "more",
       label: "GitHub",
-      meta: "Tracht-Digital-Solutions",
+      meta: "Tracht-Digital-Labs",
       href: socials.github,
       external: true,
     });

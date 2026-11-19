@@ -10,7 +10,7 @@ import { describe, expect, it } from "vitest";
  */
 const script = readFileSync(resolve(process.cwd(), "scripts/geo-audit.profile.mjs"), "utf8");
 const shared = readFileSync(
-  resolve(process.cwd(), "node_modules/@tracht-digital-solutions/tds-shared/scripts/geo-audit.mjs"),
+  resolve(process.cwd(), "node_modules/@tracht-digital-labs/tds-shared/scripts/geo-audit.mjs"),
   "utf8",
 );
 

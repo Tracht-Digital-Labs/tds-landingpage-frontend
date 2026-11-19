@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { analyticsVisitorId, forgetAnalytics } from "@tracht-digital-solutions/tds-shared/analytics";
-import { necessaryOnly } from "@tracht-digital-solutions/tds-shared/consent";
-import { openConsentSettings, readConsent, writeConsent } from "@tracht-digital-solutions/tds-shared/consent/store";
+import { analyticsVisitorId, forgetAnalytics } from "@tracht-digital-labs/tds-shared/analytics";
+import { necessaryOnly } from "@tracht-digital-labs/tds-shared/consent";
+import { openConsentSettings, readConsent, writeConsent } from "@tracht-digital-labs/tds-shared/consent/store";
 
 export interface AnalyticsControlsCopy {
   settings: string;

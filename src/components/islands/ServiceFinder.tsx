@@ -1,6 +1,6 @@
 import Arrow from "~/components/ui/Arrow";
 import { useCallback, useId, useMemo, useRef, useState, type SyntheticEvent } from "react";
-import { AnimatePresence, MotionScope, m } from "@tracht-digital-solutions/tds-shared/motion/react";
+import { AnimatePresence, MotionScope, m } from "@tracht-digital-labs/tds-shared/motion/react";
 import type { Lang } from "~/lib/i18n";
 import { handOffContactDraft } from "~/lib/contactDraft";
 import {

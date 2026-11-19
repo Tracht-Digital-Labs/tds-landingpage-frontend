@@ -3,7 +3,7 @@ import node from "@astrojs/node";
 import react from "@astrojs/react";
 // Shared CSS minify settings (incl. the cssTarget that keeps lightningcss
 // from dropping the header backdrop-filter prefix). See tds-shared#10.
-import { motionSsrNoExternal, tdsClientDirectives, tdsViteBuild } from "@tracht-digital-solutions/tds-shared/astro";
+import { motionSsrNoExternal, tdsClientDirectives, tdsViteBuild } from "@tracht-digital-labs/tds-shared/astro";
 import { fileURLToPath } from "node:url";
 import { mediaVersionsPlugin } from "./scripts/media-versions.mjs";
 
@@ -115,7 +115,7 @@ export default defineConfig({
       //
       // This is what removes the host's need to run `npm install` against
       // GitHub Packages: without it the server bundle keeps bare
-      // `@tracht-digital-solutions/…` imports and the production host would
+      // `@tracht-digital-labs/…` imports and the production host would
       // need a PAT with read:packages to boot at all.
       //
       // Enumerated rather than `noExternal: true` — the blanket form drags in
@@ -133,7 +133,7 @@ export default defineConfig({
       // instead. Bundling them leaves exactly one React — the shipped one, so
       // a new island library that imports `react` belongs in this list.
       noExternal: [
-        /^@tracht-digital-solutions\//,
+        /^@tracht-digital-labs\//,
         "zod",
         "lenis",
         "react-hook-form",

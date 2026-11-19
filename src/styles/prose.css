@@ -8,4 +8,4 @@
    Without it the panel-editable markdown on those pages would arrive as
    unstyled runs of text: not an error, not a warning, just a legal page that
    looks broken. */
-@import "@tracht-digital-solutions/tds-shared/styles/prose.css";
+@import "@tracht-digital-labs/tds-shared/styles/prose.css";

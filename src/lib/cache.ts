@@ -7,10 +7,10 @@
  * The API sends *what changed* (`{type:"block", id:"hero", lang:"de"}`); this
  * file answers *which of my pages that is*. Keeping the answer here rather
  * than in the API is deliberate — see the note in
- * `@tracht-digital-solutions/tds-shared/cache`.
+ * `@tracht-digital-labs/tds-shared/cache`.
  */
 
-import { forLanguages, type EventMap } from "@tracht-digital-solutions/tds-shared/cache";
+import { forLanguages, type EventMap } from "@tracht-digital-labs/tds-shared/cache";
 import { BUSINESS_CARD_SLUG } from "./businessCard";
 import { CREDENTIALS_SLUG } from "./credentials";
 import { FAQ_PAGE_SLUG, faqPageHref } from "./faq";

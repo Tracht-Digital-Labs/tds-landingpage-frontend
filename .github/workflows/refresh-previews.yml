@@ -43,7 +43,7 @@ jobs:
           node-version: '22'
           cache: 'npm'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@tracht-digital-solutions'
+          scope: '@tracht-digital-labs'
 
       - name: Pin npm
         # Same reason as _build.yml: npm 10's arborist crashes on this graph.

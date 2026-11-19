@@ -11,7 +11,7 @@
  * what AI search engines parse), so keeping the renderers next to the
  * data lets us iterate the shape without touching the source of truth.
  */
-import { imageRights } from "@tracht-digital-solutions/tds-shared/site";
+import { imageRights } from "@tracht-digital-labs/tds-shared/site";
 import { LOGO, portraitSrc } from "./imageVariants";
 import { siteConfig } from "./seo";
 

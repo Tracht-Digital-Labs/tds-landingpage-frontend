@@ -160,7 +160,7 @@ interaction. Visible focus, heading order, labels, both themes and
 ## Development
 
 Requirements are Node.js 22.12+, npm 10+, Git and an authorized classic GitHub
-PAT with `read:packages` for `@tracht-digital-solutions/tds-shared`.
+PAT with `read:packages` for `@tracht-digital-labs/tds-shared`.
 
 ```text
 npm install

@@ -16,7 +16,7 @@
  * the package cards' `y` lift from `ux.ts`; the hard shadow's CSS `translate`
  * lift is a separate property and tilts along. No animated `box-shadow`.
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 /** Degrees at the card's edge: enough to read as depth, calm enough for text. */
 const MAX = 6;

@@ -10,7 +10,7 @@
  * Motion adds is the tab's width minus its peek AND its bleed, measured when it
  * opens (a label can change width with the language or the font).
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 const DOCK_QUERY = "(min-width: 64rem) and (hover: hover) and (pointer: fine)";
 /** Must match `--tab-peek` in `PropertyTabs.astro`. */

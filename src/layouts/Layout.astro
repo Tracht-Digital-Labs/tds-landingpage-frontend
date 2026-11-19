@@ -34,13 +34,13 @@ import { PAGE_SCROLLBAR_BOOT_SCRIPT } from "~/lib/pageScrollbar";
 import FloatingCta from "~/components/FloatingCta.astro";
 import PropertyTabs from "~/components/PropertyTabs.astro";
 import JsonLd from "~/components/JsonLd.astro";
-import { LiveChatCta } from "@tracht-digital-solutions/tds-shared/islands/live-chat";
+import { LiveChatCta } from "@tracht-digital-labs/tds-shared/islands/live-chat";
 import {
   errorBounceScript,
   hoverTipScript,
   offscreenAnimationScript,
   themeBootstrapScript,
-} from "@tracht-digital-solutions/tds-shared/astro";
+} from "@tracht-digital-labs/tds-shared/astro";
 import { PAGE_ENTER_SCRIPT } from "~/lib/motion/constants";
 import { SPLASH_SCRIPT } from "~/lib/splash";
 import { canonicalPath } from "~/lib/share";
@@ -361,7 +361,7 @@ const showCookieNotice = !bare;
         where the host exists (not on bare pages), and asks only when no
         decision is stored — `client:when="consent"` semantics. */}
     <script>
-      import { mountConsentBanner } from "@tracht-digital-solutions/tds-shared/dom";
+      import { mountConsentBanner } from "@tracht-digital-labs/tds-shared/dom";
 
       const host = document.querySelector<HTMLElement>("[data-consent-host]");
       if (host) {
@@ -382,7 +382,7 @@ const showCookieNotice = !bare;
         unbundled, so the import would reach the browser as a bare specifier.
         A bare page (embeds, previews) says so on <body> instead. */}
     <script>
-      import { startAnalytics } from "@tracht-digital-solutions/tds-shared/analytics";
+      import { startAnalytics } from "@tracht-digital-labs/tds-shared/analytics";
 
       if (import.meta.env.PUBLIC_DEMO_MODE !== "true" && !document.body.hasAttribute("data-bare")) {
         startAnalytics({

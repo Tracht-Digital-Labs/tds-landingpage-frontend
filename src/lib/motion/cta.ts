@@ -14,7 +14,7 @@
  *
  * Transforms only; the button's colour change on hover stays CSS.
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 /** How far the button follows the pointer, in px at its edge (2026-09-22: 6 → 14, "deutlicher"). */
 const PULL = 14;

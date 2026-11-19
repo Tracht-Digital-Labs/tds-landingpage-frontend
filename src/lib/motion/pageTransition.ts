@@ -26,7 +26,7 @@
  */
 import { PAGE_ENTER_ATTR, PAGE_EXIT_KEY } from "./constants";
 
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 export { PAGE_ENTER_ATTR, PAGE_EXIT_KEY, PAGE_ENTER_SCRIPT } from "./constants";
 

@@ -24,7 +24,7 @@
  * first screen has loaded, but never sooner than `SPLASH_MIN_MS` (no flash)
  * and never later than `SPLASH_MAX_MS` (a slow image cannot hold the page).
  */
-import { CONSENT_KEY } from "@tracht-digital-solutions/tds-shared/consent/store";
+import { CONSENT_KEY } from "@tracht-digital-labs/tds-shared/consent/store";
 
 export const SPLASH_ATTR = "data-splash";
 /** The consent record tds-shared's notice writes; its presence means "been here". */

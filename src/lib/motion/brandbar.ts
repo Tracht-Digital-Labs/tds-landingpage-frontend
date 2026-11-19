@@ -34,7 +34,7 @@
  * alone — the hero's bar draws itself in with a clip on the BAR
  * (`hero-bar-draw` in `Hero.astro`), and the keys simply ride along.
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 /** How far above and below the bar the pointer still plays it, px. */
 const REACH_Y = 70;

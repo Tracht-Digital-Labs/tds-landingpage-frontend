@@ -13,7 +13,7 @@
  * most once a frame. Keyboard focus opens it too, and it stays open while
  * focus is inside.
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 const OPEN_WITHIN = 160;
 const CLOSE_BEYOND = 240;

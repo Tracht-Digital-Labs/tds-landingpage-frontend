@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
-import { translations } from "@tracht-digital-solutions/tds-shared/i18n";
+import { translations } from "@tracht-digital-labs/tds-shared/i18n";
 import { BANNED_WORDS } from "./copyRules";
 
 /**

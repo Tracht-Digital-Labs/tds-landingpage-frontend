@@ -9,7 +9,7 @@ import { join } from "node:path";
  * pins the mobile-navigation invariants whose violation produces no symptom a
  * build or a type-check would show.
  *
- * The mechanics moved into `@tracht-digital-solutions/tds-shared/nav` in
+ * The mechanics moved into `@tracht-digital-labs/tds-shared/nav` in
  * tds-shared 0.25.0. This file was the reference the blog and the tools site
  * were aligned to, so a re-hand-rolled copy here is how the four-way drift
  * would start again — and it would look completely normal in review.
@@ -34,7 +34,7 @@ const source = raw
 describe("mobile navigation", () => {
   it("takes its mechanics from tds-shared", () => {
     expect(source).toMatch(
-      /import \{ mountMobileNav \} from "@tracht-digital-solutions\/tds-shared\/nav"/,
+      /import \{ mountMobileNav \} from "@tracht-digital-labs\/tds-shared\/nav"/,
     );
     expect(source).toContain("mountMobileNav({");
   });

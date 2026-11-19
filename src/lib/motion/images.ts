@@ -15,7 +15,7 @@
  * The drift needs headroom so the photo's edge never shows: every image rests
  * at scale 1.08, which leaves 4 % of its height on each side for ±20 px.
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 const REST_SCALE = 1.08;
 

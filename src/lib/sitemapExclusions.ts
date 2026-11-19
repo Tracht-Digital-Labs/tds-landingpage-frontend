@@ -29,12 +29,12 @@
  * cannot be read may leave a page stale, never blank.
  */
 
-import { createSitemapExclusions } from "@tracht-digital-solutions/tds-shared/site";
+import { createSitemapExclusions } from "@tracht-digital-labs/tds-shared/site";
 import { memoisedOr } from "./contentCache";
 import { contentApiBase } from "./connection";
 import { readContentJson } from "./siteKey";
 
-export { canonicalPath, groupExcluded, matchesPattern } from "@tracht-digital-solutions/tds-shared/site";
+export { canonicalPath, groupExcluded, matchesPattern } from "@tracht-digital-labs/tds-shared/site";
 
 /** This site's id in the panel's site registry. */
 export const SITE_ID = "landingpage";

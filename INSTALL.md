@@ -18,11 +18,11 @@ obsolete.
 
 ## 1. Authenticate to GitHub Packages
 
-`@tracht-digital-solutions/tds-shared` is private. Configure a classic PAT in
+`@tracht-digital-labs/tds-shared` is private. Configure a classic PAT in
 the user-level npm configuration:
 
 ```ini
-@tracht-digital-solutions:registry=https://npm.pkg.github.com
+@tracht-digital-labs:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=ghp_yourClassicPATWithReadPackagesScope
 ```
 
@@ -36,7 +36,7 @@ usually means the classic PAT has not been authorized for the organization.
 ## 2. Clone and install
 
 ```text
-git clone https://github.com/Tracht-Digital-Solutions/tds-landingpage-frontend.git
+git clone https://github.com/Tracht-Digital-Labs/tds-landingpage-frontend.git
 cd tds-landingpage-frontend
 npm install
 ```

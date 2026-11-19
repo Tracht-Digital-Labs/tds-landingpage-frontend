@@ -24,7 +24,7 @@
  * (`src/pages/llms.txt.ts`) is what resolves the corpus.
  */
 
-import { PROPERTY_ORIGINS } from "@tracht-digital-solutions/tds-shared/nav";
+import { PROPERTY_ORIGINS } from "@tracht-digital-labs/tds-shared/nav";
 import { HOME_FAQ_COUNT, type FaqItem } from "./faq";
 import { platformDefinitions, platformHref } from "./platforms";
 import { siteConfig } from "./seo";

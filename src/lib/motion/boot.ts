@@ -20,7 +20,7 @@
 import { PAGE_ENTER_ATTR } from "./constants";
 import { lessMotion } from "~/lib/a11yPrefs";
 
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 function whenIdle(run: () => void) {
   const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
@@ -40,7 +40,7 @@ export function bootMotion(): void {
   const load = async () => {
     let dom: Dom;
     try {
-      dom = await import("@tracht-digital-solutions/tds-shared/motion/dom");
+      dom = await import("@tracht-digital-labs/tds-shared/motion/dom");
     } catch {
       // No runtime, no motion — and nothing may stay hidden waiting for it.
       root.removeAttribute(PAGE_ENTER_ATTR);

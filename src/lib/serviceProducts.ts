@@ -1,4 +1,4 @@
-import { PROPERTY_ORIGINS } from "@tracht-digital-solutions/tds-shared/nav";
+import { PROPERTY_ORIGINS } from "@tracht-digital-labs/tds-shared/nav";
 import { contentApiBase } from "./connection";
 import { memoisedOr } from "./contentCache";
 import type { Lang } from "./i18n";

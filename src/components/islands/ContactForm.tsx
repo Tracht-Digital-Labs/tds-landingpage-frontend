@@ -2,9 +2,9 @@ import Arrow from "~/components/ui/Arrow";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ContactSchema, type ContactFormData } from "@tracht-digital-solutions/tds-shared/schemas";
-import { runtimeSetting } from "@tracht-digital-solutions/tds-shared/api";
-import { Collapse, Presence } from "@tracht-digital-solutions/tds-shared/motion/react";
+import { ContactSchema, type ContactFormData } from "@tracht-digital-labs/tds-shared/schemas";
+import { runtimeSetting } from "@tracht-digital-labs/tds-shared/api";
+import { Collapse, Presence } from "@tracht-digital-labs/tds-shared/motion/react";
 import { CONTACT_DRAFT_EVENT, CONTACT_DRAFT_KEY, parseContactDraft } from "~/lib/contactDraft";
 import { contactFormCopy } from "~/lib/contactCopy";
 

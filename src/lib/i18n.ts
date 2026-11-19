@@ -1,4 +1,4 @@
-import { translations } from "@tracht-digital-solutions/tds-shared/i18n";
+import { translations } from "@tracht-digital-labs/tds-shared/i18n";
 
 export type Lang = "de" | "en";
 

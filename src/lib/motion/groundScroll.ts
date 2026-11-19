@@ -25,7 +25,7 @@
  *   open: the listeners go and the bodies return to their resting pose.
  *   Under reduced motion `boot.ts` never loads this file.
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 /** Time constant of the pointer's smoothing, in seconds. */
 const SMOOTHING_S = 0.45;

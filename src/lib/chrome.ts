@@ -15,7 +15,7 @@
  *   one), so none of it competes with the first paint. Until then an anchor
  *   jump is the browser's own smooth scroll and the pointer is the native one.
  */
-import { mountConsentLinks, mountThemeToggles } from "@tracht-digital-solutions/tds-shared/dom";
+import { mountConsentLinks, mountThemeToggles } from "@tracht-digital-labs/tds-shared/dom";
 
 function whenIdle(run: () => void) {
   const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };

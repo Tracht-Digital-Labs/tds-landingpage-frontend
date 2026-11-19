@@ -223,7 +223,7 @@ const credentialsUi =
     const count = (figure: HTMLElement) => {
       const to = Number(figure.dataset.countTo);
       const from = Number(figure.dataset.countFrom);
-      void import("@tracht-digital-solutions/tds-shared/motion/dom")
+      void import("@tracht-digital-labs/tds-shared/motion/dom")
         .then(({ animate }) => {
           animate(from, to, {
             duration: 1.1,

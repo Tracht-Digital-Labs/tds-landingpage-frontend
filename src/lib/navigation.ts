@@ -1,5 +1,5 @@
 import type { Lang } from "./i18n";
-import { propertyHome, propertyLabel } from "@tracht-digital-solutions/tds-shared/nav";
+import { propertyHome, propertyLabel } from "@tracht-digital-labs/tds-shared/nav";
 import { referenceCases } from "./references";
 import { siteConfig } from "./seo";
 

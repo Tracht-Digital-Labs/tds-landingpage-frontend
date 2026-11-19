@@ -17,7 +17,7 @@
  * the behaviour per scroll frame; Motion animates `transform` on the pill
  * inside it and on the rail, so the two never write the same property.
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 /**
  * Fast on purpose (2026-10-05, "schneller"): the bar answers a pointer that is

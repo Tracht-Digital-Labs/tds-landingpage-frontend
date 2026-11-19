@@ -11,7 +11,7 @@
  * 3. **Where do I start?** The contact form's rows — the reason dropdown
  *    with them — arrive as one staggered group (`[data-motion-stagger]`).
  */
-type Dom = typeof import("@tracht-digital-solutions/tds-shared/motion/dom");
+type Dom = typeof import("@tracht-digital-labs/tds-shared/motion/dom");
 
 function onScreen(el: Element): boolean {
   const box = el.getBoundingClientRect();

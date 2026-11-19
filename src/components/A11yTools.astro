@@ -300,9 +300,9 @@ const toggles = [
       panel.style.transform = "";
     };
 
-    let motion: Promise<typeof import("@tracht-digital-solutions/tds-shared/motion/dom")> | null = null;
+    let motion: Promise<typeof import("@tracht-digital-labs/tds-shared/motion/dom")> | null = null;
     const warm = () => {
-      motion ??= import("@tracht-digital-solutions/tds-shared/motion/dom");
+      motion ??= import("@tracht-digital-labs/tds-shared/motion/dom");
     };
     opener.addEventListener("pointerenter", warm, { once: true });
     opener.addEventListener("focus", warm, { once: true });
