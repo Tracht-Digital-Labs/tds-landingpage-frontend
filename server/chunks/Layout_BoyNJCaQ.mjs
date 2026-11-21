@@ -1,0 +1,1837 @@
+import { E as Fragment$2, I as addAttribute, L as unescapeHTML, M as maybeRenderHead, N as renderHead, O as renderSlot, P as createRenderInstruction, S as templateExit, T as renderComponent, j as renderTemplate, x as templateEnter } from "./sequence_BxFGYTOq.mjs";
+import { t as createComponent } from "./astro-component_BSxBItRU.mjs";
+import { t as createAstro } from "./compiler_B9dCHTw5.mjs";
+import { g as serializeJsonLd } from "./siteKey_D7sGsPK6.mjs";
+import { f as referenceCases, tt as siteConfig } from "./sitemapSections_BHRQxBgU.mjs";
+import { n as propertyHome, r as propertyLabel } from "./chunk-ZKMOXWKM_BUc6QZrc.mjs";
+import { r as isExcluded } from "./sitemap_BNeumjnS.mjs";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { jsx, jsxs } from "react/jsx-runtime";
+// node_modules/@astrojs/runtime/dist/internal/server/render/script.js
+/**
+* Relies on the `renderScript: true` compiler option
+* @experimental
+*/
+async function renderScript(result, id) {
+	const inlined = result.inlinedScripts.get(id);
+	let content = "";
+	if (inlined != null) {
+		if (inlined) content = `<script type="module">${inlined}<\/script>`;
+	} else {
+		const resolved = await result.resolve(id);
+		content = `<script type="module" src="${result.userAssetsBase ? (result.base === "/" ? "" : result.base) + result.userAssetsBase : ""}${resolved}"><\/script>`;
+	}
+	return createRenderInstruction({
+		type: "script",
+		id,
+		content
+	});
+}
+// node_modules/@fontsource/lato/files/lato-latin-400-normal.woff2?url
+var lato_latin_400_normal_default = "/_astro/lato-latin-400-normal.BEhtfm5r.woff2";
+// src/lib/groundShapes.ts
+var GROUND_KINDS = [
+	"capsule",
+	"quarter-tl",
+	"quarter-tr",
+	"quarter-br",
+	"quarter-bl",
+	"half",
+	"rect"
+];
+/** Navy is the structure, so it is drawn most often. */
+var COLOURS = [
+	"navy",
+	"navy",
+	"navy",
+	"bordeaux",
+	"bordeaux",
+	"coral",
+	"gold"
+];
+var PLANES = [
+	{
+		id: "far",
+		speed: .14,
+		count: 2,
+		size: [6, 8.5],
+		bands: [[-4, 16], [74, 92]]
+	},
+	{
+		id: "mid",
+		speed: .3,
+		count: 2,
+		size: [11, 14],
+		bands: [[-10, 8], [80, 92]]
+	},
+	{
+		id: "near",
+		speed: .5,
+		count: 1,
+		size: [17, 22],
+		bands: [[-14, 4], [84, 94]]
+	}
+];
+var GROUND_SEED = 2005;
+/** mulberry32 — small, fast, and the same numbers on every runtime. */
+function seededRandom(seed) {
+	let a = seed >>> 0;
+	return () => {
+		a = a + 1831565813 >>> 0;
+		let t = a;
+		t = Math.imul(t ^ t >>> 15, t | 1);
+		t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+		return ((t ^ t >>> 14) >>> 0) / 4294967296;
+	};
+}
+var round = (value, places = 2) => Number(value.toFixed(places));
+function proportions(kind, size) {
+	if (kind === "capsule") return [size, size * .4];
+	if (kind === "half") return [size, size / 2];
+	if (kind === "rect") return [size, size * .72];
+	return [size, size];
+}
+/** Minimum distance between two bodies of a plane, in the % space. */
+var MIN_GAP = 26;
+function generateGround(seed = GROUND_SEED) {
+	const random = seededRandom(seed);
+	const pick = (list) => list[Math.floor(random() * list.length)];
+	const between = (min, max) => min + random() * (max - min);
+	const sign = () => random() < .5 ? -1 : 1;
+	return PLANES.map((spec) => {
+		const shapes = [];
+		const slice = 100 / spec.count;
+		for (let index = 0; index < spec.count; index += 1) {
+			let x = 0;
+			let y = 0;
+			for (let attempt = 0; attempt < 24; attempt += 1) {
+				const [left, right] = spec.bands;
+				x = (index + Math.floor(random() * 2)) % 2 === 0 ? between(...left) : between(...right);
+				y = index * slice + between(slice * .1, slice * .8);
+				if (shapes.every((other) => Math.hypot(other.x - x, other.y - y) >= MIN_GAP)) break;
+			}
+			const kind = pick(GROUND_KINDS);
+			const [width, height] = proportions(kind, between(spec.size[0], spec.size[1]));
+			shapes.push({
+				kind,
+				colour: pick(COLOURS),
+				x: round(x),
+				y: round(y),
+				width: round(width),
+				height: round(height),
+				rx: round(sign() * between(10, 22), 1),
+				ry: round(sign() * between(18, 30), 1),
+				vx: round(sign() * between(.025, .05), 4),
+				vy: round(sign() * between(.035, .07), 4)
+			});
+		}
+		return {
+			id: spec.id,
+			speed: spec.speed,
+			shapes
+		};
+	});
+}
+// src/components/PageGround.astro
+createAstro("https://tracht-digital.de");
+var $$PageGround = createComponent(($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$PageGround;
+	const { bare = false } = Astro.props;
+	const planes = bare ? [] : generateGround();
+	const RINGS = 3;
+	const COPIES = [
+		0,
+		1,
+		2
+	];
+	return renderTemplate`${maybeRenderHead($$result)}<div class="page-ground" aria-hidden="true" data-astro-cid-lkflsutq>${planes.map((plane) => renderTemplate`<div${addAttribute(`page-ground__plane page-ground__plane--${plane.id}`, "class")}${addAttribute(`--speed: ${plane.speed}`, "style")} data-astro-cid-lkflsutq>${COPIES.map((copy) => renderTemplate`<div class="page-ground__tile"${addAttribute(`--copy: ${copy}`, "style")} data-astro-cid-lkflsutq>${plane.shapes.map((shape) => renderTemplate`<span class="page-ground__shape"${addAttribute(`left: ${shape.x}%; top: ${shape.y}%; --w: ${shape.width}; --h: ${shape.height}; --rx: ${shape.rx}; --ry: ${shape.ry}; --vx: ${shape.vx}; --vy: ${shape.vy}`, "style")} data-astro-cid-lkflsutq><span class="page-ground__body" data-astro-cid-lkflsutq>${Array.from({ length: RINGS }, (_, index) => renderTemplate`<span${addAttribute(`page-ground__layer tds-shape tds-shape--outline tds-shape--${shape.kind} tds-shape--${shape.colour}`, "class")}${addAttribute(`--z: ${RINGS - index}`, "style")} data-astro-cid-lkflsutq></span>`)}<span${addAttribute(`page-ground__layer page-ground__face tds-shape tds-shape--${shape.kind} tds-shape--${shape.colour}`, "class")} data-astro-cid-lkflsutq></span></span></span>`)}</div>`)}</div>`)}</div>`;
+}, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/PageGround.astro", void 0);
+// src/components/PageScrollbar.astro
+var $$PageScrollbar = createComponent(($$result, $$props, $$slots) => {
+	return renderTemplate`${maybeRenderHead($$result)}<div class="page-scrollbar" data-page-scrollbar-rail data-state="hidden" aria-hidden="true" data-astro-cid-cbovbbeu><button type="button" tabindex="-1" class="page-scrollbar__arrow" data-scrollbar-up data-astro-cid-cbovbbeu><svg data-scrollbar-arrow width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-cbovbbeu><path d="M2 8 6 4l4 4" data-astro-cid-cbovbbeu></path></svg></button><div class="page-scrollbar__track" data-scrollbar-track data-astro-cid-cbovbbeu><div class="page-scrollbar__thumb" data-scrollbar-thumb data-astro-cid-cbovbbeu><span class="page-scrollbar__pill" data-scrollbar-pill data-astro-cid-cbovbbeu></span></div></div><button type="button" tabindex="-1" class="page-scrollbar__arrow" data-scrollbar-down data-astro-cid-cbovbbeu><svg data-scrollbar-arrow width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-cbovbbeu><path d="M2 4l4 4 4-4" data-astro-cid-cbovbbeu></path></svg></button></div>${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/PageScrollbar.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/PageScrollbar.astro", void 0);
+// node_modules/@tracht-digital-labs/tds-shared/dist/chunk-RL7PVLZ7.js
+var translations = {
+	de: {
+		nav: {
+			about: "Über mich",
+			services: "Leistungen",
+			tech: "Tech",
+			portfolio: "Portfolio",
+			process: "Prozess",
+			blog: "Ratgeber",
+			contact: "Kontakt",
+			cta: "Unverbindlich anfragen",
+			pricing: "Preise"
+		},
+		blog: {
+			label: "Ratgeber",
+			headline: "Ratgeber für",
+			headlineAccent: "Betriebe",
+			readMore: "Weiterlesen",
+			allPosts: "Alle Artikel",
+			posts: [
+				{
+					category: "Digitalisierung",
+					title: "Digitalisierung fängt nicht beim Großprojekt an.",
+					excerpt: "Sie fängt bei dem einen Ablauf an, der Sie jede Woche Stunden kostet, und den außer Ihnen niemand sieht.",
+					date: "2026-08-04",
+					slug: "digitalisierung-faengt-klein-an",
+					imagePlaceholder: "Handgeschriebene Liste auf einem Klemmbrett neben einem Laptop, warmes Morgenlicht, Werkstatt im Hintergrund."
+				},
+				{
+					category: "Webshop",
+					title: "Lohnt sich ein Webshop für mein Ladengeschäft?",
+					excerpt: "Nicht für jedes Sortiment. Vier Fragen, die die Antwort meist schon vorwegnehmen.",
+					date: "2026-07-21",
+					slug: "lohnt-sich-ein-webshop",
+					imagePlaceholder: "Ladentheke von oben, Produkte, ein Notizblock und ein Smartphone mit offener Produktliste."
+				},
+				{
+					category: "Werkzeuge",
+					title: "Excel-Tabelle oder eigenes Werkzeug?",
+					excerpt: "Eine Tabelle ist erstaunlich weit tragfähig. Es gibt aber drei Punkte, an denen sie zuverlässig kippt.",
+					date: "2026-07-07",
+					slug: "excel-oder-eigenes-werkzeug",
+					imagePlaceholder: "Bildschirm mit einer weit gescrollten Tabelle, daneben ein Notizzettel mit Formelfragment."
+				}
+			]
+		},
+		contact: {
+			label: "Kontakt",
+			headline: "Kontakt",
+			headlineAccent: "",
+			sub: "Zwei Sätze dazu, wo es hakt, genügen. Antwort in der Regel innerhalb von 24 Stunden.",
+			form: {
+				name: "Name",
+				namePlaceholder: "Hanna Schmidt",
+				email: "E-Mail",
+				emailPlaceholder: "hanna@manufaktur.de",
+				company: "Unternehmen (optional)",
+				companyPlaceholder: "Schmidt Manufaktur",
+				message: "Nachricht",
+				messagePlaceholder: "Wir pflegen unsere Preise noch in drei Listen gleichzeitig. Das kostet jede Woche einen halben Tag.",
+				consent: "Ich willige in die Verarbeitung meiner Daten gemäß der",
+				consentLink: "Datenschutzerklärung",
+				consentSuffix: "ein.",
+				submit: "Nachricht senden",
+				submitting: "Wird gesendet …",
+				successTitle: "Nachricht erhalten!",
+				successMessage: "Danke für Ihre Nachricht. Ich melde mich in der Regel innerhalb von 24 Stunden.",
+				errorMessage: "Etwas ist schiefgelaufen. Bitte versuchen Sie es noch einmal."
+			},
+			info: {
+				emailLabel: "E-Mail",
+				phoneLabel: "Handy",
+				locationLabel: "Standort",
+				socialLabel: "Social",
+				email: "kontakt@tracht-digital.de",
+				phone: "+49 178 822 4022",
+				location: "Schwarzenbek · nähe Hamburg"
+			}
+		},
+		footer: {
+			slogan: "Digitale Lösungen, die passen.",
+			tagline: "Aus Schwarzenbek bei Hamburg.",
+			nav: "Navigation",
+			contactTitle: "Kontakt",
+			copyright: "© 2026 Tracht Digital Solutions. Alle Rechte vorbehalten.",
+			impressum: "Impressum",
+			datenschutz: "Datenschutz",
+			pricing: "Preise"
+		},
+		errors: {
+			name: "Bitte geben Sie Ihren Namen an.",
+			email: "Bitte geben Sie eine gültige E-Mail-Adresse an.",
+			message: "Mindestens 20 Zeichen, bitte.",
+			consent: "Zustimmung erforderlich."
+		},
+		cookieNotice: {
+			label: "Hinweis zu Cookies und Datenschutz",
+			siteText: "Keine Tracking-Cookies: Nur technisch nötige Einstellungen wie das Farbschema bleiben lokal im Browser.",
+			panelText: "Dieser Bereich verwendet ausschließlich ein technisch notwendiges Cookie für die sichere Anmeldung (Session-Cookie). Es findet kein Tracking statt.",
+			privacy: "Mehr in der Datenschutzerklärung.",
+			accept: "Verstanden",
+			consentText: "Wir zeigen auf diesem Blog Werbung von Google AdSense. Dafür werden nur mit Ihrer Einwilligung Cookies und ähnliche Technologien zu Werbezwecken gesetzt. Ihre Wahl ist freiwillig und jederzeit änderbar.",
+			consentAccept: "Akzeptieren",
+			consentDecline: "Ablehnen"
+		},
+		consent: {
+			label: "Datenschutz-Einstellungen",
+			title: "Ihre Auswahl",
+			intro: "Wir verwenden nur die Speicherung, die diese Seite zum Funktionieren braucht. Alles darüber hinaus setzen wir erst ein, wenn Sie zustimmen. Sie können Ihre Wahl jederzeit ändern.",
+			privacy: "Datenschutzerklärung",
+			imprint: "Impressum",
+			acceptAll: "Alle akzeptieren",
+			necessaryOnly: "Nur notwendige",
+			settings: "Einstellungen",
+			save: "Auswahl speichern",
+			close: "Schließen",
+			manage: "Cookie-Einstellungen",
+			alwaysOn: "Immer aktiv",
+			categories: {
+				necessary: {
+					label: "Notwendig",
+					description: "Speichert, was die Seite zum Betrieb braucht: Ihr Farbschema, Ihre Sprache, den Inhalt Ihres Warenkorbs und diese Auswahl selbst. Ohne diese Speicherung funktioniert die Seite nicht, deshalb ist sie nicht abwählbar (§ 25 Abs. 2 Nr. 2 TDDDG)."
+				},
+				functional: {
+					label: "Komfort",
+					description: "Merkt sich Einstellungen, die die Bedienung angenehmer machen, für den Betrieb aber nicht nötig sind, etwa eine zuletzt gewählte Ansicht oder, im Journal, welche Themen Sie gelesen haben, um passende Artikel vorzuschlagen. Gespeichert nur in Ihrem Browser, höchstens 180 Tage."
+				},
+				analytics: {
+					label: "Statistik",
+					description: "Eigene Reichweitenmessung: welche Seiten gelesen werden, woher Besucher kommen, welche Schaltflächen sie nutzen und wo sie abbrechen. Dafür speichert Ihr Browser eine zufällige Kennung für 30 Tage. Ihre IP-Adresse wird nicht gespeichert, die Daten liegen auf unserem Server in Deutschland und gehen an niemanden weiter."
+				},
+				marketing: {
+					label: "Werbung",
+					description: "Erlaubt Werbeanzeigen und die dafür nötigen Cookies unserer Werbepartner. Ohne Ihre Einwilligung wird kein Werbeskript geladen."
+				}
+			},
+			placeholder: {
+				title: "Externer Inhalt",
+				body: "Dieser Inhalt wird von {provider} geladen. Dabei werden Ihre IP-Adresse und Angaben zu Ihrem Gerät an {provider} übertragen.",
+				load: "Inhalt laden",
+				settings: "Dauerhaft entscheiden"
+			}
+		},
+		a11y: { skipToContent: "Zum Inhalt springen" },
+		toast: { dismiss: "Schließen" }
+	},
+	en: {
+		nav: {
+			about: "About",
+			services: "Services",
+			tech: "Tech",
+			portfolio: "Portfolio",
+			process: "Process",
+			blog: "Ratgeber",
+			contact: "Contact",
+			cta: "Get in touch",
+			pricing: "Pricing"
+		},
+		blog: {
+			label: "Guides",
+			headline: "Guides for",
+			headlineAccent: "businesses",
+			readMore: "Read more",
+			allPosts: "All articles",
+			posts: [
+				{
+					category: "Digitalization",
+					title: "Digitalization doesn't start with a big project.",
+					excerpt: "It starts with the one routine that costs you hours every week, the one nobody but you can see.",
+					date: "2026-08-04",
+					slug: "digitalisierung-faengt-klein-an",
+					imagePlaceholder: "A handwritten list on a clipboard beside a laptop, warm morning light, workshop in the background."
+				},
+				{
+					category: "Online shop",
+					title: "Is an online shop worth it for my local business?",
+					excerpt: "Not for every range of products. Four questions that usually answer it for you.",
+					date: "2026-07-21",
+					slug: "lohnt-sich-ein-webshop",
+					imagePlaceholder: "A shop counter from above, products, a notepad and a phone showing an open product list."
+				},
+				{
+					category: "Tools",
+					title: "Spreadsheet or a tool of your own?",
+					excerpt: "A spreadsheet carries you surprisingly far. There are three points, though, where it reliably tips over.",
+					date: "2026-07-07",
+					slug: "excel-oder-eigenes-werkzeug",
+					imagePlaceholder: "A screen showing a spreadsheet scrolled far down, next to a sticky note with a fragment of a formula."
+				}
+			]
+		},
+		contact: {
+			label: "Contact",
+			headline: "Contact",
+			headlineAccent: "",
+			sub: "Two sentences on where things are stuck are enough. Replies usually within 24 hours.",
+			form: {
+				name: "Name",
+				namePlaceholder: "Alex Marlow",
+				email: "Email",
+				emailPlaceholder: "alex@marlow.studio",
+				company: "Company (optional)",
+				companyPlaceholder: "Marlow Studios",
+				message: "Message",
+				messagePlaceholder: "We still keep our prices in three separate lists. It costs us half a day every week.",
+				consent: "I consent to the processing of my data in accordance with the",
+				consentLink: "Privacy Policy",
+				consentSuffix: ".",
+				submit: "Send message",
+				submitting: "Sending …",
+				successTitle: "Message received!",
+				successMessage: "Thank you for your message. I'll get back to you within 24 hours.",
+				errorMessage: "Something went wrong. Please try again."
+			},
+			info: {
+				emailLabel: "Email",
+				phoneLabel: "Mobile",
+				locationLabel: "Location",
+				socialLabel: "Social",
+				email: "contact@tracht-digital.de",
+				phone: "+49 178 822 4022",
+				location: "Schwarzenbek · near Hamburg"
+			}
+		},
+		footer: {
+			slogan: "Digital solutions that fit.",
+			tagline: "From Schwarzenbek near Hamburg.",
+			nav: "Navigation",
+			contactTitle: "Contact",
+			copyright: "© 2026 Tracht Digital Solutions. All rights reserved.",
+			impressum: "Legal Notice",
+			datenschutz: "Privacy Policy",
+			pricing: "Pricing"
+		},
+		errors: {
+			name: "Please enter your name.",
+			email: "Please enter a valid email address.",
+			message: "At least 20 characters, please.",
+			consent: "Consent required."
+		},
+		cookieNotice: {
+			label: "Cookie and privacy notice",
+			siteText: "No tracking cookies: only necessary preferences such as your colour scheme stay local in your browser.",
+			panelText: "This area only uses one technically necessary cookie for secure sign-in (session cookie). No tracking takes place.",
+			privacy: "More in the privacy policy.",
+			accept: "Got it",
+			consentText: "This blog shows advertising from Google AdSense. Cookies and similar technologies are set for advertising only with your consent. Your choice is free and can be changed at any time.",
+			consentAccept: "Accept",
+			consentDecline: "Decline"
+		},
+		consent: {
+			label: "Privacy settings",
+			title: "Your choice",
+			intro: "We only use the storage this site needs to work. Anything beyond that we use once you agree. You can change your choice at any time.",
+			privacy: "Privacy policy",
+			imprint: "Legal notice",
+			acceptAll: "Accept all",
+			necessaryOnly: "Necessary only",
+			settings: "Settings",
+			save: "Save choice",
+			close: "Close",
+			manage: "Cookie settings",
+			alwaysOn: "Always on",
+			categories: {
+				necessary: {
+					label: "Necessary",
+					description: "Stores what the site needs to operate: your colour scheme, your language, the contents of your basket and this choice itself. The site does not work without it, which is why it cannot be switched off (sec. 25(2) no. 2 TDDDG)."
+				},
+				functional: {
+					label: "Convenience",
+					description: "Remembers settings that make the site nicer to use but are not required to operate it: the view you last picked, say, or, in the journal, which topics you read so it can suggest matching articles. Stored only in your browser, for at most 180 days."
+				},
+				analytics: {
+					label: "Statistics",
+					description: "Our own audience measurement: which pages get read, where visitors come from, which buttons they use and where they drop off. Your browser stores a random identifier for 30 days. Your IP address is not stored; the data stays on our server in Germany and is shared with no one."
+				},
+				marketing: {
+					label: "Advertising",
+					description: "Allows advertisements and the cookies our advertising partners need for them. Without your consent no advertising script is loaded."
+				}
+			},
+			placeholder: {
+				title: "External content",
+				body: "This content is loaded from {provider}. Doing so transmits your IP address and details about your device to {provider}.",
+				load: "Load content",
+				settings: "Decide permanently"
+			}
+		},
+		a11y: { skipToContent: "Skip to content" },
+		toast: { dismiss: "Dismiss" }
+	}
+};
+// src/lib/i18n.ts
+function resolveLang(currentLocale) {
+	return currentLocale === "en" ? "en" : "de";
+}
+function tFor(currentLocale) {
+	return translations[resolveLang(currentLocale)];
+}
+/** Prefix a site-internal path with the EN locale segment when needed. */
+function localizePath(path, lang) {
+	if (lang === "de") return path;
+	if (path.startsWith("/en/") || path === "/en") return path;
+	if (path === "/") return "/en/";
+	return `/en${path.startsWith("/") ? "" : "/"}${path}`;
+}
+// src/components/A11yTools.astro
+createAstro("https://tracht-digital.de");
+var $$A11yTools = createComponent(($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$A11yTools;
+	const copy = resolveLang(Astro.currentLocale) === "en" ? {
+		open: "Accessibility settings",
+		title: "Accessibility",
+		text: "Larger text",
+		contrast: "Higher contrast",
+		motion: "Motion off",
+		note: "Saved on this device.",
+		close: "Close"
+	} : {
+		open: "Einstellungen zur Barrierefreiheit",
+		title: "Barrierefreiheit",
+		text: "Größere Schrift",
+		contrast: "Hoher Kontrast",
+		motion: "Bewegung aus",
+		note: "Wird auf diesem Gerät gespeichert.",
+		close: "Schließen"
+	};
+	const toggles = [
+		{
+			pref: "text",
+			label: copy.text
+		},
+		{
+			pref: "contrast",
+			label: copy.contrast
+		},
+		{
+			pref: "motion",
+			label: copy.motion
+		}
+	];
+	return renderTemplate`${maybeRenderHead($$result)}<button type="button" class="a11y-toggle" popovertarget="a11y-panel"${addAttribute(copy.open, "aria-label")} data-a11y-open hidden data-astro-cid-jzswpfjk><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-jzswpfjk><circle cx="12" cy="4.5" r="1.75" data-astro-cid-jzswpfjk></circle><path d="M5 8.5l7 1.5 7-1.5" data-astro-cid-jzswpfjk></path><path d="M12 10v4.5" data-astro-cid-jzswpfjk></path><path d="M9 21l3-6.5 3 6.5" data-astro-cid-jzswpfjk></path></svg></button><div id="a11y-panel" popover class="a11y-panel" role="dialog" aria-labelledby="a11y-panel-title" data-astro-cid-jzswpfjk><div class="a11y-panel__head" data-astro-cid-jzswpfjk><p id="a11y-panel-title" class="a11y-panel__title" data-astro-cid-jzswpfjk>${copy.title}</p><button type="button" class="a11y-panel__close" popovertarget="a11y-panel" popovertargetaction="hide" data-astro-cid-jzswpfjk><span class="sr-only" data-astro-cid-jzswpfjk>${copy.close}</span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-jzswpfjk><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-jzswpfjk></line><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-jzswpfjk></line></svg></button></div><ul class="a11y-panel__list" data-astro-cid-jzswpfjk>${toggles.map((toggle) => renderTemplate`<li data-astro-cid-jzswpfjk><button type="button" class="a11y-switch" aria-pressed="false"${addAttribute(toggle.pref, "data-a11y-pref")} data-astro-cid-jzswpfjk><span class="a11y-switch__label" data-astro-cid-jzswpfjk>${toggle.label}</span><span class="a11y-switch__track" aria-hidden="true" data-astro-cid-jzswpfjk><span class="a11y-switch__thumb" data-astro-cid-jzswpfjk></span></span></button></li>`)}</ul><p class="a11y-panel__note" data-astro-cid-jzswpfjk>${copy.note}</p></div>${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/A11yTools.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/A11yTools.astro", void 0);
+// src/components/FloatingCta.astro
+createAstro("https://tracht-digital.de");
+var $$FloatingCta = createComponent(($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$FloatingCta;
+	const lang = resolveLang(Astro.currentLocale);
+	const home = localizePath("/", lang);
+	const href = `${home === "/" ? "" : home.replace(/\/$/, "")}/#contact`;
+	const label = lang === "de" ? "Zum Kontaktformular" : "Go to the contact form";
+	const topLabel = lang === "en" ? "Back to top" : "Nach oben";
+	const regionLabel = lang === "en" ? "Quick access" : "Schnellzugriff";
+	return renderTemplate`${maybeRenderHead($$result)}<aside class="floating-cta-group"${addAttribute(regionLabel, "aria-label")} data-scrolled-down="false" data-astro-cid-72f5watn><div class="tree-slot tree-slot--top" data-astro-cid-72f5watn><div class="tree-slot__inner" data-astro-cid-72f5watn><button type="button" class="floating-cta-top"${addAttribute(topLabel, "aria-label")} data-astro-cid-72f5watn><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tree-icon" data-astro-cid-72f5watn><line x1="12" y1="19" x2="12" y2="5" data-astro-cid-72f5watn></line><polyline points="5 12 12 5 19 12" data-astro-cid-72f5watn></polyline></svg></button></div></div><div class="tree-slot tree-slot--a11y" data-astro-cid-72f5watn><div class="tree-slot__inner" data-astro-cid-72f5watn>${renderComponent($$result, "A11yTools", $$A11yTools, { "data-astro-cid-72f5watn": true })}</div></div><div class="tree-slot tree-slot--trunk" data-astro-cid-72f5watn><div class="tree-slot__inner" data-astro-cid-72f5watn><span class="floating-cta-track" aria-hidden="true" data-astro-cid-72f5watn><svg class="floating-cta-track__chevrons" width="22" height="18" viewBox="0 0 22 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-72f5watn><polyline points="8 3 2 9 8 15" data-astro-cid-72f5watn></polyline><polyline points="18 3 12 9 18 15" data-astro-cid-72f5watn></polyline></svg></span><a${addAttribute(href, "href")} class="floating-cta"${addAttribute(label, "aria-label")} draggable="false" data-track="floating-cta" data-astro-cid-72f5watn><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="tree-icon floating-cta__icon" data-astro-cid-72f5watn><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" data-astro-cid-72f5watn></path></svg></a></div></div></aside><script>
+  (function () {
+    var group = document.currentScript && document.currentScript.previousElementSibling;
+    if (group && document.getElementById("hero")) group.setAttribute("data-hero-start", "");
+  })();
+<\/script>${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/FloatingCta.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/FloatingCta.astro", void 0);
+// src/lib/arrowPaths.ts
+var ARROW_PATHS = {
+	right: "m9 6 6 6-6 6",
+	left: "m15 6-6 6 6 6",
+	"up-right": "M8.5 7.5h8v8",
+	down: "m6 9 6 6 6-6"
+};
+// src/components/ui/Arrow.astro
+createAstro("https://tracht-digital.de");
+var $$Arrow = createComponent(($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$Arrow;
+	const { dir = "right", class: className } = Astro.props;
+	return renderTemplate`${maybeRenderHead($$result)}<svg${addAttribute(["lp-arrow", className], "class:list")} viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path${addAttribute(ARROW_PATHS[dir], "d")}></path></svg>`;
+}, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/ui/Arrow.astro", void 0);
+// src/lib/navigation.ts
+function sectionLinks(lang) {
+	const de = lang === "de";
+	return [
+		{
+			id: "services",
+			label: de ? "Leistungen" : "Services"
+		},
+		...referenceCases.length > 0 ? [{
+			id: "cases",
+			label: de ? "Projekte" : "Projects"
+		}] : [],
+		{
+			id: "process",
+			label: de ? "Vorgehen" : "Process"
+		}
+	];
+}
+function propertyLinks(lang) {
+	return [
+		{
+			id: "journal",
+			label: propertyLabel("journal", lang),
+			href: propertyHome("journal", lang)
+		},
+		{
+			id: "tools",
+			label: propertyLabel("tools", lang),
+			href: propertyHome("tools", lang)
+		},
+		{
+			id: "portal",
+			label: lang === "de" ? "Kundenportal" : "Customer portal",
+			href: siteConfig.portalUrl
+		},
+		{
+			id: "shop",
+			label: propertyLabel("shop", lang),
+			href: propertyHome("shop", lang)
+		}
+	];
+}
+// src/components/PropertyTabs.astro
+createAstro("https://tracht-digital.de");
+var $$PropertyTabs = createComponent(($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$PropertyTabs;
+	const lang = resolveLang(Astro.currentLocale);
+	const links = propertyLinks(lang);
+	const navLabel = lang === "de" ? "Weitere Angebote" : "More from Tracht Digital";
+	const external = lang === "de" ? "(öffnet eine andere Website)" : "(opens another website)";
+	const ICONS = {
+		journal: ["M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z", "M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"],
+		tools: ["M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"],
+		portal: ["M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2", "M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"],
+		shop: [
+			"M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",
+			"M3 6h18",
+			"M16 10a4 4 0 0 1-8 0"
+		]
+	};
+	return renderTemplate`${maybeRenderHead($$result)}<nav class="property-tabs"${addAttribute(navLabel, "aria-label")} data-property-tabs data-astro-cid-f3l3wxva><template data-property-tabs-src data-astro-cid-f3l3wxva>${templateEnter($$result)}<ul class="property-tabs__list" data-astro-cid-f3l3wxva>${links.map((link) => renderTemplate`<li data-astro-cid-f3l3wxva><a${addAttribute(link.href, "data-to")} class="property-tab"${addAttribute(link.id, "data-property-tab")} rel="noopener" data-astro-cid-f3l3wxva><span class="property-tab__label" data-astro-cid-f3l3wxva>${link.label}<span class="sr-only" data-astro-cid-f3l3wxva> ${external}</span></span><span aria-hidden="true" class="property-tab__arrow" data-astro-cid-f3l3wxva>${renderComponent($$result, "Arrow", $$Arrow, {
+		"dir": "up-right",
+		"data-astro-cid-f3l3wxva": true
+	})}</span><svg aria-hidden="true" class="property-tab__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-f3l3wxva>${ICONS[link.id].map((d) => renderTemplate`<path${addAttribute(d, "d")} data-astro-cid-f3l3wxva></path>`)}</svg></a></li>`)}</ul>${templateExit($$result)}</template><script>
+    (function (t) {
+      var q = matchMedia("(min-width: 64rem) and (hover: hover) and (pointer: fine)");
+      function show() {
+        if (!t.isConnected || !q.matches) return;
+        var list = t.content.cloneNode(true);
+        list.querySelectorAll("[data-to]").forEach(function (a) {
+          a.setAttribute("href", a.getAttribute("data-to"));
+        });
+        t.replaceWith(list);
+      }
+      show();
+      if (t.isConnected) q.addEventListener("change", show);
+    })(document.currentScript.previousElementSibling);
+  <\/script></nav>${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/PropertyTabs.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/PropertyTabs.astro", void 0);
+// src/components/JsonLd.astro
+createAstro("https://tracht-digital.de");
+var $$JsonLd = createComponent(($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$JsonLd;
+	const { data } = Astro.props;
+	return renderTemplate`${(Array.isArray(data) ? data : [data]).map((graph) => renderTemplate`<script type="application/ld+json">${unescapeHTML(serializeJsonLd(graph))}<\/script>`)}`;
+}, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/JsonLd.astro", void 0);
+var STATE_KEY = /* @__PURE__ */ Symbol.for("@tracht-digital-labs/tds-shared:api-state");
+var state = (() => {
+	const host = globalThis;
+	const existing = host[STATE_KEY];
+	if (existing !== void 0) return existing;
+	const fresh = {
+		cached: null,
+		runtimePromise: null,
+		runtimeValue: null,
+		onUnauthorized: null,
+		headersProvider: null
+	};
+	host[STATE_KEY] = fresh;
+	return fresh;
+})();
+var trimEnd = (value) => value.replace(/\/+$/, "");
+var RUNTIME_CONFIG_PATH = "/tds-runtime.json";
+async function runtimeConfig() {
+	if (state.runtimePromise !== null) return state.runtimePromise;
+	if (typeof document === "undefined" || typeof fetch !== "function") {
+		state.runtimePromise = Promise.resolve(null);
+		return state.runtimePromise;
+	}
+	let declared = "";
+	try {
+		declared = document.querySelector(`meta[name="tds-api-base"]`)?.getAttribute("content") ?? "";
+	} catch {}
+	if (declared.trim() !== "") {
+		state.runtimePromise = Promise.resolve(null);
+		return state.runtimePromise;
+	}
+	state.runtimePromise = (async () => {
+		try {
+			const res = await fetch(RUNTIME_CONFIG_PATH, {
+				credentials: "same-origin",
+				headers: { Accept: "application/json" },
+				signal: typeof AbortSignal?.timeout === "function" ? AbortSignal.timeout(3e3) : void 0
+			});
+			if (!res.ok) return null;
+			if (!(res.headers.get("content-type") ?? "").includes("json")) return null;
+			const parsed = await res.json();
+			if (parsed === null || typeof parsed !== "object") return null;
+			const config = parsed;
+			if (typeof config.apiBase === "string" && config.apiBase !== "") state.cached = trimEnd(config.apiBase);
+			state.runtimeValue = config;
+			return config;
+		} catch {
+			return null;
+		}
+	})();
+	return state.runtimePromise;
+}
+async function runtimeSetting(key, fallback) {
+	const value = (await runtimeConfig())?.[key];
+	return typeof value === "string" && value !== "" ? value : fallback;
+}
+function apiBase() {
+	if (state.cached !== null) return state.cached;
+	const env = typeof import.meta !== "undefined" ? Object.assign({
+		"ASSETS_PREFIX": void 0,
+		"BASE_URL": "/",
+		"DEV": false,
+		"MODE": "production",
+		"PROD": true,
+		"PUBLIC_DEMO_MODE": "false",
+		"SITE": "https://tracht-digital.de",
+		"SSR": true
+	}, {
+		_: "/opt/hostedtoolcache/node/22.23.5/x64/bin/npm",
+		PATH: "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/node_modules/.bin:/home/runner/work/tds-landingpage-frontend/node_modules/.bin:/home/runner/work/node_modules/.bin:/home/runner/node_modules/.bin:/home/node_modules/.bin:/node_modules/.bin:/opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/opt/hostedtoolcache/node/22.23.5/x64/bin:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+	})?.PUBLIC_API_BASE ?? "" : "";
+	if (typeof document === "undefined") return trimEnd(env || "https://api.tracht-digital.de");
+	let meta = "";
+	try {
+		meta = document.querySelector(`meta[name="tds-api-base"]`)?.getAttribute("content") ?? "";
+	} catch {}
+	state.cached = trimEnd(meta.trim() || env || "https://api.tracht-digital.de");
+	return state.cached;
+}
+function apiUrl(path) {
+	if (/^(https?:)?\/\//i.test(path)) return path;
+	return `${apiBase()}${path.startsWith("/") ? "" : "/"}${path}`;
+}
+async function apiFetch(path, init = {}) {
+	await runtimeConfig();
+	const url = apiUrl(path);
+	let extra = {};
+	if (state.headersProvider !== null) try {
+		extra = state.headersProvider(url);
+	} catch {}
+	const res = await fetch(url, {
+		credentials: "include",
+		...init,
+		headers: {
+			...extra,
+			...init.headers
+		}
+	});
+	if (res.status === 401 && state.onUnauthorized !== null) try {
+		await state.onUnauthorized(url);
+	} catch {}
+	return res;
+}
+// node_modules/@tracht-digital-labs/tds-shared/dist/chunk-W2CCGKXF.js
+var STR = {
+	de: {
+		close: "Schließen",
+		hide: "Ausblenden",
+		chat: "Chat",
+		faq: "FAQ",
+		docs: "Hilfe",
+		contact: "Kontakt",
+		startPrompt: "Schreib uns, wir antworten so schnell wie möglich.",
+		namePh: "Name (optional)",
+		emailPh: "E-Mail (optional)",
+		msgPh: "Nachricht …",
+		send: "Senden",
+		start: "Chat starten",
+		subjectPh: "Betreff (optional)",
+		contactMsgPh: "Deine Nachricht …",
+		contactSend: "Absenden",
+		contactOk: "Danke! Wir melden uns.",
+		contactErr: "Bitte Name, gültige E-Mail und eine Nachricht (min. 20 Zeichen) angeben.",
+		rate: "Zu viele Anfragen. Bitte später erneut versuchen.",
+		empty: "Noch keine Nachrichten."
+	},
+	en: {
+		close: "Close",
+		hide: "Hide",
+		chat: "Chat",
+		faq: "FAQ",
+		docs: "Help",
+		contact: "Contact",
+		startPrompt: "Message us, we reply as soon as we can.",
+		namePh: "Name (optional)",
+		emailPh: "Email (optional)",
+		msgPh: "Message …",
+		send: "Send",
+		start: "Start chat",
+		subjectPh: "Subject (optional)",
+		contactMsgPh: "Your message …",
+		contactSend: "Submit",
+		contactOk: "Thanks! We'll be in touch.",
+		contactErr: "Please provide a name, a valid email and a message (min. 20 chars).",
+		rate: "Too many requests. Please try again later.",
+		empty: "No messages yet."
+	}
+};
+var POLL_MS = 4e3;
+function sessionKey(frontend) {
+	return `tds-live-chat-session:${frontend}`;
+}
+function ChatPane({ api, frontend, greeting, t }) {
+	const [session, setSession] = useState(null);
+	const [messages, setMessages] = useState([]);
+	const [draft, setDraft] = useState("");
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [busy, setBusy] = useState(false);
+	const endRef = useRef(null);
+	const cursor = useRef(0);
+	useEffect(() => {
+		try {
+			const raw = localStorage.getItem(sessionKey(frontend));
+			if (raw) setSession(JSON.parse(raw));
+		} catch {}
+	}, [frontend]);
+	const poll = useCallback(async () => {
+		if (!session) return;
+		const res = await api(`/live-chat-cta/chat/${session.id}/messages?since=${cursor.current}`, { headers: { "X-Chat-Token": session.token } });
+		if (res.ok) {
+			const incoming = (await res.json()).messages ?? [];
+			if (incoming.length > 0) {
+				cursor.current = incoming[incoming.length - 1].id;
+				setMessages((m) => [...m, ...incoming]);
+			}
+		}
+	}, [api, session]);
+	useEffect(() => {
+		if (!session) return;
+		poll();
+		const timer = setInterval(() => void poll(), POLL_MS);
+		return () => clearInterval(timer);
+	}, [session, poll]);
+	useEffect(() => {
+		endRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [messages]);
+	const start = async () => {
+		const body = draft.trim();
+		if (!body) return;
+		setBusy(true);
+		const res = await api("/live-chat-cta/chat", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				name,
+				email,
+				frontend,
+				message: body
+			})
+		});
+		setBusy(false);
+		if (res.ok) {
+			const d = await res.json();
+			const s = {
+				id: d.id,
+				token: d.token
+			};
+			try {
+				localStorage.setItem(sessionKey(frontend), JSON.stringify(s));
+			} catch {}
+			setSession(s);
+			setDraft("");
+		}
+	};
+	const send = async () => {
+		if (!session) return;
+		const body = draft.trim();
+		if (!body) return;
+		setBusy(true);
+		const res = await api(`/live-chat-cta/chat/${session.id}/messages`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"X-Chat-Token": session.token
+			},
+			body: JSON.stringify({ body })
+		});
+		setBusy(false);
+		if (res.ok) {
+			setDraft("");
+			await poll();
+		}
+	};
+	if (!session) return /* @__PURE__ */ jsxs("div", {
+		className: "live-chat-cta__chat",
+		children: [
+			/* @__PURE__ */ jsx("p", {
+				className: "live-chat-cta__greeting",
+				children: greeting
+			}),
+			/* @__PURE__ */ jsx("p", {
+				className: "live-chat-cta__hint",
+				children: t.startPrompt
+			}),
+			/* @__PURE__ */ jsx("input", {
+				type: "text",
+				value: name,
+				onChange: (e) => setName(e.target.value),
+				placeholder: t.namePh
+			}),
+			/* @__PURE__ */ jsx("input", {
+				type: "email",
+				value: email,
+				onChange: (e) => setEmail(e.target.value),
+				placeholder: t.emailPh
+			}),
+			/* @__PURE__ */ jsx("textarea", {
+				value: draft,
+				onChange: (e) => setDraft(e.target.value),
+				placeholder: t.msgPh,
+				rows: 3
+			}),
+			/* @__PURE__ */ jsx("button", {
+				type: "button",
+				onClick: start,
+				disabled: busy || !draft.trim(),
+				children: t.start
+			})
+		]
+	});
+	return /* @__PURE__ */ jsxs("div", {
+		className: "live-chat-cta__chat",
+		children: [/* @__PURE__ */ jsxs("div", {
+			className: "live-chat-cta__messages",
+			children: [
+				messages.length === 0 ? /* @__PURE__ */ jsx("p", {
+					className: "live-chat-cta__hint",
+					children: greeting
+				}) : null,
+				messages.map((m) => /* @__PURE__ */ jsx("div", {
+					className: `live-chat-cta__msg live-chat-cta__msg--${m.author}`,
+					children: m.body
+				}, m.id)),
+				/* @__PURE__ */ jsx("div", { ref: endRef })
+			]
+		}), /* @__PURE__ */ jsxs("div", {
+			className: "live-chat-cta__compose",
+			children: [/* @__PURE__ */ jsx("textarea", {
+				value: draft,
+				onChange: (e) => setDraft(e.target.value),
+				placeholder: t.msgPh,
+				rows: 2,
+				onKeyDown: (e) => {
+					if (e.key === "Enter" && !e.shiftKey) {
+						e.preventDefault();
+						send();
+					}
+				}
+			}), /* @__PURE__ */ jsx("button", {
+				type: "button",
+				onClick: send,
+				disabled: busy || !draft.trim(),
+				children: t.send
+			})]
+		})]
+	});
+}
+function FaqPane({ faqs }) {
+	const [open, setOpen] = useState(null);
+	if (faqs.length === 0) return /* @__PURE__ */ jsx("p", {
+		className: "live-chat-cta__hint",
+		children: "—"
+	});
+	return /* @__PURE__ */ jsx("ul", {
+		className: "live-chat-cta__faq",
+		children: faqs.map((f) => /* @__PURE__ */ jsxs("li", { children: [/* @__PURE__ */ jsx("button", {
+			type: "button",
+			"aria-expanded": open === f.id,
+			onClick: () => setOpen(open === f.id ? null : f.id),
+			children: f.question
+		}), open === f.id ? /* @__PURE__ */ jsx(Prose, {
+			text: f.answer,
+			className: "live-chat-cta__faq-answer"
+		}) : null] }, f.id))
+	});
+}
+function DocsPane({ docs }) {
+	const [active, setActive] = useState(null);
+	if (docs.length === 0) return /* @__PURE__ */ jsx("p", {
+		className: "live-chat-cta__hint",
+		children: "—"
+	});
+	const current = docs.find((d) => d.id === active) ?? null;
+	if (current) return /* @__PURE__ */ jsxs("div", {
+		className: "live-chat-cta__doc",
+		children: [
+			/* @__PURE__ */ jsx("button", {
+				type: "button",
+				className: "live-chat-cta__back",
+				onClick: () => setActive(null),
+				children: "← "
+			}),
+			/* @__PURE__ */ jsx("h4", { children: current.title }),
+			/* @__PURE__ */ jsx(Prose, {
+				text: current.body_markdown,
+				className: "live-chat-cta__doc-body"
+			})
+		]
+	});
+	return /* @__PURE__ */ jsx("ul", {
+		className: "live-chat-cta__docs",
+		children: docs.map((d) => /* @__PURE__ */ jsx("li", { children: /* @__PURE__ */ jsx("button", {
+			type: "button",
+			onClick: () => setActive(d.id),
+			children: d.title
+		}) }, d.id))
+	});
+}
+function ContactPane({ api, frontend, t }) {
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [subject, setSubject] = useState("");
+	const [message, setMessage] = useState("");
+	const [website, setWebsite] = useState("");
+	const [busy, setBusy] = useState(false);
+	const [status, setStatus] = useState(null);
+	const [done, setDone] = useState(false);
+	const submit = async () => {
+		setBusy(true);
+		setStatus(null);
+		const res = await api("/live-chat-cta/contact", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				name,
+				email,
+				subject,
+				message,
+				frontend,
+				website
+			})
+		});
+		setBusy(false);
+		if (res.ok) setDone(true);
+		else if (res.status === 429) setStatus(t.rate);
+		else setStatus(t.contactErr);
+	};
+	if (done) return /* @__PURE__ */ jsx("p", {
+		className: "live-chat-cta__ok",
+		children: t.contactOk
+	});
+	return /* @__PURE__ */ jsxs("div", {
+		className: "live-chat-cta__contact",
+		children: [
+			/* @__PURE__ */ jsx("input", {
+				type: "text",
+				value: name,
+				onChange: (e) => setName(e.target.value),
+				placeholder: t.namePh
+			}),
+			/* @__PURE__ */ jsx("input", {
+				type: "email",
+				value: email,
+				onChange: (e) => setEmail(e.target.value),
+				placeholder: t.emailPh
+			}),
+			/* @__PURE__ */ jsx("input", {
+				type: "text",
+				value: subject,
+				onChange: (e) => setSubject(e.target.value),
+				placeholder: t.subjectPh
+			}),
+			/* @__PURE__ */ jsx("textarea", {
+				value: message,
+				onChange: (e) => setMessage(e.target.value),
+				placeholder: t.contactMsgPh,
+				rows: 4
+			}),
+			/* @__PURE__ */ jsx("input", {
+				type: "text",
+				value: website,
+				onChange: (e) => setWebsite(e.target.value),
+				tabIndex: -1,
+				autoComplete: "off",
+				"aria-hidden": "true",
+				style: {
+					position: "absolute",
+					left: "-9999px",
+					width: 1,
+					height: 1,
+					opacity: 0
+				}
+			}),
+			status ? /* @__PURE__ */ jsx("p", {
+				className: "live-chat-cta__err",
+				children: status
+			}) : null,
+			/* @__PURE__ */ jsx("button", {
+				type: "button",
+				onClick: submit,
+				disabled: busy,
+				children: t.contactSend
+			})
+		]
+	});
+}
+function Prose({ text, className }) {
+	const paragraphs = text.split(/\n{2,}/);
+	return /* @__PURE__ */ jsx("div", {
+		className,
+		children: paragraphs.map((p, i) => /* @__PURE__ */ jsx("p", { children: p.split("\n").map((line, j) => /* @__PURE__ */ jsxs("span", { children: [line, j < p.split("\n").length - 1 ? /* @__PURE__ */ jsx("br", {}) : null] }, j)) }, i))
+	});
+}
+var HIDDEN_KEY = "tds-live-chat-hidden";
+function LiveChatCta({ frontend, apiBase, lang = "de" }) {
+	const t = STR[lang === "en" ? "en" : "de"];
+	const [config, setConfig] = useState(null);
+	const [hidden, setHidden] = useState(true);
+	const [open, setOpen] = useState(false);
+	const [tab, setTab] = useState("chat");
+	const launcherRef = useRef(null);
+	const api = useCallback((path, init) => apiBase ? fetch(`${apiBase}${path}`, {
+		credentials: "include",
+		...init
+	}) : apiFetch(path, init), [apiBase]);
+	useEffect(() => {
+		let alive = true;
+		let dismissed = false;
+		try {
+			dismissed = localStorage.getItem(`${HIDDEN_KEY}:${frontend}`) === "1";
+		} catch {}
+		api(`/live-chat-cta/config?frontend=${encodeURIComponent(frontend)}&lang=${lang}`).then((r) => r.ok ? r.json() : null).then((d) => {
+			if (!alive || !d || !d.enabled) return;
+			setConfig(d);
+			setHidden(dismissed);
+			const first = [
+				"chat",
+				"faq",
+				"docs",
+				"contact"
+			].find((k) => d.tabs[k]);
+			if (first) setTab(first);
+		}).catch(() => {});
+		return () => {
+			alive = false;
+		};
+	}, [
+		api,
+		frontend,
+		lang
+	]);
+	useEffect(() => {
+		const el = launcherRef.current;
+		const root = typeof document === "undefined" ? null : document.documentElement;
+		if (!root) return;
+		if (!el || open || hidden || !config) {
+			root.style.removeProperty("--tds-right-lane");
+			return;
+		}
+		const publish = () => {
+			root.style.setProperty("--tds-right-lane", `${Math.ceil(el.getBoundingClientRect().height)}px`);
+		};
+		publish();
+		const ro = typeof ResizeObserver === "function" ? new ResizeObserver(publish) : null;
+		ro?.observe(el);
+		window.addEventListener("resize", publish);
+		return () => {
+			ro?.disconnect();
+			window.removeEventListener("resize", publish);
+			root.style.removeProperty("--tds-right-lane");
+		};
+	}, [
+		config,
+		hidden,
+		open
+	]);
+	const hide = () => {
+		setHidden(true);
+		setOpen(false);
+		try {
+			localStorage.setItem(`${HIDDEN_KEY}:${frontend}`, "1");
+		} catch {}
+	};
+	if (!config || hidden) return null;
+	const enabledTabs = [
+		"chat",
+		"faq",
+		"docs",
+		"contact"
+	].filter((k) => config.tabs[k]);
+	if (enabledTabs.length === 0) return null;
+	const accent = config.cta.accent || "#050f68";
+	if (!open) return /* @__PURE__ */ jsxs("div", {
+		ref: launcherRef,
+		className: "live-chat-cta live-chat-cta--closed",
+		style: { "--lc-accent": accent },
+		children: [/* @__PURE__ */ jsxs("button", {
+			type: "button",
+			className: "live-chat-cta__launcher",
+			onClick: () => setOpen(true),
+			children: [/* @__PURE__ */ jsx("span", {
+				className: "live-chat-cta__launcher-icon",
+				"aria-hidden": "true",
+				children: "💬"
+			}), /* @__PURE__ */ jsx("span", {
+				className: "live-chat-cta__launcher-label",
+				children: config.cta.label
+			})]
+		}), /* @__PURE__ */ jsx("button", {
+			type: "button",
+			className: "live-chat-cta__hide",
+			onClick: hide,
+			"aria-label": t.hide,
+			title: t.hide,
+			children: "×"
+		})]
+	});
+	return /* @__PURE__ */ jsxs("div", {
+		className: "live-chat-cta live-chat-cta--open",
+		style: { "--lc-accent": accent },
+		role: "dialog",
+		"aria-label": config.cta.label,
+		children: [
+			/* @__PURE__ */ jsxs("header", {
+				className: "live-chat-cta__head",
+				children: [/* @__PURE__ */ jsx("span", {
+					className: "live-chat-cta__title",
+					children: config.cta.label
+				}), /* @__PURE__ */ jsx("button", {
+					type: "button",
+					className: "live-chat-cta__close",
+					onClick: () => setOpen(false),
+					"aria-label": t.close,
+					title: t.close,
+					children: "−"
+				})]
+			}),
+			enabledTabs.length > 1 ? /* @__PURE__ */ jsx("nav", {
+				className: "live-chat-cta__tabs",
+				role: "tablist",
+				children: enabledTabs.map((k) => /* @__PURE__ */ jsx("button", {
+					type: "button",
+					role: "tab",
+					"aria-selected": tab === k,
+					className: tab === k ? "is-active" : "",
+					onClick: () => setTab(k),
+					children: t[k]
+				}, k))
+			}) : null,
+			/* @__PURE__ */ jsxs("div", {
+				className: "live-chat-cta__body",
+				children: [
+					tab === "chat" && config.tabs.chat ? /* @__PURE__ */ jsx(ChatPane, {
+						api,
+						frontend,
+						greeting: config.cta.greeting,
+						t
+					}) : null,
+					tab === "faq" && config.tabs.faq ? /* @__PURE__ */ jsx(FaqPane, { faqs: config.faqs }) : null,
+					tab === "docs" && config.tabs.docs ? /* @__PURE__ */ jsx(DocsPane, { docs: config.docs }) : null,
+					tab === "contact" && config.tabs.contact ? /* @__PURE__ */ jsx(ContactPane, {
+						api,
+						frontend,
+						t
+					}) : null
+				]
+			})
+		]
+	});
+}
+// node_modules/@tracht-digital-labs/tds-shared/dist/chunk-CKIWAE4V.js
+var PREFS_COOKIE = "tds_prefs";
+// node_modules/@tracht-digital-labs/tds-shared/dist/chunk-JQBEG2B3.js
+var SEMANTIC_CHIP_VARIANTS = [
+	"neutral",
+	"success",
+	"warning",
+	"danger",
+	"info"
+];
+var CATEGORICAL_CHIP_VARIANTS = [
+	"cat-violet",
+	"cat-teal",
+	"cat-amber",
+	"cat-rose",
+	"cat-cyan"
+];
+var CHIP_VARIANTS = [...SEMANTIC_CHIP_VARIANTS, ...CATEGORICAL_CHIP_VARIANTS];
+new Set(CHIP_VARIANTS);
+var THEME_STORAGE_KEY = "tds-theme";
+var THEME_ATTRIBUTE = "data-theme";
+// node_modules/@tracht-digital-labs/tds-shared/dist/chunk-J7OBMTKV.js
+var BOUNCE_KEYFRAMES = [
+	{ translate: "0px 0px" },
+	{
+		translate: "-7px 0px",
+		offset: .16
+	},
+	{
+		translate: "6px 0px",
+		offset: .36
+	},
+	{
+		translate: "-4px 0px",
+		offset: .56
+	},
+	{
+		translate: "2px 0px",
+		offset: .76
+	},
+	{ translate: "0px 0px" }
+];
+var BOUNCE_OPTIONS = {
+	duration: 420,
+	easing: "ease-out",
+	composite: "add"
+};
+// node_modules/@tracht-digital-labs/tds-shared/dist/astro/index.js
+var themeBootstrapScript = `(function () {
+  /* The cross-site preference cookie (tds-shared/prefs), parsed once and
+     published as window.__tdsPrefs for the other pre-paint scripts of a site
+     (reader zoom, sidebar state) \u2014 so none of them re-implements the parse. */
+  var prefs = {};
+  try {
+    var m = document.cookie.match(/(?:^|;\\s*)${PREFS_COOKIE}=([^;]*)/);
+    if (m) prefs = JSON.parse(decodeURIComponent(m[1])) || {};
+  } catch (e) { prefs = {}; }
+  window.__tdsPrefs = prefs;
+  function apply(root) {
+    try {
+      var saved = localStorage.getItem("${THEME_STORAGE_KEY}");
+      if (saved === "light" || saved === "dark") {
+        root.setAttribute("${THEME_ATTRIBUTE}", saved);
+        return;
+      }
+    } catch (e) { /* storage disabled \u2014 fall through to the cookie / OS */ }
+    if (prefs.theme === "light" || prefs.theme === "dark") {
+      root.setAttribute("${THEME_ATTRIBUTE}", prefs.theme);
+      return;
+    }
+    var dark = window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.setAttribute("${THEME_ATTRIBUTE}", dark ? "dark" : "light");
+  }
+  apply(document.documentElement);
+  document.addEventListener("astro:before-swap", function (event) {
+    apply(event.newDocument.documentElement);
+  });
+})();`;
+var errorBounceScript = `(function () {
+  if (window.__tdsBounce) return;
+  var KF = ${JSON.stringify(BOUNCE_KEYFRAMES)};
+  var OPT = ${JSON.stringify(BOUNCE_OPTIONS)};
+  var ERR = '[role="alert"], .form-alert, .tds-toast--error, .tds-alert--danger, [data-error]';
+  function still() {
+    return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+  function bounce(el) {
+    if (!el || !el.animate || still()) return;
+    if (el.closest && el.closest("[inert], .tds-theme-preview")) return;
+    var running = el.getAnimations ? el.getAnimations() : [];
+    for (var i = 0; i < running.length; i++) if (running[i].id === "tds-bounce") running[i].cancel();
+    try { el.animate(KF, OPT).id = "tds-bounce"; } catch (e) { /* no Web Animations */ }
+  }
+  window.__tdsBounce = bounce;
+
+  var last = null, lastAt = 0;
+  function remember(el) { if (el) { last = el; lastAt = Date.now(); } }
+  function blame() {
+    if (last && last.isConnected && Date.now() - lastAt < 4000) bounce(last);
+    last = null;
+  }
+  document.addEventListener("submit", function (e) { remember(e.submitter); }, true);
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    remember(t && t.closest ? t.closest('button, [role="button"], input[type="submit"], input[type="button"]') : null);
+  }, true);
+  document.addEventListener("invalid", function (e) { bounce(e.target); blame(); }, true);
+
+  var live = document.readyState !== "loading";
+  if (!live) document.addEventListener("DOMContentLoaded", function () { live = true; });
+  document.addEventListener("astro:before-swap", function () { live = false; });
+  document.addEventListener("astro:after-swap", function () {
+    requestAnimationFrame(function () { live = true; });
+  });
+
+  function errorIn(node) {
+    if (node.nodeType !== 1) return null;
+    if (node.matches(ERR)) return node;
+    return node.firstElementChild ? node.querySelector(ERR) : null;
+  }
+  new MutationObserver(function (records) {
+    if (!live) return;
+    var hits = [];
+    function add(el) {
+      if (!el || el.getAttribute("data-bounce") === "off" || hits.indexOf(el) >= 0) return;
+      if (!(el.textContent || "").trim() && !el.matches("[aria-invalid]")) return;
+      hits.push(el);
+    }
+    for (var i = 0; i < records.length; i++) {
+      var r = records[i];
+      if (r.type === "attributes") {
+        if (r.target.getAttribute("aria-invalid") === "true" && r.oldValue !== "true") add(r.target);
+        continue;
+      }
+      var found = false;
+      for (var j = 0; j < r.addedNodes.length; j++) {
+        var n = r.addedNodes[j];
+        var err = errorIn(n);
+        if (err) { add(err); found = true; }
+        if (n.nodeType === 1 && n.matches('[aria-invalid="true"]')) { add(n); found = true; }
+      }
+      if (!found) {
+        var host = r.target.nodeType === 1 ? r.target : r.target.parentElement;
+        var owner = host && host.closest ? host.closest(ERR) : null;
+        if (owner && (r.type === "characterData" || r.addedNodes.length)) add(owner);
+      }
+    }
+    if (!hits.length) return;
+    for (var k = 0; k < hits.length; k++) {
+      var nested = false;
+      for (var m = 0; m < hits.length; m++) if (m !== k && hits[m].contains(hits[k])) nested = true;
+      if (!nested) bounce(hits[k]);
+    }
+    blame();
+  }).observe(document.documentElement, {
+    subtree: true,
+    childList: true,
+    characterData: true,
+    attributes: true,
+    attributeFilter: ["aria-invalid"],
+    attributeOldValue: true,
+  });
+})();`;
+var offscreenAnimationScript = `(function () {
+  if (window.__tdsOffscreen || !window.IntersectionObserver || !document.getAnimations) return;
+  window.__tdsOffscreen = true;
+  var ATTR = "data-tds-offscreen";
+  var watched = new WeakSet();
+  var ours = new WeakSet();
+  function endless(a) {
+    var t = a.effect && a.effect.getComputedTiming ? a.effect.getComputedTiming() : null;
+    return !!t && t.iterations === Infinity;
+  }
+  function isCss(a) { return typeof a.animationName === "string"; }
+  var io = new IntersectionObserver(function (entries) {
+    for (var i = 0; i < entries.length; i++) {
+      var el = entries[i].target, off = !entries[i].isIntersecting;
+      if (off) el.setAttribute(ATTR, ""); else el.removeAttribute(ATTR);
+      var list = el.getAnimations ? el.getAnimations() : [];
+      for (var j = 0; j < list.length; j++) {
+        var a = list[j];
+        if (isCss(a) || !endless(a)) continue;
+        if (off && a.playState === "running") { a.pause(); ours.add(a); }
+        else if (!off && ours.has(a)) { ours.delete(a); a.play(); }
+      }
+    }
+  }, { rootMargin: "128px" });
+  function watch(el) {
+    if (!el || el.nodeType !== 1 || watched.has(el)) return;
+    watched.add(el);
+    io.observe(el);
+  }
+  function scan() {
+    var all = document.getAnimations();
+    for (var i = 0; i < all.length; i++) {
+      var a = all[i];
+      var el = a.effect && a.effect.target;
+      if (!el || !endless(a)) continue;
+      watch(el);
+      if (!isCss(a) && a.playState === "running" && el.hasAttribute(ATTR)) { a.pause(); ours.add(a); }
+    }
+  }
+  document.addEventListener("animationstart", function (e) {
+    var el = e.target;
+    if (!el || !el.getAnimations) return;
+    var list = el.getAnimations();
+    for (var i = 0; i < list.length; i++) if (endless(list[i])) { watch(el); return; }
+  }, true);
+  var timer = 0;
+  function later(ms) {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      if (window.requestIdleCallback) requestIdleCallback(scan, { timeout: 1000 }); else scan();
+    }, ms);
+  }
+  new MutationObserver(function () { later(400); }).observe(document.documentElement, { childList: true, subtree: true });
+  if (document.readyState === "complete") later(0); else window.addEventListener("load", function () { later(0); setTimeout(scan, 3000); });
+  document.addEventListener("astro:page-load", function () { later(200); });
+})();`;
+var hoverTipScript = `(function () {
+  if (window.__tdsHoverTip || !window.matchMedia) return;
+  window.__tdsHoverTip = true;
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+  var DELAY = 700, WARM = 400, GAP = 8, OFFSET = 16;
+  var SEL = "button, [role=button], [role=tab], summary, input[type=submit], input[type=button], input[type=reset], [data-tip], .btn, a[class*=btn], a[class*=button], a[class*=cta], a[class*=action], a[aria-label]";
+  var tip = null, current = null, timer = 0, warmUntil = 0, px = 0, py = 0;
+  function de() { return (document.documentElement.lang || "de").toLowerCase().indexOf("en") !== 0; }
+  function norm(s) { return (s || "").toLowerCase().split(/[^a-z0-9\xE4\xF6\xFC\xDF]+/).join(" ").trim(); }
+  function linkHint(a) {
+    var href = a.getAttribute("href") || "";
+    if (!href || href.charAt(0) === "#") return "";
+    if (href.indexOf("mailto:") === 0) return (de() ? "E-Mail an " : "Email ") + decodeURIComponent(href.slice(7).split("?")[0]);
+    if (href.indexOf("tel:") === 0) return (de() ? "Anrufen: " : "Call ") + decodeURIComponent(href.slice(4));
+    if (a.hasAttribute("download")) return de() ? "Datei herunterladen" : "Download the file";
+    var url;
+    try { url = new URL(href, location.href); } catch (e) { return ""; }
+    var tab = a.getAttribute("target") === "_blank";
+    if (url.host && url.host !== location.host) {
+      return (de() ? "\xD6ffnet " : "Opens ") + url.host.replace(/^www[.]/, "") + (tab ? (de() ? " in einem neuen Tab" : " in a new tab") : "");
+    }
+    return tab ? (de() ? "\xD6ffnet in einem neuen Tab" : "Opens in a new tab") : "";
+  }
+  function textFor(el) {
+    var own = el.getAttribute("data-tip");
+    if (own !== null) return own.trim();
+    var visible = norm(el.textContent);
+    var title = el.getAttribute("title");
+    if (title) {
+      if (!el.getAttribute("aria-label") && !visible) el.setAttribute("aria-label", title);
+      el.setAttribute("data-tip", norm(title) === visible ? "" : title);
+      el.removeAttribute("title");
+      return norm(title) === visible ? "" : title.trim();
+    }
+    var label = el.getAttribute("aria-label");
+    if (label && norm(label) !== visible) return label.trim();
+    if (el.tagName === "A") return linkHint(el);
+    if (el.tagName === "SUMMARY" && el.parentElement && el.parentElement.tagName === "DETAILS") {
+      if (el.parentElement.open) return de() ? "Zuklappen" : "Collapse";
+      return de() ? "Aufklappen" : "Expand";
+    }
+    return "";
+  }
+  function ensure() {
+    if (tip && tip.isConnected) return tip;
+    tip = document.createElement("div");
+    tip.className = "tds-hover-tip";
+    tip.setAttribute("aria-hidden", "true");
+    if (tip.showPopover) tip.setAttribute("popover", "manual");
+    document.body.appendChild(tip);
+    return tip;
+  }
+  function place() {
+    var w = tip.offsetWidth, h = tip.offsetHeight;
+    var vw = document.documentElement.clientWidth || window.innerWidth, vh = window.innerHeight;
+    var left = px + OFFSET + w + GAP > vw ? px - OFFSET - w : px + OFFSET;
+    var top = py + OFFSET + h + GAP > vh ? py - OFFSET - h : py + OFFSET;
+    tip.style.left = Math.round(Math.max(GAP, left)) + "px";
+    tip.style.top = Math.round(Math.max(GAP, top)) + "px";
+    tip.setAttribute("data-side", top < py ? "top" : "bottom");
+  }
+  function show(el, text) {
+    ensure();
+    tip.textContent = text;
+    if (tip.showPopover) {
+      try { if (tip.matches(":popover-open")) tip.hidePopover(); tip.showPopover(); } catch (e) {}
+    }
+    tip.setAttribute("data-open", "");
+    place();
+  }
+  function hide() {
+    clearTimeout(timer);
+    if (tip && tip.hasAttribute("data-open")) {
+      warmUntil = Date.now() + WARM;
+      tip.removeAttribute("data-open");
+      if (tip.hidePopover) { try { tip.hidePopover(); } catch (e) {} }
+    }
+    current = null;
+  }
+  function dismiss() {
+    if (!current && !(tip && tip.hasAttribute("data-open"))) return;
+    hide();
+    warmUntil = 0;
+  }
+  document.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse") return;
+    px = e.clientX;
+    py = e.clientY;
+    if (tip && tip.hasAttribute("data-open")) place();
+  }, { capture: true, passive: true });
+  document.addEventListener("pointerover", function (e) {
+    if (e.pointerType !== "mouse" || !fine.matches) return;
+    px = e.clientX;
+    py = e.clientY;
+    var t = e.target;
+    var el = t && t.closest ? t.closest(SEL) : null;
+    if (el && el === current) return;
+    hide();
+    if (!el || el.closest("[data-no-tip]") || el.hasAttribute("disabled")) return;
+    var text = textFor(el);
+    if (!text) return;
+    current = el;
+    timer = setTimeout(function () {
+      if (current === el && el.isConnected) show(el, text);
+    }, Date.now() < warmUntil ? 0 : DELAY);
+  }, true);
+  document.addEventListener("pointerout", function (e) {
+    if (!current) return;
+    var to = e.relatedTarget;
+    if (!to || !current.contains(to)) hide();
+  }, true);
+  ["pointerdown", "keydown", "wheel", "scroll"].forEach(function (type) {
+    window.addEventListener(type, dismiss, { capture: true, passive: true });
+  });
+  document.addEventListener("astro:before-swap", dismiss);
+})();`;
+// src/lib/motion/constants.ts
+/**
+* The page transition's hand-over values, in their own module so `boot.ts`
+* and `Layout.astro` can read them without pulling `pageTransition.ts` out of
+* its lazily loaded chunk.
+*/
+var PAGE_ENTER_ATTR = "data-page-enter";
+var PAGE_EXIT_KEY = "lp-page-exit";
+/**
+* Runs inline as the first thing in `<head>` (see `Layout.astro`). Written as
+* a string because it must run before the body parses, unbundled.
+*/
+var PAGE_ENTER_SCRIPT = `try{if(sessionStorage.getItem("${PAGE_EXIT_KEY}")){sessionStorage.removeItem("${PAGE_EXIT_KEY}");if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!document.documentElement.hasAttribute("data-a11y-motion"))document.documentElement.setAttribute("${PAGE_ENTER_ATTR}","")}}catch(e){}`;
+// node_modules/@tracht-digital-labs/tds-shared/dist/chunk-BFQILDHK.js
+var AD_CONSENT_KEY = "tds-ad-consent";
+var AD_CONSENT_EVENT = "tds-ad-consent";
+function getAdConsent() {
+	if (typeof window === "undefined") return null;
+	try {
+		const v = window.localStorage.getItem(AD_CONSENT_KEY);
+		return v === "granted" || v === "denied" ? v : null;
+	} catch {
+		return null;
+	}
+}
+function setAdConsent(value) {
+	if (typeof window === "undefined") return;
+	try {
+		window.localStorage.setItem(AD_CONSENT_KEY, value);
+	} catch {}
+	try {
+		window.dispatchEvent(new CustomEvent(AD_CONSENT_EVENT, { detail: value }));
+	} catch {}
+}
+// node_modules/@tracht-digital-labs/tds-shared/dist/chunk-LEQZGNCP.js
+var CONSENT_CATEGORIES = [
+	"necessary",
+	"functional",
+	"analytics",
+	"marketing"
+];
+var necessaryOnly = () => ({
+	necessary: true,
+	functional: false,
+	analytics: false,
+	marketing: false
+});
+var isConsentCategory = (v) => typeof v === "string" && CONSENT_CATEGORIES.includes(v);
+var CONSENT_KEY = "tds-consent";
+var CONSENT_EVENT = "tds:consent-change";
+var CONSENT_OPEN_EVENT = "tds:consent-open";
+function readConsent() {
+	if (typeof window === "undefined") return null;
+	let raw = null;
+	try {
+		raw = window.localStorage.getItem(CONSENT_KEY);
+	} catch {
+		return null;
+	}
+	if (raw === null) return migrateLegacy();
+	let parsed;
+	try {
+		parsed = JSON.parse(raw);
+	} catch {
+		return null;
+	}
+	const record = coerce(parsed);
+	if (record === null) return null;
+	if (record.v !== 2) return null;
+	return record;
+}
+function migrateLegacy() {
+	const legacy = getAdConsent();
+	if (legacy === null) return null;
+	return {
+		v: 2,
+		ts: null,
+		lang: "de",
+		choices: {
+			...necessaryOnly(),
+			marketing: legacy === "granted"
+		}
+	};
+}
+function coerce(value) {
+	if (typeof value !== "object" || value === null) return null;
+	const o = value;
+	if (typeof o.v !== "number") return null;
+	if (typeof o.choices !== "object" || o.choices === null) return null;
+	const src = o.choices;
+	const choices = necessaryOnly();
+	for (const [k, v] of Object.entries(src)) if (isConsentCategory(k) && typeof v === "boolean") choices[k] = v;
+	choices.necessary = true;
+	return {
+		v: o.v,
+		ts: typeof o.ts === "string" ? o.ts : null,
+		lang: typeof o.lang === "string" ? o.lang : "de",
+		choices
+	};
+}
+function writeConsent(choices, lang) {
+	const record = {
+		v: 2,
+		ts: (/* @__PURE__ */ new Date()).toISOString(),
+		lang,
+		choices: {
+			...choices,
+			necessary: true
+		}
+	};
+	if (typeof window === "undefined") return record;
+	try {
+		window.localStorage.setItem(CONSENT_KEY, JSON.stringify(record));
+	} catch {}
+	setAdConsent(record.choices.marketing ? "granted" : "denied");
+	try {
+		window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: record }));
+	} catch {}
+	return record;
+}
+function openConsentSettings() {
+	if (typeof window === "undefined") return;
+	window[OPEN_PENDING] = true;
+	try {
+		window.dispatchEvent(new CustomEvent(CONSENT_OPEN_EVENT));
+	} catch {}
+}
+var OPEN_PENDING = /* @__PURE__ */ Symbol.for("tds.consent.open-pending");
+// src/lib/splash.ts
+/**
+* First-visit splash (2026-11-13).
+*
+* On the very first page a browser loads from this site, a brand-coloured
+* layer covers the page while fonts and the images in the first screen
+* arrive, then fades away. The page underneath renders exactly as without it:
+* the layer is decoration on top, never a hidden state of the content, so the
+* H1 stays the LCP element and crawlers read the full page.
+*
+* Shown only when all of these hold:
+* - JavaScript runs (the attribute that shows it is set by this script),
+* - the visitor has not answered the cookie notice yet (no `tds-consent`
+*   record). The splash itself stores nothing (2026-11-15, decided by Julian):
+*   until a decision exists the site keeps nothing on the device beyond what
+*   the visitor agreed to, so "seen before" is read from the consent record
+*   the notice writes anyway,
+* - the page is not a reload and was not opened from another page of this
+*   site (same-origin referrer), so a visitor who has not decided yet sees it
+*   once per entry, not on every page,
+* - no reduced motion (OS setting or the site's own switch),
+* - the page was not reached through an internal link (page transition).
+*
+* It leaves when the fonts are ready and every image that intersects the
+* first screen has loaded, but never sooner than `SPLASH_MIN_MS` (no flash)
+* and never later than `SPLASH_MAX_MS` (a slow image cannot hold the page).
+*/
+var SPLASH_ATTR = "data-splash";
+/**
+* Inline, in `<head>` after the a11y and page-enter scripts (it reads both
+* attributes). Written as a string because it must run before the body
+* parses, unbundled.
+*/
+var SPLASH_SCRIPT = `try{var d=document,r=d.documentElement;var n=performance.getEntriesByType&&performance.getEntriesByType("navigation")[0],ref="";try{ref=new URL(d.referrer).origin}catch(e){}if(!localStorage.getItem("${CONSENT_KEY}")&&!(n&&n.type==="reload")&&ref!==location.origin&&!r.hasAttribute("data-page-enter")&&!r.hasAttribute("data-a11y-motion")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){r.setAttribute("${SPLASH_ATTR}","");var t0=Date.now(),done=false,leave=function(){if(done)return;done=true;setTimeout(function(){r.setAttribute("${SPLASH_ATTR}","out");setTimeout(function(){r.removeAttribute("${SPLASH_ATTR}")},360)},Math.max(0,450-(Date.now()-t0)))};setTimeout(leave,1600);d.addEventListener("DOMContentLoaded",function(){var h=innerHeight,w=[];d.querySelectorAll("img").forEach(function(i){var b=i.getBoundingClientRect();if(b.bottom>0&&b.top<h&&b.width>0&&!i.complete)w.push(new Promise(function(f){i.addEventListener("load",f,{once:true});i.addEventListener("error",f,{once:true})}))});if(d.fonts&&d.fonts.ready)w.push(d.fonts.ready);Promise.all(w).then(leave,leave)})}}catch(e){}`;
+// src/lib/share.ts
+/**
+* One spelling per page (public/.htaccess rule 0a): no trailing slash except
+* on the two roots, so canonical, hreflang, sitemap and share links agree.
+*/
+function canonicalPath(pathname) {
+	return pathname.replace(/(.)\/+$/, "$1").replace(/^\/en$/, "/en/");
+}
+function canonicalUrl(pathname, origin) {
+	return new URL(canonicalPath(pathname), origin).toString();
+}
+/**
+* Share links for one page (2026-11-13). Plain links, so they work without
+* JavaScript and SEO checkers recognise them; the native share sheet and
+* "copy link" are buttons added by `ShareLinks.astro`. Nothing is loaded from
+* the networks themselves: no widget, no tracking pixel, no consent needed.
+*/
+function shareTargets(url, lang) {
+	const subject = "Tracht Digital Solutions";
+	const encoded = encodeURIComponent(url);
+	return [
+		{
+			id: "linkedin",
+			label: "LinkedIn",
+			href: `https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`
+		},
+		{
+			id: "whatsapp",
+			label: "WhatsApp",
+			href: `https://wa.me/?text=${encoded}`
+		},
+		{
+			id: "email",
+			label: lang === "de" ? "E-Mail" : "Email",
+			href: `mailto:?subject=${encodeURIComponent(subject)}&body=${encoded}`
+		}
+	];
+}
+// src/components/Splash.astro
+var $$Splash = createComponent(($$result, $$props, $$slots) => {
+	return renderTemplate`${maybeRenderHead($$result)}<div class="lp-splash" aria-hidden="true"><div class="lp-splash__mark"><span class="lp-splash__name">${siteConfig.name}</span><span class="tds-brandbar tds-brandbar--on-dark lp-splash__bar"></span></div></div>`;
+}, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/components/Splash.astro", void 0);
+// src/lib/a11yPrefs.ts
+/**
+* The visitor's own accessibility settings, from the tools in the floating
+* CTA menu (`components/A11yTools.astro`, 2026-09-21).
+*
+* Three switches, each a boolean attribute on `<html>` that CSS in
+* `styles/global.css` answers:
+*
+* - `data-a11y-text`     — larger text: the root size grows, and everything
+*   sized in `rem` (which is nearly everything) grows with it.
+* - `data-a11y-contrast` — muted text becomes full-strength ink and links are
+*   underlined, so no information rides on a pale grey or on colour alone.
+* - `data-a11y-motion`   — motion off, the same as the operating system's
+*   `prefers-reduced-motion: reduce`, for visitors who cannot or do not know
+*   how to set that. Every JS motion path asks `lessMotion()` rather than the
+*   media query alone.
+*
+* Stored in localStorage and applied by `A11Y_BOOT_SCRIPT`, inline and first
+* in `<head>`, so a page never paints at the wrong size and then jumps. Storage
+* may be blocked (private mode); the switches then last for the page.
+*/
+var A11Y_STORAGE_KEY = "lp-a11y";
+var A11Y_PREFS = [
+	"text",
+	"contrast",
+	"motion"
+];
+var a11yAttr = (pref) => `data-a11y-${pref}`;
+/** Inline in `<head>`, before anything paints. No imports — it is a string. */
+var A11Y_BOOT_SCRIPT = `try{var p=JSON.parse(localStorage.getItem("${A11Y_STORAGE_KEY}")||"{}"),r=document.documentElement;${A11Y_PREFS.map((pref) => `if(p.${pref}===true)r.setAttribute("${a11yAttr(pref)}","");`).join("")}}catch(e){}`;
+// src/layouts/Layout.astro
+createAstro("https://tracht-digital.de");
+var $$Layout = createComponent(async ($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$Layout;
+	const { title, description: givenDescription, lang = "de", canonical, alternates, ogImage = siteConfig.defaultOgImage, noindex = false, jsonLd, ogType = "website", bare = false } = Astro.props;
+	const description = givenDescription ?? siteConfig.description[lang];
+	const site = Astro.site?.origin ?? siteConfig.url;
+	const pathname = canonicalPath(Astro.url.pathname);
+	const url = canonical ?? new URL(pathname, site).toString();
+	const ogImageAbs = ogImage.startsWith("http") ? ogImage : new URL(ogImage, site).toString();
+	const ogLocale = lang === "de" ? "de_DE" : "en_GB";
+	const altOgLocale = lang === "de" ? "en_GB" : "de_DE";
+	const hidden = noindex || await isExcluded(pathname);
+	const neutralPath = pathname.replace(/^\/en\/?/, "/") || "/";
+	const absoluteUrl = (value) => value.startsWith("http") ? value : new URL(value, site).toString();
+	const deAltUrl = alternates ? absoluteUrl(alternates.de) : new URL(neutralPath, site).toString();
+	const enAltUrl = alternates ? absoluteUrl(alternates.en) : new URL(neutralPath === "/" ? "/en/" : `/en${neutralPath}`, site).toString();
+	const showCookieNotice = !bare;
+	return renderTemplate`<!-- data-surface selects the geometry layer from tds-shared's design
+     library (surfaces/marketing.css): round pills, 6px lifted cards, the
+     700 display voice. Do not author radii locally. --><html${addAttribute(lang, "lang")} data-surface="marketing"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script>${unescapeHTML(A11Y_BOOT_SCRIPT)}<\/script><script>${unescapeHTML(PAGE_ENTER_SCRIPT)}<\/script>${!bare && renderTemplate`<script>${unescapeHTML(SPLASH_SCRIPT)}<\/script>`}<link rel="preload"${addAttribute(lato_latin_400_normal_default, "href")} as="font" type="font/woff2" crossorigin><meta name="description"${addAttribute(description, "content")}><meta name="generator"${addAttribute(Astro.generator, "content")}><meta name="theme-color" content="#050f68" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b0a07" media="(prefers-color-scheme: dark)"><script>${unescapeHTML(themeBootstrapScript)}<\/script><script>${unescapeHTML(errorBounceScript)}<\/script><script>${unescapeHTML(offscreenAnimationScript)}<\/script><script>${unescapeHTML(hoverTipScript)}<\/script>${!bare && renderTemplate`<script>${unescapeHTML("try{if(matchMedia(\"(hover: hover) and (pointer: fine)\").matches)document.documentElement.setAttribute(\"data-page-scrollbar\",\"\")}catch(e){}")}<\/script>`}<meta name="robots"${addAttribute(hidden ? "noindex,nofollow,max-image-preview:large" : "index,follow,max-image-preview:large", "content")}><link rel="icon" type="image/png" href="/favicon-tds-2026.png" sizes="64x64"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="canonical"${addAttribute(url, "href")}><!-- Resource hints, connect to the API origins we know we'll
+         hit (the contact form on submit, the content API on every
+         page that has a Journal section). \`preconnect\`
+         opens the TLS handshake early; \`dns-prefetch\` is the cheap
+         fallback for browsers that ignore preconnect on a different
+         origin. --><link rel="preconnect" href="https://api.tracht-digital.de" crossorigin><link rel="dns-prefetch" href="https://api.tracht-digital.de"><link rel="preconnect" href="https://blog.tracht-digital.de" crossorigin><link rel="dns-prefetch" href="https://blog.tracht-digital.de"><!-- i18n alternates, only emitted when the page is indexable.
+         Legal pages opt out of both search and hreflang. -->${!hidden && renderTemplate`${renderComponent($$result, "Fragment", Fragment$2, {}, { "default": ($$result) => renderTemplate`<link rel="alternate" hreflang="de"${addAttribute(deAltUrl, "href")}><link rel="alternate" hreflang="en"${addAttribute(enAltUrl, "href")}><link rel="alternate" hreflang="x-default"${addAttribute(deAltUrl, "href")}>` })}`}<!-- Cross-property: sibling blog at blog.tracht-digital.de --><link rel="alternate" type="application/rss+xml"${addAttribute(lang === "en" ? "Tracht Digital | Ratgeber" : "Tracht Digital | Ratgeber (Feed)", "title")}${addAttribute(`${siteConfig.blogUrl}/rss.xml`, "href")}><link rel="me"${addAttribute(siteConfig.blogUrl, "href")}><title>${title}</title><!-- Open Graph --><meta property="og:type"${addAttribute(ogType, "content")}><meta property="og:url"${addAttribute(url, "content")}><meta property="og:title"${addAttribute(title, "content")}><meta property="og:description"${addAttribute(description, "content")}><meta property="og:image"${addAttribute(ogImageAbs, "content")}><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt"${addAttribute(title, "content")}><meta property="og:locale"${addAttribute(ogLocale, "content")}>${!hidden && renderTemplate`<meta property="og:locale:alternate"${addAttribute(altOgLocale, "content")}>`}<meta property="og:site_name"${addAttribute(siteConfig.name, "content")}><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title"${addAttribute(title, "content")}><meta name="twitter:description"${addAttribute(description, "content")}><meta name="twitter:image"${addAttribute(ogImageAbs, "content")}><meta name="twitter:image:alt"${addAttribute(title, "content")}>${jsonLd && renderTemplate`${renderComponent($$result, "JsonLd", $$JsonLd, { "data": jsonLd })}`}${renderSlot($$result, $$slots["head"])}${renderHead($$result)}</head><body${addAttribute(bare ? "" : void 0, "data-bare")}>${!bare && renderTemplate`${renderComponent($$result, "Splash", $$Splash, {})}`}${renderComponent($$result, "PageGround", $$PageGround, { "bare": bare })}<a href="#main" class="absolute -top-full left-3 z-50 rounded-full px-6 py-3 bg-[var(--color-surface-navy)] text-white text-sm font-semibold focus:top-3 transition-all">${tFor(lang).a11y.skipToContent}</a>${!bare && renderTemplate`${renderComponent($$result, "Fragment", Fragment$2, {}, { "default": ($$result) => renderTemplate`<div popover="manual" class="tds-cursor-ring" aria-hidden="true" data-theme-preview="skip" data-cursor-ring></div><div popover="manual" class="tds-cursor-dot" aria-hidden="true" data-theme-preview="skip" data-cursor-dot></div>` })}`}${!bare && renderTemplate`<div aria-hidden="true" hidden data-scroll-progress class="fixed top-0 left-0 right-0 z-50 h-[3px] pointer-events-none"><div data-scroll-progress-bar class="h-full origin-left bg-[var(--color-accent)]" style="transform: scaleX(0)"></div></div>`}${!bare && renderTemplate`${renderComponent($$result, "PageScrollbar", $$PageScrollbar, {})}`}${renderSlot($$result, $$slots["default"])}${!bare && renderTemplate`${renderComponent($$result, "FloatingCta", $$FloatingCta, {})}`}${!bare && renderTemplate`${renderComponent($$result, "PropertyTabs", $$PropertyTabs, {})}`}${showCookieNotice && renderTemplate`<div data-consent-host style="display: contents"></div>`}${!bare && renderTemplate`${renderComponent($$result, "LiveChatCta", LiveChatCta, {
+		"client:when": `chat:landingpage:${lang}`,
+		"frontend": "landingpage",
+		"lang": lang,
+		"client:component-hydration": "when",
+		"client:component-path": "@tracht-digital-labs/tds-shared/islands/live-chat",
+		"client:component-export": "LiveChatCta"
+	})}`}${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/layouts/Layout.astro?astro&type=script&index=0&lang.ts")}${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/layouts/Layout.astro?astro&type=script&index=1&lang.ts")}${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/layouts/Layout.astro?astro&type=script&index=2&lang.ts")}${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/layouts/Layout.astro?astro&type=script&index=3&lang.ts")}${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/layouts/Layout.astro?astro&type=script&index=4&lang.ts")}${renderScript($$result, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/layouts/Layout.astro?astro&type=script&index=5&lang.ts")}</body></html>`;
+}, "/home/runner/work/tds-landingpage-frontend/tds-landingpage-frontend/src/layouts/Layout.astro", void 0);
+export { translations as _, openConsentSettings as a, apiBase as c, sectionLinks as d, $$Arrow as f, tFor as g, resolveLang as h, necessaryOnly as i, runtimeSetting as l, localizePath as m, canonicalUrl as n, readConsent as o, ARROW_PATHS as p, shareTargets as r, writeConsent as s, $$Layout as t, propertyLinks as u, renderScript as v };
