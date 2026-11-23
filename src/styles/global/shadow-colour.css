@@ -1,0 +1,85 @@
+/* === Hard shadows take the colour of the control (2026-10-05) ===
+
+   Julian: a control's shadow changes WITH its colour. Every hard shadow used
+   the page's one ink (translucent navy), so a button that turned bordeaux on
+   hover kept a navy shadow — measured on every control below. Each one now
+   names its current fill as `--lp-fill` (rest AND hover, where it sets its
+   background), and its shadow is a dark shade of that fill.
+
+   The shadow tokens are RE-DECLARED here, on the control itself: `var()` in a
+   custom property resolves where it is declared, so a new ink alone would
+   not reach `--tds-shadow-hard*` declared on the surface. Zero specificity,
+   so a component that sets its own ink would win — none does any more. The
+   twins over dark bands are left out on purpose: there the shadow is black
+   for contrast against the band. `.lp-ink` is the hook for markup styled
+   with utilities. No transition: the shadow changes in one step (never
+   transition a `box-shadow`). */
+:where(
+    .hero-cta,
+    .svc-explorer__more,
+    .svc-explorer__button,
+    .assistant-card,
+    .first-call__cta,
+    .faq-cta,
+    .submit-button,
+    .page-scrollbar__pill,
+    .cookie-notice-btn,
+    .lp-ink,
+    .property-tab:not(.property-tabs--twin *),
+    .floating-cta-group:not(.floating-cta-group--twin)
+  ) {
+  /* A shade of the element's own fill — EXCEPT under navy: navy 45% into black
+     is still navy, and a navy fill over a navy offset fuses into one slab.
+     Every navy `--lp-fill` therefore sets `--lp-shade` to the brand coral
+     (tds-shared casts the same under `.btn-primary`); every other fill resets
+     it to `initial`, so a shade never leaks down from a navy ancestor. */
+  --tds-shadow-ink: var(--lp-shade, color-mix(in srgb, var(--lp-fill, rgb(5 15 104)) 45%, #000));
+  --tds-shadow-hard: 6px 6px 0 0 var(--tds-shadow-ink);
+  --tds-shadow-hard-sm: 3px 3px 0 0 var(--tds-shadow-ink);
+  --tds-shadow-hard-press: 1px 1px 0 0 var(--tds-shadow-ink);
+  --tds-shadow-hard-hover: 8px 8px 0 0 var(--tds-shadow-ink);
+  --tds-shadow-hard-sm-hover: 5px 5px 0 0 var(--tds-shadow-ink);
+}
+/* In the dark theme a fill-derived shade is a darker copy of an already dark
+   fill — a dark-blue offset under a dark-blue card. Those take the dark
+   theme's own ink (tds-shared base.css), so the offset reads lighter than the
+   shape; a navy-family fill still casts its coral `--lp-shade`. */
+:is(:root, .tds-theme-preview__page)[data-theme="dark"] :where(
+    .hero-cta,
+    .svc-explorer__more,
+    .svc-explorer__button,
+    .assistant-card,
+    .first-call__cta,
+    .faq-cta,
+    .submit-button,
+    .page-scrollbar__pill,
+    .cookie-notice-btn,
+    .lp-ink,
+    .property-tab:not(.property-tabs--twin *),
+    .floating-cta-group:not(.floating-cta-group--twin)
+  ):not(:where([data-theme="dark"] [data-theme="light"] *)) {
+  --tds-shadow-ink: var(--lp-shade, rgb(147 167 255 / 0.32));
+}
+/* tds-shared's consent buttons: their fills, restated as `--lp-fill` (the
+   values are those of tds-shared base.css — keep them in step). */
+.cookie-notice-btn {
+  --lp-fill: var(--color-surface-navy);
+  --lp-shade: var(--color-accent-pink);
+}
+.cookie-notice-btn:hover {
+  --lp-fill: color-mix(in srgb, var(--color-surface-navy) 88%, #fff);
+  --lp-shade: var(--color-accent-pink);
+}
+:is(:root, .tds-theme-preview__page)[data-theme="dark"] .cookie-notice-btn:not(.cookie-notice-btn--ghost):not(:where([data-theme="dark"] [data-theme="light"] *)) {
+  --lp-fill: var(--color-primary);
+  --lp-shade: var(--color-accent-pink);
+}
+:is(:root, .tds-theme-preview__page)[data-theme="dark"] .cookie-notice-btn:not(.cookie-notice-btn--ghost):hover:not(:where([data-theme="dark"] [data-theme="light"] *)) {
+  --lp-fill: var(--color-accent);
+  --lp-shade: initial;
+}
+.cookie-notice-btn--ghost,
+.cookie-notice-btn--ghost:hover {
+  --lp-fill: transparent;
+  --lp-shade: initial;
+}

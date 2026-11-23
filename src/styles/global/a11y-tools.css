@@ -1,0 +1,35 @@
+/* === Accessibility tools (components/A11yTools.astro) =======================
+
+   Three switches, each a boolean attribute on <html>, set from localStorage
+   by the inline boot script before the first paint (lib/a11yPrefs.ts). */
+
+/* Larger text. Nearly everything is sized in rem, so the root carries it. */
+html[data-a11y-text] {
+  font-size: 118.75%;
+}
+
+/* Higher contrast: nothing rides on a pale grey, no link on colour alone.
+   The dark tones re-map --color-muted themselves, so they are named here too. */
+html[data-a11y-contrast] {
+  --color-muted: var(--color-black);
+}
+html[data-a11y-contrast] .tds-tone-navy,
+html[data-a11y-contrast] .tds-tone-ink {
+  --color-muted: #fff;
+}
+html[data-a11y-contrast] main a:not([data-cta]):not(.btn):not(.hero-cta),
+html[data-a11y-contrast] footer a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Motion off: the same end states as prefers-reduced-motion, for visitors who
+   cannot set that in their system. JS motion asks lessMotion() as well. */
+html[data-a11y-motion] *,
+html[data-a11y-motion] *::before,
+html[data-a11y-motion] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

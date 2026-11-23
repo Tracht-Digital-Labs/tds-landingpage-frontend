@@ -8,7 +8,9 @@
   `propertyTabs`, `pageScrollbar`). Source-level tests about that behaviour read the lib file.
 - A large global stylesheet (one that styles a React island, whose markup carries no Astro scope) lives in
   `src/styles/<name>.css`, an index of `@import`s of partials under `src/styles/<name>/` in cascade order,
-  imported from the component's frontmatter (`contact.css` for `sections/Contact.astro`).
+  imported from the component's frontmatter (`contact.css` for `sections/Contact.astro`). `global.css` keeps
+  the same shape: the Tailwind and tds-shared imports, then `global/*.css`, then `@source`. Tests read a split
+  sheet through `readStylesheet()` (`src/__tests__/stylesheet.ts`).
 - `src/layouts/Layout.astro` owns fonts, theme bootstrap, metadata, canonical/hreflang, optional JSON-LD and
   global islands.
 - Locales: resolve copy with `resolveLang()` / `tFor()` and build internal links with `localizePath()`

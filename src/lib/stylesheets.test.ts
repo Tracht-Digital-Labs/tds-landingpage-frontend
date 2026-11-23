@@ -13,8 +13,8 @@ const IMPORT = /^@import "\.\/([\w-]+)\/([\w-]+\.css)";$/gm;
 const splitSheets = readdirSync(STYLES).filter((name) => statSync(join(STYLES, name)).isDirectory());
 
 describe("split stylesheets", () => {
-  it("exist (the contact section's at least)", () => {
-    expect(splitSheets).toContain("contact");
+  it("exist (the site's global sheet and the contact section's at least)", () => {
+    expect(splitSheets).toEqual(expect.arrayContaining(["contact", "global"]));
   });
 
   for (const name of splitSheets) {
@@ -26,8 +26,12 @@ describe("split stylesheets", () => {
       });
       expect([...imported].sort()).toEqual(readdirSync(join(STYLES, name)).sort());
       expect(new Set(imported).size).toBe(imported.length);
-      // Nothing but the doc comment and the imports.
-      expect(index.replace(/\/\*[\s\S]*?\*\//g, "").replace(IMPORT, "").trim()).toBe("");
+      // Nothing but comments, imports and Tailwind's @source: the rules live in the partials.
+      const rest = index
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(IMPORT, "")
+        .replace(/^@(import|source) "[^"]+";$/gm, "");
+      expect(rest.trim()).toBe("");
     });
   }
 });

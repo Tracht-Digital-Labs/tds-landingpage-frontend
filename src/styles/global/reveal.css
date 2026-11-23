@@ -1,0 +1,36 @@
+/* === Scroll reveal ================================================= */
+
+/* One implementation for the whole site (`src/lib/reveal.ts`, mounted once
+   in Layout.astro). It used to exist exactly once, inline at the bottom of
+   Journal.astro, which is why every other section entered with no motion
+   at all.
+
+   PROGRESSIVE ENHANCEMENT, in the strict sense: the hidden state is gated
+   behind `[data-reveal-active]` on <html>, which only the script writes.
+   With no JavaScript — and with the script throwing — the selector never
+   matches and every element simply stays visible. */
+[data-reveal] {
+  transition:
+    opacity var(--lp-dur-enter) var(--tds-ease-out) var(--lp-reveal-delay, 0ms),
+    transform var(--lp-dur-enter) var(--lp-ease-bounce) var(--lp-reveal-delay, 0ms);
+}
+
+html[data-reveal-active] [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  /* Small travel on purpose: the spring overshoots by ~9%, so 20px of
+     declared travel lands as ~22px of felt movement. */
+  transform: translateY(1.25rem);
+}
+
+/* END STATE, spelled out. The shared reduced-motion block
+   (tds-shared/styles/base.css) clamps DURATION to 0.01ms — a clamped
+   transition still travels, it just arrives instantly, and anything that
+   never receives the revealed flag would sit at opacity 0 forever. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-reveal-active] [data-reveal],
+  html[data-reveal-active] [data-reveal]:not([data-revealed]) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

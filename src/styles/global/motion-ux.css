@@ -1,0 +1,38 @@
+/* === CTA arrival sweep (lib/motion/cta.ts) ================================== */
+:where([data-cta]) {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+/* Motion owns the transform of every CTA once it is mounted. A CSS
+   transition on `transform` (`.btn` has one) would smear each frame it
+   writes, so only the colour properties keep transitioning. */
+html[data-motion="on"] :where([data-cta]) {
+  transition-property: background-color, color, border-color, translate, opacity;
+}
+/* The header's section indicator (lib/motion/ux.ts). Invisible until Motion
+   places it; it sits under the links, which are `position: relative`. */
+.nav-pill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0;
+  height: 2rem;
+  margin-top: -1rem;
+  border-radius: var(--tds-radius-pill, 100px);
+  background: color-mix(in srgb, var(--color-primary) 9%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+[data-nav-links] a[aria-current="location"] {
+  color: var(--color-primary);
+}
+.cta-shine {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 45%;
+  pointer-events: none;
+  transform: translateX(-120%);
+  background: rgb(255 255 255 / 0.2);
+  z-index: -1;
+}

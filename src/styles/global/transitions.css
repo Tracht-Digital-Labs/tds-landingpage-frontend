@@ -1,0 +1,24 @@
+/* === Page transitions (Motion) =============================================
+
+   The native cross-document View Transition is gone: it did not run in
+   Firefox, and it needed the header named out of the root snapshot to keep
+   still. `lib/motion/pageTransition.ts` animates `<main>` out and the next
+   page's `<main>` in with Motion; the fixed header is outside `<main>` on
+   every page, so it never moves.
+
+   The start state of the incoming page. `data-page-enter` is set by the
+   inline head script ONLY after an internal click, never on a first visit, so
+   no LCP measurement sees it. The failsafe keyframe shows `<main>` after
+   1.5 s whatever happens to the script — hidden content is never left
+   waiting on JavaScript. */
+html[data-page-enter] #main {
+  opacity: 0;
+  transform: translateY(2rem);
+  animation: lp-enter-failsafe 1ms 1.5s forwards;
+}
+@keyframes lp-enter-failsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

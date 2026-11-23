@@ -1,0 +1,41 @@
+/* === Section rhythm ==========================================================
+
+   Three steps for the space BETWEEN two sections, as HALF-gaps: the gap at a
+   boundary is the lower edge of the section above plus the upper edge of the
+   one below, so each side contributes one of these.
+
+     tight   ≈ 2.5 … 4rem total    two sections that are one thought
+     normal  ≈ 5 … 9rem total      the default step
+     wide    ≈ 7.5 … 14rem total   a real break in the argument
+
+   Why steps at all: every section used the same `.section-spacing`
+   (clamp(3.25rem, 6.5vw, 6.5rem) per edge, so 6.5 … 13rem at every boundary),
+   which reads as one endless ladder — nothing tells the eye that the pricing
+   logic belongs to the prices above it while the contact block is somewhere
+   new. Reported as "die Lücken zwischen den Sektionen passen noch nicht ganz"
+   (2026-09-29).
+
+   WHICH boundary gets which step is decided in ONE place, `HomePage.astro`, and
+   not here or in the sections: a section cannot know what follows it, and the
+   rhythm is a property of the page's order. These are only the three numbers.
+
+   `normal` is deliberately tighter than the old uniform value, so the page gets
+   shorter overall even though `wide` is about what every boundary used to be. */
+:root {
+  --lp-rhythm-tight: clamp(1.25rem, 2.5vw, 2rem);
+  --lp-rhythm-normal: clamp(2.5rem, 4.5vw, 4.5rem);
+  --lp-rhythm-wide: clamp(3.75rem, 7vw, 7rem);
+}
+
+/* === Full-width layout =======================================================
+
+   One container for every section, header and footer: the page uses the
+   screen instead of an 80rem column. 120rem is the shared site bar's width
+   (tds-shared), and the gutter grows with the viewport. Reading width is NOT
+   this container's job — text blocks keep their own `max-w-*`. */
+.lp-container {
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  padding-inline: clamp(1.5rem, 1rem + 3vw, 5rem);
+}

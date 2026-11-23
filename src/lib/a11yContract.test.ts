@@ -2,6 +2,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { contactIslandSource } from "../__tests__/contactIslandSource";
+import { readStylesheet } from "../__tests__/stylesheet";
 
 /**
  * The accessibility contract of the 2026-09 redesign, as source rules.
@@ -101,7 +102,7 @@ describe("the page frame", () => {
   it("keeps focused elements clear of the fixed bottom chrome", () => {
     // WCAG 2.4.11: 11 of 80 focus stops sat completely behind the cookie
     // notice or the floating bar on a phone.
-    const css = read("src/styles/global.css");
+    const css = readStylesheet("global");
     expect(css).toMatch(
       /scroll-padding-bottom:\s*calc\(\s*var\(--tds-bottom-lane[^;]*--lp-floating-lane/,
     );

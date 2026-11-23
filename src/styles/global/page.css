@@ -1,0 +1,142 @@
+/* === Line breaking ================================================= */
+
+/* Headlines here are short and set very large, which is exactly the case
+   where the browser's greedy line breaker leaves one word alone on the
+   last line. `balance` evens the lines out; the spec caps it at 6 lines,
+   so it costs nothing on long text. `pretty` on body copy fixes only the
+   last line (no orphan), which is the cheaper of the two. */
+h1,
+h2,
+h3,
+.display {
+  text-wrap: balance;
+}
+
+p,
+li,
+figcaption {
+  text-wrap: pretty;
+}
+
+/* The shared base sets `body { overflow-x: hidden }` to tame stray
+   horizontal overflow. But `overflow-x: hidden` turns the body into a
+   scroll container, which silently disables `backdrop-filter` on
+   position:fixed descendants in Chromium — i.e. it kills the frosted
+   blur on the fixed nav pill. `overflow-x: clip` clips the same way
+   without establishing that scroll container, so the nav blur renders
+   and horizontal overflow stays contained. (overflow-y stays visible:
+   clip + visible don't coerce each other, so vertical scroll is fine.) */
+body {
+  overflow-x: clip;
+  /* Stated, not inherited. `.page-ground` sits at `z-index: -1`, which puts
+     it behind the body's own content but still IN FRONT of the body's
+     background — so the body needs a real background for the layer to have
+     something to lie on. Without it the ground paints against the canvas and
+     the root's background propagation makes the two fight. */
+  background-color: var(--color-paper);
+}
+
+/* The page's one ground (`.page-ground`) and its shapes live in
+   `components/PageGround.astro`. */
+
+/* Clearance for the fixed chrome on ANY kind of scroll the browser performs
+   by itself — one value per edge.
+
+   TOP: the floating header. `lib/smoothScroll.ts` reads it back off
+   <html> rather than carrying its own constant, and the browser applies it
+   to the jumps JS never sees: the fragment landing on a cross-page `/#preise`
+   (every redirect and every nav link from a subpage is one), back/forward
+   restoration, find-in-page, and keyboard focus. Responsive because the bar
+   is: the nav collapses to the burger below `lg`, where the pill is ~24px
+   shorter.
+
+   BOTTOM: the cookie notice and the floating call to action, both fixed to
+   the lower edge. Without it, tabbing through the page scrolled each focused
+   link only just into view — i.e. directly behind whichever of the two was
+   lying there: measured on the live site, 11 of the first 80 focus stops on
+   a phone were completely hidden (WCAG 2.4.11). `scroll-padding-bottom` is
+   the documented fix (technique C43); both lanes are MEASURED values the
+   components publish themselves, so the clearance follows the notice from
+   one line on a desktop to three on a phone, and drops to zero once it is
+   dismissed. */
+/* Read on <html> only, so it does not inherit (2026-10-12): the floating pill
+   writes it inline on <html> after each fold, and as an inherited property
+   every write recalculated the style of all ~1,700 elements of the page. */
+@property --lp-floating-lane {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+html {
+  --lp-header-clearance: 5rem;
+  scroll-padding-top: var(--lp-header-clearance);
+  scroll-padding-bottom: calc(
+    var(--tds-bottom-lane, 0px) + var(--lp-floating-lane, 0px) + 1rem
+  );
+}
+@media (min-width: 64rem) {
+  html {
+    --lp-header-clearance: 5.5rem;
+  }
+}
+/* Sections land with their top edge on the top of the screen, not under the
+   header (2026-10-12): the negative margin cancels the clearance for a
+   section target only, so focused links and fields keep it. lib/smoothScroll.ts
+   adds a target's `scroll-margin-top` to the clearance, so its jumps and the
+   section snap land on the same pixel as a fragment link. */
+main section[id] {
+  scroll-margin-top: calc(-1 * var(--lp-header-clearance));
+}
+/* The least upper padding a home section takes, so its heading clears the
+   header once the section sits at the top edge (HomePage.astro). */
+html {
+  --lp-section-top: calc(var(--lp-header-clearance) + 1rem);
+}
+
+/* ONE smoothing at a time (2026-09-29).
+
+   `tds-shared/styles/base.css` sets `html { scroll-behavior: smooth }` for
+   every site. On this one Lenis also smooths the wheel, so both were running:
+   the CSS engine and a rAF tween writing the same scroll position. That is the
+   bug `lib/smoothScroll.ts` documents around its `behavior: "instant"`
+   calls — a `scrollTo` whose `behavior` resolves to `auto` inherits the CSS
+   value, so a jump was handed to CSS while Lenis was mid-tween and on a phone
+   never arrived. It is also why a rAF tween can starve: the two fight per frame.
+
+   `data-lenis` is set on `<body>` by that island, and only on the fine-pointer
+   branch where Lenis actually runs. So the CSS smoothing survives exactly where
+   nothing else does the job: a coarse pointer, reduced motion, or no JS. The
+   in-app motion switch further down already forces `auto` on its own. */
+html:has(body[data-lenis="on"]) {
+  scroll-behavior: auto;
+}
+
+/* An open modal owns the scroll (2026-10-12): the page behind it stays put.
+   Set and cleared by lib/motion/dialog.ts. */
+html[data-modal-open] {
+  overflow: hidden;
+}
+html[data-modal-open] dialog {
+  overscroll-behavior: contain;
+}
+
+/* Hero availability dot */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+.pulse-dot {
+  animation: pulse-dot 2.5s ease-in-out infinite;
+}
+
+/* Contact form error shake */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-8px); }
+  80% { transform: translateX(8px); }
+}
+.shake {
+  animation: shake 0.5s ease-in-out;
+}

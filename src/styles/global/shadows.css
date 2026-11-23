@@ -1,0 +1,131 @@
+/* === Hard 2D shadows (2026-09-22) ==========================================
+   A fixed, unblurred offset on every box and every control of the site —
+   the tokens come from tds-shared (`--tds-shadow-hard*`, set by the
+   marketing surface; a dark tone flips the ink). `:where()` keeps these at
+   zero specificity: a component that states its own shadow wins, and the
+   components here only ever state the same tokens.
+
+   Boxes take the large offset, controls the small one and PRESS into it
+   (`translate`, never `transform` — Motion owns the CTAs' transform). A
+   shadow is never transitioned: it is painted, not composited.
+
+   Not here, on purpose: text, the decoration layer (`.tds-shape`, circuits),
+   static chips and badges, the process markers, the underline form fields.
+   The services mosaic on a service page takes ONE shadow on its container,
+   not one per tile — its 1px seams are the tiles' separation. */
+:where(
+  [class*="rounded-[6px]"],
+  .credential-card,
+  .about-portrait__card,
+  .post-card,
+  .reference-card,
+  .faq-item,
+  .first-call,
+  .pricing-packages__card
+) {
+  box-shadow: var(--tds-shadow-hard);
+}
+:where(
+  .hero-cta,
+  [data-cta],
+  a[class*="rounded-[100px]"],
+  a[class*="rounded-full"][class*="px-5"],
+  a[class*="rounded-full"][class*="px-7"],
+  .first-call__cta,
+  .faq-cta-pill,
+  .submit-button,
+  .showcase-nav__btn
+) {
+  box-shadow: var(--tds-shadow-hard-sm);
+}
+/* The link chips (the systems under the services) are controls too, but
+   small: the press offset is their resting shadow. */
+:where(a[class*="rounded-full"][class*="text-xs"]) {
+  box-shadow: var(--tds-shadow-hard-press);
+}
+:where(
+  .hero-cta,
+  [data-cta],
+  a[class*="rounded-[100px]"],
+  a[class*="rounded-full"][class*="px-5"],
+  a[class*="rounded-full"][class*="px-7"],
+  .first-call__cta,
+  .submit-button,
+  .showcase-nav__btn
+):active:not(:disabled) {
+  translate: 2px 2px;
+  box-shadow: var(--tds-shadow-hard-press);
+}
+@media (prefers-reduced-motion: reduce) {
+  :where(
+    .hero-cta,
+    [data-cta],
+    a[class*="rounded-[100px]"],
+    a[class*="rounded-full"][class*="px-5"],
+    a[class*="rounded-full"][class*="px-7"],
+    .first-call__cta,
+    .submit-button,
+    .showcase-nav__btn
+  ):active:not(:disabled) {
+    translate: none;
+  }
+}
+/* A card inside a scroll track would lose its offset to the track's clip:
+   the track keeps room for it (the packages in `PricingList.astro`). */
+
+/* === Hover lift (2026-09-22) ==============================================
+   An interactive element with a hard shadow comes OFF the page toward the
+   pointer: 2px up-left (`translate` — Motion keeps `transform` for the
+   magnetic CTAs) while its offset grows by the same 2px. Keyboard focus
+   lifts it too. `:not(:active)` hands a pressed control to the press rule
+   above; non-interactive boxes (price cards, notes) never lift. */
+:where(
+  .hero-cta,
+  [data-cta],
+  a[class*="rounded-[100px]"],
+  a[class*="rounded-full"][class*="px-5"],
+  a[class*="rounded-full"][class*="px-7"],
+  .first-call__cta,
+  .submit-button
+):where(:hover, :focus-visible):not(:active):not(:disabled) {
+  translate: -2px -2px;
+  box-shadow: var(--tds-shadow-hard-sm-hover);
+}
+:where(
+  a.post-card,
+  .credential-card,
+  .reference-card,
+  a.faq-cta
+):where(:hover, :focus-within) {
+  translate: -2px -2px;
+  box-shadow: var(--tds-shadow-hard-hover);
+}
+:where(
+  a.post-card,
+  .credential-card,
+  .reference-card,
+  a.faq-cta
+) {
+  transition-property: background-color, color, translate;
+  transition-duration: 160ms;
+}
+:where(a[class*="rounded-full"][class*="text-xs"]):where(:hover, :focus-visible) {
+  translate: -1px -1px;
+  box-shadow: var(--tds-shadow-hard-sm);
+}
+@media (prefers-reduced-motion: reduce) {
+  :where(
+    .hero-cta,
+    [data-cta],
+    a[class*="rounded-[100px]"],
+    a[class*="rounded-full"],
+    .first-call__cta,
+    .submit-button,
+    a.post-card,
+    .credential-card,
+    .reference-card,
+      a.faq-cta
+  ):where(:hover, :focus-visible, :focus-within) {
+    translate: none;
+  }
+}

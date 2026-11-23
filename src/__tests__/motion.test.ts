@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { contactIslandSource } from "./contactIslandSource";
+import { readStylesheet } from "./stylesheet";
 
 /**
  * The motion rules for this site, held as a source contract. None of these
@@ -93,7 +94,7 @@ describe("motion on the landing page", () => {
     expect(faq).toContain('class="faq-item tds-disclosure"');
     expect(faq).not.toContain("::details-content {");
     // Scoped by .tds-disclosure now; a document-wide switch is not needed.
-    expect(src("styles/global.css")).not.toMatch(/^\s*interpolate-size:/m);
+    expect(readStylesheet("global")).not.toMatch(/^\s*interpolate-size:/m);
   });
 
   /**
@@ -102,7 +103,7 @@ describe("motion on the landing page", () => {
    * navigation would play two animations.
    */
   it("animates page changes with Motion, not a native View Transition", () => {
-    const css = src("styles/global.css");
+    const css = readStylesheet("global");
     expect(css).not.toContain("page-transitions.css");
     expect(css.replace(/\/\*[\s\S]*?\*\//g, "")).not.toMatch(/view-transition/);
     const layout = src("layouts/Layout.astro");
@@ -116,7 +117,7 @@ describe("motion on the landing page", () => {
   it("never leaves the incoming page hidden", () => {
     // The start state exists only under the attribute, and a failsafe
     // keyframe shows <main> whatever happens to the script.
-    const css = src("styles/global.css");
+    const css = readStylesheet("global");
     expect(css).toMatch(/html\[data-page-enter\] #main \{[^}]*animation: lp-enter-failsafe/);
     expect(css).toMatch(/@keyframes lp-enter-failsafe \{\s*to \{\s*opacity: 1;/);
     // The flag is set only after an internal click, and never under reduced motion.

@@ -1,0 +1,17 @@
+/* --- The native page scrollbar is off where the floating one runs ---
+
+   `data-page-scrollbar` is set in <head> on a device with a mouse
+   (lib/pageScrollbar.ts); `components/PageScrollbar.astro` then draws the
+   bar that only appears near the right edge. Only the VIEWPORT's bar goes:
+   Chrome reads it from `html`'s `scrollbar-width` and from `body`'s
+   pseudo-elements, Safari from `html`'s — inner scrollers keep tds-shared's
+   pill. */
+html[data-page-scrollbar] {
+  scrollbar-width: none;
+}
+html[data-page-scrollbar]::-webkit-scrollbar,
+html[data-page-scrollbar] > body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
