@@ -102,7 +102,8 @@ Preise (`sections/Pricing.astro`, with the assistant's second button) â†’ FAQ â†
 ## Leistungsassistent (button + dialog)
 
 `components/ServiceAssistant.astro` renders one native `<dialog id="leistungsassistent">` around
-`islands/ServiceFinder.tsx`; questions, weights and copy live in `lib/serviceFinder.ts`.
+`islands/ServiceFinder.tsx` (answer cards and the result in `islands/finder/`); catalogue, questions and weights
+live in `lib/serviceFinder.ts`, its words in `lib/serviceFinderCopy.ts`. `ServiceFinder.test.tsx` renders it.
 
 - Way in: the last tile of the services row (`ui/AssistantCard.astro`). Questions and results follow the Shop's categories and
   products (`lib/serviceFinder.ts`); a new Shop product it should recommend is added there. Cards marked `[data-assistant-open]` ship `hidden` until `showModal` exists. `/#leistungsassistent`

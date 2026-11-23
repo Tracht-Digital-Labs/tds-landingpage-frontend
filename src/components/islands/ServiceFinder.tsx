@@ -1,11 +1,12 @@
 import Arrow from "~/components/ui/Arrow";
 import { useCallback, useId, useMemo, useRef, useState, type SyntheticEvent } from "react";
 import { AnimatePresence, MotionScope, m } from "@tracht-digital-labs/tds-shared/motion/react";
+import FinderOption from "./finder/FinderOption";
+import FinderResult from "./finder/FinderResult";
 import type { Lang } from "~/lib/i18n";
 import { handOffContactDraft } from "~/lib/contactDraft";
+import { FINDER_COPY } from "~/lib/serviceFinderCopy";
 import {
-  FINDER_COPY,
-  SAVINGS_LEVELS,
   STAGE_IDS,
   STEP_COUNT,
   TOPIC_IDS,
@@ -203,7 +204,6 @@ export default function ServiceFinder({ lang = "de", products, contactHref, cata
     x: { type: "spring" as const, bounce: 0, visualDuration: 0.34 },
   };
 
-
   const question = step === 0 ? copy.topicsQuestion : step === 1 ? copy.situationsQuestion : copy.stageQuestion;
   const help = step === 0 ? copy.topicsHelp : step === 1 ? copy.situationsHelp : copy.stageHelp;
   const helpId = `${uid}-help`;
@@ -243,79 +243,17 @@ export default function ServiceFinder({ lang = "de", products, contactHref, cata
               exit="exit"
               transition={slideTransition}
             >
-              <h3 ref={focusOnMount} tabIndex={-1} className="finder__result-title">
-                {copy.resultTitle}
-              </h3>
-              {matches.length === 0 && <p className="finder__summary">{copy.noMatch}</p>}
-              <ol className="finder__matches">
-                {matches.map((match, index) => {
-                  const product = products.find((candidate) => candidate.id === match.productId);
-                  if (!product) return null;
-                  return (
-                    <m.li
-                      key={match.productId}
-                      className="finder__match"
-                      data-rank={index === 0 ? "best" : "also"}
-                      initial={still ? false : { y: 24, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={still ?? { type: "spring", bounce: 0.3, visualDuration: 0.45, delay: 0.12 + index * 0.09 }}
-                    >
-                      <p className="finder__rank">
-                        <span className="finder__rank-badge" aria-hidden="true">
-                          {index + 1}
-                        </span>
-                        {index === 0 ? copy.rankBest : copy.rankAlso}
-                      </p>
-                      <h4 className="finder__match-title">{product.title}</h4>
-                      <p className="finder__summary">{product.categoryName}</p>
-                      <p className="finder__savings">
-                        <span className="finder__savings-label">{copy.savingsLabel}:</span>
-                        <span className="finder__savings-meter" aria-hidden="true">
-                          {SAVINGS_LEVELS.map((level, rank) => (
-                            <span key={level} data-on={rank <= SAVINGS_LEVELS.indexOf(product.savings) ? "" : undefined} />
-                          ))}
-                        </span>
-                        <span>{copy.savingsLevels[product.savings]}</span>
-                      </p>
-                      {match.reasons.length > 0 && (
-                        <>
-                          <p className="finder__why-label">{copy.whyLabel}</p>
-                          <ul className="finder__why">
-                            {match.reasons.map((reason) => (
-                              <li key={reason}>
-                                <span aria-hidden="true" className="finder__tick">
-                                  ✓
-                                </span>
-                                <span>{reason}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </>
-                      )}
-                      <a className="finder__detail" href={product.href}>
-                        {copy.detailLink}
-                        <span aria-hidden="true"><Arrow dir="right" /></span>
-                      </a>
-                    </m.li>
-                  );
-                })}
-              </ol>
-              <p className="finder__note">
-                {copy.note} {copy.savingsNote}{" "}
-                <a className="finder__price-link" href={catalogueHref}>
-                  {copy.catalogueLink}
-                </a>
-              </p>
-              <div className="finder__actions">
-                <a className="finder__cta finder__cta--contact" href={contactHref} onClick={handOff}>
-                  {copy.cta}
-                  <span aria-hidden="true"><Arrow dir="right" /></span>
-                </a>
-                <button type="button" className="finder__secondary" onClick={restart}>
-                  {copy.restart}
-                </button>
-                <p className="finder__handoff">{copy.handoffNote}</p>
-              </div>
+              <FinderResult
+                lang={lang}
+                matches={matches}
+                products={products}
+                catalogueHref={catalogueHref}
+                contactHref={contactHref}
+                onHandOff={handOff}
+                onRestart={restart}
+                headingRef={focusOnMount}
+                still={still}
+              />
             </m.div>
           ) : (
             <m.form
@@ -341,64 +279,47 @@ export default function ServiceFinder({ lang = "de", products, contactHref, cata
                 <div className="finder__options">
                   {step === 0 &&
                     TOPIC_IDS.map((id) => (
-                      <label key={id} className="finder__option">
-                        <input
-                          className="finder__input"
-                          type="checkbox"
-                          name={`${uid}-topic`}
-                          value={id}
-                          checked={topics.includes(id)}
-                          onChange={() => toggleTopic(id)}
-                        />
-                        <Tick on={topics.includes(id)} still={still} />
-                        <span className="finder__option-body">
-                          <span className="finder__option-label">{topicWords(id, lang).label}</span>
-                          <span className="finder__option-hint">{topicWords(id, lang).hint}</span>
-                        </span>
-                      </label>
+                      <FinderOption
+                        key={id}
+                        type="checkbox"
+                        name={`${uid}-topic`}
+                        value={id}
+                        checked={topics.includes(id)}
+                        onChange={() => toggleTopic(id)}
+                        {...topicWords(id, lang)}
+                        still={still}
+                      />
                     ))}
 
                   {step === 1 &&
-                    options.map((choice) => {
-                      const on = situations.some((selected) => selected.key === choice.key);
-                      return (
-                        <label key={choice.key} className="finder__option">
-                          <input
-                            className="finder__input"
-                            type="checkbox"
-                            name={`${uid}-situation`}
-                            value={choice.key}
-                            checked={on}
-                            onChange={() => toggleSituation(choice)}
-                          />
-                          <Tick on={on} still={still} />
-                          <span className="finder__option-body">
-                            <span className="finder__option-label">{choice.text}</span>
-                          </span>
-                        </label>
-                      );
-                    })}
+                    options.map((choice) => (
+                      <FinderOption
+                        key={choice.key}
+                        type="checkbox"
+                        name={`${uid}-situation`}
+                        value={choice.key}
+                        checked={situations.some((selected) => selected.key === choice.key)}
+                        onChange={() => toggleSituation(choice)}
+                        label={choice.text}
+                        still={still}
+                      />
+                    ))}
 
                   {step === 2 &&
                     STAGE_IDS.map((id) => (
-                      <label key={id} className="finder__option finder__option--radio">
-                        <input
-                          className="finder__input"
-                          type="radio"
-                          name={`${uid}-stage`}
-                          value={id}
-                          checked={stage === id}
-                          onChange={() => {
-                            setHint("");
-                            setStage(id);
-                          }}
-                        />
-                        <Tick on={stage === id} still={still} />
-                        <span className="finder__option-body">
-                          <span className="finder__option-label">{copy.stages[id].label}</span>
-                          <span className="finder__option-hint">{copy.stages[id].hint}</span>
-                        </span>
-                      </label>
+                      <FinderOption
+                        key={id}
+                        type="radio"
+                        name={`${uid}-stage`}
+                        value={id}
+                        checked={stage === id}
+                        onChange={() => {
+                          setHint("");
+                          setStage(id);
+                        }}
+                        {...copy.stages[id]}
+                        still={still}
+                      />
                     ))}
                 </div>
               </fieldset>
@@ -429,35 +350,3 @@ export default function ServiceFinder({ lang = "de", products, contactHref, cata
   );
 }
 
-/**
- * The tick that pops when an answer is chosen. A component of its own, OUTSIDE
- * the finder: defined inside, it would be a new component type on every render,
- * remount each time and never play its entrance.
- */
-function Tick({ on, still }: { on: boolean; still?: { duration: number } }) {
-  return (
-    <span className="finder__check" aria-hidden="true">
-      <AnimatePresence initial={false}>
-        {on && (
-          <m.svg
-            key="tick"
-            viewBox="0 0 24 24"
-            width="14"
-            height="14"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={{ scale: 0.2, rotate: -30 }}
-            animate={{ scale: 1, rotate: 0 }}
-            exit={{ scale: 0.2, opacity: 0 }}
-            transition={still ?? { type: "spring", bounce: 0.55, visualDuration: 0.32 }}
-          >
-            <polyline points="5 12.5 10 17.5 19 7" />
-          </m.svg>
-        )}
-      </AnimatePresence>
-    </span>
-  );
-}
