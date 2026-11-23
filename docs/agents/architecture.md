@@ -94,7 +94,7 @@ Preise (`sections/Pricing.astro`, with the assistant's second button) → FAQ �
   "— Tracht Digital" last, ≤ 65 characters, distinct) and `updatedAt` (visible "Stand" and JSON-LD
   `dateModified`; raise it only when content changes).
 - **Platform pages** (WooCommerce, Shopware 6, WordPress, TYPO3, STRATO) at `/leistungen/<system>` and
-  `/en/services/<system>` are code-owned in `lib/platforms.ts`, rendered by
+  `/en/services/<system>` are code-owned in `lib/platforms.ts` (one file per system under `lib/platforms/`), rendered by
   `components/platforms/PlatformDetailPage.astro` from the `components/detail/` bands. One page per system
   with anchored offer sections. Rules (`platforms.test.ts`): no amount (the cost box links to `/#preise`; no
   JSON-LD `offers`); an answer-first paragraph naming Tracht Digital Solutions, Julian Tracht and Schwarzenbek;

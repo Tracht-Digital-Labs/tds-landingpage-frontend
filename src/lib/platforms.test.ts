@@ -1,3 +1,4 @@
+import { readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   JOURNAL_ARTICLES,
@@ -22,6 +23,14 @@ const prose = (platform: PlatformDefinition, lang: (typeof LANGS)[number]) =>
   JSON.stringify(platform.content[lang]);
 
 describe("platform catalog", () => {
+  it("lists every page file under platforms/, as its own id", () => {
+    // A file left out of the list would be a page that never ships.
+    const files = readdirSync(new URL("./platforms", import.meta.url))
+      .filter((name) => name !== "shared.ts")
+      .map((name) => name.replace(/.ts$/, ""));
+    expect(platformDefinitions.map((platform) => platform.id).sort()).toEqual(files.sort());
+  });
+
   it("keeps ids and slugs unique", () => {
     const ids = platformDefinitions.map((platform) => platform.id);
     const slugs = platformDefinitions.map((platform) => platform.slug);
