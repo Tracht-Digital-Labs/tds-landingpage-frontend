@@ -1,3 +1,4 @@
+import { readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { platformDefinitions } from "./platforms";
 import {
@@ -9,6 +10,12 @@ import {
 } from "./services";
 
 describe("service catalog", () => {
+  it("lists every service file under services/, as its own id", () => {
+    // A file left out of the list would be a service that never ships.
+    const files = readdirSync(new URL("./services", import.meta.url)).map((name) => name.replace(/.ts$/, ""));
+    expect(serviceDefinitions.map((service) => service.id).sort()).toEqual(files.sort());
+  });
+
   it("pins the five services in the agreed display order", () => {
     // Kundenportale & Verwaltungspanels first since 2026-10-06 — the site leads
     // with the business's own panel and with digitalization, and the hero says
