@@ -1,0 +1,72 @@
+/* The filled state and the field icons. */
+
+/* A field that is complete and valid is FILLED, like the ticked emergency
+   row, but in a pale periwinkle instead of its pink: the pink means
+   "emergency", this means "done". No inset shadow, navy type. Focus keeps
+   its own well. */
+.contact-field-row[data-filled] .contact-field:not(:focus) {
+  background-color: #d9deff !important;
+  box-shadow: none;
+  color: var(--color-surface-navy);
+}
+.contact-field-row[data-filled] .contact-field:not(:focus)::placeholder {
+  color: rgb(5 15 104 / 0.5);
+}
+.contact-field-row[data-filled]:not(:focus-within) .contact-input__icon {
+  color: var(--color-surface-navy);
+}
+.contact-field-row[data-filled] .contact-select:not(:focus) {
+  color-scheme: light;
+}
+.contact-step__head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0;
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+}
+.contact-step__num {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+.contact-step[data-done] .contact-step__num {
+  background: var(--color-accent-pink);
+  color: var(--color-surface-navy);
+}
+/* A field with its icon. */
+.contact-input {
+  position: relative;
+}
+.contact-input__icon {
+  position: absolute;
+  top: 50%;
+  left: 0.875rem;
+  z-index: 2;
+  display: inline-flex;
+  translate: 0 -50%;
+  color: rgb(255 255 255 / 0.55);
+  pointer-events: none;
+  transition: color 200ms ease;
+}
+.contact-field-row:focus-within .contact-input__icon {
+  color: var(--color-accent-pink);
+}
+.contact-input .contact-field {
+  padding-left: 2.625rem !important;
+}

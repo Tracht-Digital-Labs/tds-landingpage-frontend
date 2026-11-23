@@ -6,6 +6,9 @@
 - A component's bundled `<script>` of more than a few lines lives in `src/lib/<name>.ts` as a `mount…()`
   function the script imports and calls (`heroCarousel`, `floatingCta`, `timeSavings`, `previewLightbox`,
   `propertyTabs`, `pageScrollbar`). Source-level tests about that behaviour read the lib file.
+- A large global stylesheet (one that styles a React island, whose markup carries no Astro scope) lives in
+  `src/styles/<name>.css`, an index of `@import`s of partials under `src/styles/<name>/` in cascade order,
+  imported from the component's frontmatter (`contact.css` for `sections/Contact.astro`).
 - `src/layouts/Layout.astro` owns fonts, theme bootstrap, metadata, canonical/hreflang, optional JSON-LD and
   global islands.
 - Locales: resolve copy with `resolveLang()` / `tFor()` and build internal links with `localizePath()`

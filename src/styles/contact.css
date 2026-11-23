@@ -1,0 +1,18 @@
+/* The contact section and its form island (`sections/Contact.astro`,
+   `islands/ContactForm.tsx`). Global, not scoped: the island's markup is
+   React's and carries no Astro scope. Partials in source order; the order
+   is the cascade, so a new rule goes into the partial it belongs to rather
+   than into a new file at the end. */
+@import "./contact/surface.css";
+@import "./contact/fields.css";
+@import "./contact/consent.css";
+@import "./contact/messages.css";
+@import "./contact/layout.css";
+@import "./contact/foot.css";
+@import "./contact/card.css";
+@import "./contact/emergency.css";
+@import "./contact/next-steps.css";
+@import "./contact/reason.css";
+@import "./contact/steps.css";
+@import "./contact/field-states.css";
+@import "./contact/submit.css";

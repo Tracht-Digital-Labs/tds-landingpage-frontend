@@ -1,0 +1,217 @@
+/* === Contact form: the three steps ================================
+   Numbered groups instead of one column of fields: what is asked, in what
+   order, and how far along it is. The number turns into a tick once a step
+   has what it needs. */
+.contact-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.contact-step[hidden] {
+  display: none;
+}
+.contact-step__head:focus {
+  outline: none;
+}
+.contact-step__head:focus-visible {
+  outline: 2px solid var(--color-accent-pink);
+  outline-offset: 4px;
+}
+
+/* The stepper's progress row (redesigned 2026-11-03): three numbered
+   stops on one track. The track fills in pink up to the current step
+   (`--contact-progress`, 0 → 1, set by the island); finished stops carry a
+   tick, stops not reached yet are disabled. */
+.contact-progress {
+  --contact-stop: 2.25rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+.contact-progress::before,
+.contact-progress::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--contact-stop) / 2 - 1.5px);
+  left: calc(100% / 6);
+  width: calc(100% * 2 / 3);
+  height: 3px;
+  border-radius: 3px;
+  background: rgb(255 255 255 / 0.16);
+}
+.contact-progress::after {
+  width: calc(100% * 2 / 3 * var(--contact-progress, 0));
+  background: var(--color-accent-pink);
+  transition: width 320ms var(--tds-ease-out);
+}
+.contact-progress__item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+}
+.contact-progress__button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  color: rgb(255 255 255 / 0.7);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+.contact-progress__button:disabled {
+  cursor: default;
+  color: rgb(255 255 255 / 0.45);
+}
+.contact-progress__button:focus-visible {
+  outline: 2px solid var(--color-accent-pink);
+  outline-offset: 3px;
+}
+.contact-progress__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--contact-stop);
+  height: var(--contact-stop);
+  border: 2px solid rgb(255 255 255 / 0.28);
+  border-radius: 9999px;
+  background: var(--color-surface-navy);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+.contact-progress__item[data-state="done"] .contact-progress__button {
+  color: #fff;
+}
+.contact-progress__item[data-state="done"] .contact-progress__num {
+  border-color: var(--color-accent-pink);
+  background: var(--color-accent-pink);
+  color: var(--color-surface-navy);
+}
+.contact-progress__item[data-state="current"] .contact-progress__button {
+  color: #fff;
+}
+.contact-progress__item[data-state="current"] .contact-progress__num {
+  border-color: var(--color-accent-pink);
+  background: #fff;
+  color: var(--color-surface-navy);
+  box-shadow: 0 0 0 4px rgb(255 122 156 / 0.28);
+}
+.contact-progress__title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The last step's look back at the first two. */
+.contact-summary {
+  margin-bottom: 0.25rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 10px;
+}
+.contact-summary__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.65);
+}
+.contact-summary__list {
+  display: grid;
+  gap: 0.375rem;
+  margin: 0;
+}
+.contact-summary__row {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+.contact-summary__row dt {
+  color: rgb(255 255 255 / 0.65);
+}
+.contact-summary__row dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #fff;
+}
+.contact-summary__edit {
+  min-height: 2rem;
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--color-accent-pink);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.contact-summary__edit:focus-visible {
+  outline: 2px solid var(--color-accent-pink);
+  outline-offset: 2px;
+}
+@media (max-width: 30rem) {
+  .contact-summary__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .contact-summary__row dd {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+/* Parted from the last field (2026-11-03: the button sat on it). */
+.contact-stepper-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+}
+.contact-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.25rem;
+  border: 0;
+  background: none;
+  color: rgb(255 255 255 / 0.8);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.contact-back:hover {
+  color: #fff;
+}
+.contact-back:focus-visible {
+  outline: 2px solid var(--color-accent-pink);
+  outline-offset: 3px;
+}

@@ -1,0 +1,46 @@
+/* === Contact form: what happens next ==============================
+
+   The four points that used to sit above the form, rendered inside the
+   confirmation. No card around them — they already sit on the navy ground
+   with the tick and the heading, and a second surface there would read as a
+   dialog inside a dialog. */
+.contact-next {
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+  padding-top: 1.5rem;
+}
+.contact-next__title {
+  margin: 0 0 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.5);
+}
+.contact-next__list {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+/* Two columns as soon as there is room. `auto-fit` with a `min()` floor
+   rather than a breakpoint: this block sits in one half of a two-column
+   grid, so the viewport says nothing useful about how wide it is. */
+@media (min-width: 30rem) {
+  .contact-next__list {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    column-gap: 1.5rem;
+  }
+}
+.contact-next__label {
+  margin: 0 0 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-pink);
+}
+.contact-next__text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgb(255 255 255 / 0.75);
+}

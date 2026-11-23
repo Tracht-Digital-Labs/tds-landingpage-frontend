@@ -1,0 +1,28 @@
+/* === Contact form: send button ==================================== */
+
+/* The send button: a solid pink pill with the site's hard offset — the
+   white sheen that swept across it is gone (2026-10-11); no other control
+   on the site glints. Hover lifts it like every other button. */
+.submit-button {
+  color: var(--color-surface-navy);
+  --lp-fill: var(--color-accent-pink);
+  --lp-shade: initial;
+  background-color: var(--lp-fill);
+  transition:
+    background-color 200ms var(--tds-ease-out),
+    translate 160ms var(--tds-ease-out);
+  box-shadow: var(--tds-shadow-hard-sm);
+}
+.submit-button:hover:not(:disabled) {
+  --lp-fill: #fff;
+  translate: -2px -2px;
+}
+.submit-button:active:not(:disabled) {
+  translate: 2px 2px;
+  box-shadow: var(--tds-shadow-hard-press);
+}
+@media (prefers-reduced-motion: reduce) {
+  .submit-button {
+    transition: none;
+  }
+}

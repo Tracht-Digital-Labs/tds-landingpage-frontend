@@ -1,0 +1,57 @@
+/* The two cards, their seam and the section grid. */
+
+/* The form's own glass, same recipe as the card beside it so the two read as
+   one pair rather than a panel next to bare fields. A touch lighter: it holds
+   input text, and the card holds links. */
+/* Both cards (2026-10-11): a solid lifted navy with the site's hard offset
+   in coral — the card language every other box on the page speaks, instead
+   of a glass veil that let the photo through unevenly. Navy fill, so coral
+   shade, never a navy one (design.md). */
+#contact .contact-panel {
+  display: grid;
+  border-radius: 6px;
+  background: color-mix(in srgb, #fff 7%, var(--color-surface-navy));
+  box-shadow: 6px 6px 0 0 var(--color-accent-pink);
+}
+#contact .contact-panel__form,
+#contact .contact-card {
+  min-width: 0;
+  padding: 1.5rem;
+}
+/* The seam between the two halves: horizontal while stacked. */
+#contact .contact-card {
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+@media (min-width: 48rem) {
+  #contact .contact-panel__form,
+  #contact .contact-card {
+    padding: 2rem;
+  }
+}
+/* The card's grid (2026-11-03, reordered because the stepper left a large
+   empty field under the form): the emergency row on top, the form and the
+   direct ways side by side from `lg`, and one row across the bottom with
+   the map, the town and the two take-aways. Each half holds about as much as
+   the other, so neither column ends in a hole. */
+@media (min-width: 64rem) {
+  #contact .contact-panel {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-areas:
+      "form card"
+      "foot foot";
+  }
+  /* More air around the fields (2026-11-03: the form read squeezed). */
+  #contact .contact-panel__form {
+    grid-area: form;
+    padding: 2.75rem 3rem 2.75rem 2.75rem;
+  }
+  #contact .contact-card {
+    grid-area: card;
+    border-top: 0;
+    border-left: 1px solid rgb(255 255 255 / 0.14);
+    padding: 2.75rem 2.75rem 2.75rem 3rem;
+  }
+  #contact .contact-foot {
+    grid-area: foot;
+  }
+}
