@@ -3,6 +3,9 @@
 ## Application shape
 
 - Prefer `.astro` components; add a React island only for state, browser APIs or event-driven interaction.
+- A component's bundled `<script>` of more than a few lines lives in `src/lib/<name>.ts` as a `mount…()`
+  function the script imports and calls (`heroCarousel`, `floatingCta`, `timeSavings`, `previewLightbox`,
+  `propertyTabs`, `pageScrollbar`). Source-level tests about that behaviour read the lib file.
 - `src/layouts/Layout.astro` owns fonts, theme bootstrap, metadata, canonical/hreflang, optional JSON-LD and
   global islands.
 - Locales: resolve copy with `resolveLang()` / `tFor()` and build internal links with `localizePath()`

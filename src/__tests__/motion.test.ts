@@ -129,11 +129,17 @@ describe("motion on the landing page", () => {
    * flat colour behind it, and closes with a bare cross.
    */
   it("animates every modal through lib/motion/dialog.ts", () => {
-    for (const file of ["components/ServiceAssistant.astro", "components/ui/PreviewLightbox.astro"]) {
+    // Each modal with the file its script lives in.
+    const modals = [
+      ["components/ServiceAssistant.astro", "components/ServiceAssistant.astro"],
+      ["components/ui/PreviewLightbox.astro", "lib/previewLightbox.ts"],
+    ] as const;
+    for (const [file, scriptFile] of modals) {
       const code = src(file);
-      expect(code, file).toContain('import { animatedDialog } from "~/lib/motion/dialog"');
+      const source = src(scriptFile);
+      expect(source, scriptFile).toContain('import { animatedDialog } from "~/lib/motion/dialog"');
       // No raw open/close left that would skip the animation.
-      const script = code.slice(code.indexOf("<script>"));
+      const script = source.slice(Math.max(0, source.indexOf("<script>")));
       expect(script, file).not.toMatch(/dialog\.(showModal|close)\(\)/);
       // The cross has no chip behind it.
       expect(code, file).toMatch(/__close \{[^}]*background: none;/);
