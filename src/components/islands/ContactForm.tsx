@@ -1,12 +1,19 @@
-import Arrow from "~/components/ui/Arrow";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ContactSchema, type ContactFormData } from "@tracht-digital-labs/tds-shared/schemas";
 import { runtimeSetting } from "@tracht-digital-labs/tds-shared/api";
 import { Collapse, Presence } from "@tracht-digital-labs/tds-shared/motion/react";
-import { CONTACT_DRAFT_EVENT, CONTACT_DRAFT_KEY, parseContactDraft } from "~/lib/contactDraft";
 import { contactFormCopy } from "~/lib/contactCopy";
+import { LAST_STEP, STEP_FIELDS, fieldValid, firstInvalidStep, subjectFor } from "~/lib/contactSteps";
+import ContactProgress from "./contact/ContactProgress";
+import ContactSuccess, { type NextSteps } from "./contact/ContactSuccess";
+import ConsentField from "./contact/ConsentField";
+import ContactSummary from "./contact/ContactSummary";
+import ReasonFields from "./contact/ReasonFields";
+import StepperActions from "./contact/StepperActions";
+import { FieldError, Step, TextRow, a11yFor, errorId, fieldClass, filled, rowClass } from "./contact/fields";
+import { useContactDraft } from "./contact/useContactDraft";
 
 /**
  * Where this form posts if the host has not been configured.
@@ -24,105 +31,6 @@ const CONTACT_API_URL =
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
 type Lang = "de" | "en";
-
-/** Field ids double as the prefix of their error messages' ids. */
-type FieldName = "name" | "email" | "message" | "consent";
-
-const STEPS: Record<Lang, [string, string, string]> = {
-  de: ["Kontaktdaten", "Anliegen", "Nachricht"],
-  en: ["Contact details", "Your request", "Message"],
-};
-
-const STEPPER: Record<
-  Lang,
-  {
-    next: string;
-    back: string;
-    progress: (step: number, total: number) => string;
-    summary: string;
-    edit: string;
-    urgent: string;
-  }
-> = {
-  de: {
-    next: "Weiter",
-    back: "Zurück",
-    progress: (step, total) => `Schritt ${step} von ${total}`,
-    summary: "Bisherige Angaben",
-    edit: "Ändern",
-    urgent: "Notfall",
-  },
-  en: {
-    next: "Next",
-    back: "Back",
-    progress: (step, total) => `Step ${step} of ${total}`,
-    summary: "Details so far",
-    edit: "Change",
-    urgent: "Emergency",
-  },
-};
-
-/** The fields each step checks before "Weiter" moves on. */
-const STEP_FIELDS: readonly (readonly FieldName[])[] = [["name", "email"], [], ["message", "consent"]];
-
-/** Whether a value passes the shared schema's rule for that one field. */
-function fieldValid(field: "name" | "email" | "company" | "message", value: unknown): boolean {
-  if (!String(value ?? "").trim()) return false;
-  const shape = (ContactSchema as unknown as { shape?: Record<string, { safeParse: (v: unknown) => { success: boolean } }> }).shape;
-  return shape?.[field]?.safeParse(value).success ?? true;
-}
-
-const ICONS = {
-  name: <><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></>,
-  email: <><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m2 7 10 6 10-6" /></>,
-  company: <><path d="M3 21h18M5 21V5l8-2v18M13 9l6 2v10M8 8h1M8 12h1M8 16h1" /></>,
-  subject: <><path d="M4 5h16v11H8l-4 4z" /></>,
-};
-
-function InputIcon({ name }: { name: keyof typeof ICONS }) {
-  return (
-    <span className="contact-input__icon" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        {ICONS[name]}
-      </svg>
-    </span>
-  );
-}
-
-/**
- * One step of the form. Only the current one is shown (`hidden`, never
- * `opacity: 0`); its legend takes focus when the step changes.
- */
-function Step({
-  number,
-  title,
-  done,
-  grow,
-  current,
-  children,
-}: {
-  number: number;
-  title: string;
-  done: boolean;
-  grow?: boolean;
-  current: boolean;
-  children: ReactNode;
-}) {
-  return (
-    <fieldset
-      className={`contact-step${grow ? " contact-step--grow" : ""}`}
-      data-done={done ? "" : undefined}
-      hidden={!current}
-    >
-      {/* Visually hidden: the progress row above already shows the title. */}
-      <legend className="contact-step__head sr-only" id={`contact-step-${number}`} tabIndex={-1}>
-        <span className="contact-step__num" aria-hidden="true">{done ? "✓" : number}</span>
-        {title}
-      </legend>
-      {children}
-    </fieldset>
-  );
-}
 
 /**
  * Contact form. Posts to tds-contact-api over CORS and validates with
@@ -152,9 +60,9 @@ function Step({
  *   chosen reason travels as `subject`, so the request arrives in the panel
  *   under a heading instead of as one more untitled message. And the four
  *   "what happens next" points, which used to sit above the form, now fill the
- *   confirmation: on the way in they were a wall between the visitor and the
- *   field they came to type in, and they duplicated the process section word
- *   for word. Afterwards they are the answer to the only question left.
+ *   confirmation (`contact/ContactSuccess.tsx`).
+ *
+ * The pieces live in `contact/`; the step rules in `lib/contactSteps.ts`.
  *
  * ### Why `reasons` and `nextSteps` are props
  *
@@ -179,16 +87,15 @@ export default function ContactForm({
    */
   assistantReasons?: Readonly<Record<string, string>>;
   /** What happens after sending — rendered in place of the form. */
-  nextSteps?: { title: string; items: readonly { label: string; text: string }[] };
+  nextSteps?: NextSteps;
 }) {
   const copy = contactFormCopy(lang);
 
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   // The emergency checkbox. Not a form field: `ContactSchema` knows no such
-  // key and zodResolver would drop it. It marks the subject instead (below).
+  // key and zodResolver would drop it. It marks the subject instead.
   const [urgent, setUrgent] = useState(false);
-  const [shake, setShake] = useState(false);
-  const shakeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const shake = useShake();
   // The stepper: which step shows, and how far the visitor has come.
   const [stage, setStage] = useState(0);
   const [reached, setReached] = useState(0);
@@ -207,63 +114,7 @@ export default function ContactForm({
     defaultValues: { consent: undefined as unknown as true },
   });
 
-  // A draft from the service assistant (`lib/contactDraft.ts`): read from
-  // storage when this form hydrates after the jump down here, or taken from the
-  // event when it is already live. Text in the field, nothing else — the
-  // visitor still reads, edits and sends. What they typed themselves is never
-  // replaced; the draft goes underneath it.
-  useEffect(() => {
-    const apply = (value: unknown) => {
-      const draft = parseContactDraft(value);
-      if (!draft) return;
-
-      /**
-       * The reason the assistant's recommendation maps to — and only while the
-       * visitor has not chosen one themselves. It is checked against the
-       * options actually rendered: a value the select has no `<option>` for
-       * would set the field to nothing at all, and a panel edit to the list is
-       * exactly how that happens.
-       */
-      const mapped = draft.service ? assistantReasons[draft.service] : undefined;
-      if (mapped && reasons.includes(mapped) && !String(getValues("subject") ?? "").trim()) {
-        setValue("subject", mapped, { shouldDirty: true });
-      }
-
-      const current = String(getValues("message") ?? "");
-      if (current.includes(draft.message.trim())) return;
-      setValue(
-        "message",
-        current.trim() ? `${current.trimEnd()}\n\n${draft.message}` : draft.message,
-        { shouldDirty: true },
-      );
-    };
-    try {
-      const stored = window.sessionStorage.getItem(CONTACT_DRAFT_KEY);
-      if (stored) {
-        apply(stored);
-        window.sessionStorage.removeItem(CONTACT_DRAFT_KEY);
-      }
-    } catch {
-      // Storage blocked: the event below still delivers to a live form.
-    }
-    const onDraft = (event: Event) => {
-      apply((event as CustomEvent<unknown>).detail);
-      try {
-        window.sessionStorage.removeItem(CONTACT_DRAFT_KEY);
-      } catch {
-        // ignore
-      }
-    };
-    window.addEventListener(CONTACT_DRAFT_EVENT, onDraft);
-    return () => window.removeEventListener(CONTACT_DRAFT_EVENT, onDraft);
-  }, [getValues, setValue, reasons, assistantReasons]);
-
-  useEffect(
-    () => () => {
-      if (shakeTimerRef.current) clearTimeout(shakeTimerRef.current);
-    },
-    [],
-  );
+  useContactDraft({ getValues, setValue, reasons, assistantReasons });
 
   // A step change moves focus to the new step's legend; never on hydration.
   useEffect(() => {
@@ -278,28 +129,15 @@ export default function ContactForm({
   };
 
   const next = async () => {
-    const fields = STEP_FIELDS[stage] as FieldName[];
+    const fields = [...STEP_FIELDS[stage]!];
     if (fields.length > 0 && !(await trigger(fields))) return;
-    goTo(Math.min(stage + 1, STEP_FIELDS.length - 1));
+    goTo(Math.min(stage + 1, LAST_STEP));
   };
 
   /** After a failed submit, show the first step that holds an error. */
   const onInvalid = (invalid: Partial<Record<string, unknown>>) => {
-    const first = STEP_FIELDS.findIndex((fields) => fields.some((field) => invalid[field]));
+    const first = firstInvalidStep(invalid);
     if (first >= 0 && first !== stage) goTo(first);
-  };
-
-  const triggerShake = () => {
-    if (shakeTimerRef.current) clearTimeout(shakeTimerRef.current);
-    setShake(true);
-    shakeTimerRef.current = setTimeout(() => setShake(false), 600);
-  };
-
-  /** The chosen reason, marked as an emergency when the box is ticked. */
-  const subjectFor = (subject: string | undefined) => {
-    const reason = String(subject ?? "").trim();
-    if (!urgent) return reason || undefined;
-    return (reason ? `${copy.urgentSubject}: ${reason}` : copy.urgentSubject).slice(0, 200);
   };
 
   const onSubmit = async (data: ContactFormData) => {
@@ -312,82 +150,21 @@ export default function ContactForm({
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, subject: subjectFor(data.subject), lang }),
+        body: JSON.stringify({ ...data, subject: subjectFor(data.subject, urgent, copy.urgentSubject), lang }),
         // A hanging endpoint left the form in "submitting" for good, with the
         // button disabled and nothing to say why. 20s, then the error view.
         signal: AbortSignal.timeout(20_000),
       });
       if (res.ok) {
         setSubmitState("success");
-      } else {
-        setSubmitState("error");
-        triggerShake();
+        return;
       }
     } catch {
-      setSubmitState("error");
-      triggerShake();
+      // Unreachable or timed out: the same error view as a refusal.
     }
+    setSubmitState("error");
+    shake.start();
   };
-
-  // Each field is wrapped in a `.contact-field-row` <div> so the
-  // focus-within styles in Contact.astro can light up the label when the
-  // visitor lands on the input. The wrapper family is
-  // deliberately `contact-field-*`, not `field-*`: tds-shared's primitives.css
-  // owns a `.field` class for the *input element*.
-  const fieldClass = [
-    "contact-field block w-full appearance-none bg-transparent",
-    "px-3 py-3 text-base text-white leading-snug",
-    "border-0 outline-none focus:outline-none focus:ring-0",
-  ].join(" ");
-
-  const errorId = (field: FieldName) => `contact-${field}-error`;
-  const a11yFor = (field: FieldName) =>
-    errors[field]
-      ? { "aria-invalid": true as const, "aria-describedby": errorId(field) }
-      : {};
-
-  const rowClass = (field?: FieldName) =>
-    `contact-field-row ${field && errors[field] ? "contact-field-row--error" : ""}`;
-  /** A field that is complete and valid is filled (`.contact-field-row[data-filled]`). */
-  const filled = (ok: boolean) => (ok ? "" : undefined);
-
-  // Plain JSX, not an inner component (a component declared in here would be
-  // a new type every render and remount the form on each keystroke).
-  const success = (
-      <div className="contact-success flex flex-col items-start gap-4 py-12" role="status">
-        <span className="contact-success__mark" aria-hidden="true">
-          ✓
-        </span>
-        <h3
-          // Focused as it MOUNTS: the success view fades in after the form has
-          // faded out, so an effect keyed on submitState would find no heading.
-          ref={(el) => el?.focus()}
-          tabIndex={-1}
-          className="text-2xl font-[var(--font-display)] font-medium text-white outline-none"
-          style={{ fontVariationSettings: '"opsz" 144' }}
-        >
-          {copy.form.successTitle}
-        </h3>
-        <p className="text-white/75">{copy.form.successMessage}</p>
-
-        {/* The next steps, at the one moment they are the whole question.
-            A <dl>, like `ui/FirstCall.astro` renders them, so the pairing of
-            label and text survives without the visual card around it. */}
-        {nextSteps && nextSteps.items.length > 0 && (
-          <div className="contact-next mt-4 w-full">
-            <h4 className="contact-next__title">{nextSteps.title}</h4>
-            <dl className="contact-next__list">
-              {nextSteps.items.map((item) => (
-                <div className="contact-next__item" key={item.label}>
-                  <dt className="contact-next__label">{item.label}</dt>
-                  <dd className="contact-next__text">{item.text}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        )}
-      </div>
-  );
 
   const submitting = submitState === "submitting";
   const [nameValue, emailValue, companyValue, subjectValue, messageValue] = watch([
@@ -397,16 +174,14 @@ export default function ContactForm({
     "subject",
     "message",
   ]);
-  const steps = STEPS[lang];
-  const stepper = STEPPER[lang];
+  const { steps, stepper } = copy;
   const nameOk = fieldValid("name", nameValue);
   const emailOk = fieldValid("email", emailValue);
   const messageOk = fieldValid("message", messageValue);
   const doneSteps = [nameOk && emailOk, Boolean(subjectValue || urgent), messageOk];
-  const last = STEP_FIELDS.length - 1;
 
   const form = (
-    <div className={shake ? "shake" : ""}>
+    <div className={shake.on ? "shake" : ""}>
       {/* `data-motion-stagger`: the rows — the reason dropdown among them —
           arrive one after another as the form scrolls in (lib/motion/ux.ts,
           vanilla Motion on this markup, off screen only). The honeypot is
@@ -414,7 +189,7 @@ export default function ContactForm({
       <form
         onSubmit={(event) => {
           // Enter in an early step moves on instead of sending.
-          if (stage < last) {
+          if (stage < LAST_STEP) {
             event.preventDefault();
             void next();
             return;
@@ -434,299 +209,132 @@ export default function ContactForm({
           <input id="website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
         </div>
 
-        {/* The stepper (2026-11-03): one step at a time, so the card never
-            asks everything at once. Earlier steps stay reachable. */}
-        <ol
-          className="contact-progress"
-          aria-label={stepper.progress(stage + 1, steps.length)}
-          style={{ "--contact-progress": stage / (steps.length - 1) } as CSSProperties}
-        >
-          {steps.map((title, index) => (
-            <li key={title} className="contact-progress__item" data-state={index === stage ? "current" : doneSteps[index] ? "done" : undefined}>
-              <button
-                type="button"
-                className="contact-progress__button"
-                disabled={index > reached}
-                aria-current={index === stage ? "step" : undefined}
-                onClick={() => goTo(index)}
-              >
-                <span className="contact-progress__num" aria-hidden="true">
-                  {doneSteps[index] && index !== stage ? "✓" : index + 1}
-                </span>
-                <span className="contact-progress__title">{title}</span>
-              </button>
-            </li>
-          ))}
-        </ol>
+        <ContactProgress
+          titles={steps}
+          stage={stage}
+          reached={reached}
+          done={doneSteps}
+          label={stepper.progress(stage + 1, steps.length)}
+          onGo={goTo}
+        />
 
-        <Step number={1} title={steps[0]} done={doneSteps[0]} current={stage === 0}>
-        <div className="contact-form-pair">
-        <div className={rowClass("name")} data-filled={filled(nameOk)}>
-          <label htmlFor="name" className="contact-field-label">
-            {copy.form.name}
-          </label>
-          <div className="contact-input">
-            <InputIcon name="name" />
-          <input
-            id="name"
-            type="text"
-            autoComplete="name"
-            required
-            placeholder={copy.form.namePlaceholder}
-            className={fieldClass}
-            {...a11yFor("name")}
-            {...register("name")}
-          />
+        <Step number={1} title={steps[0]} done={doneSteps[0]!} current={stage === 0}>
+          <div className="contact-form-pair">
+            <TextRow
+              id="name"
+              label={copy.form.name}
+              icon="name"
+              autoComplete="name"
+              required
+              placeholder={copy.form.namePlaceholder}
+              ok={nameOk}
+              errorText={copy.errors.name}
+              invalid={Boolean(errors.name)}
+              input={register("name")}
+            />
+            <TextRow
+              id="email"
+              label={copy.form.email}
+              icon="email"
+              type="email"
+              autoComplete="email"
+              required
+              placeholder={copy.form.emailPlaceholder}
+              ok={emailOk}
+              errorText={copy.errors.email}
+              invalid={Boolean(errors.email)}
+              input={register("email")}
+            />
           </div>
-          <Collapse open={Boolean(errors.name)}>
-            <p id={errorId("name")} className="contact-field-error text-xs mt-2">
-              {copy.errors.name}
-            </p>
-          </Collapse>
-        </div>
-
-        <div className={rowClass("email")} data-filled={filled(emailOk)}>
-          <label htmlFor="email" className="contact-field-label">
-            {copy.form.email}
-          </label>
-          <div className="contact-input">
-            <InputIcon name="email" />
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder={copy.form.emailPlaceholder}
-            className={fieldClass}
-            {...a11yFor("email")}
-            {...register("email")}
-          />
-          </div>
-          <Collapse open={Boolean(errors.email)}>
-            <p id={errorId("email")} className="contact-field-error text-xs mt-2">
-              {copy.errors.email}
-            </p>
-          </Collapse>
-        </div>
-
-        </div>
-
-        <div className={rowClass()} data-filled={filled(fieldValid("company", companyValue))}>
-          <label htmlFor="company" className="contact-field-label">
-            {copy.form.company}
-          </label>
-          <div className="contact-input">
-            <InputIcon name="company" />
-          <input
+          <TextRow
             id="company"
-            type="text"
+            label={copy.form.company}
+            icon="company"
             autoComplete="organization"
             placeholder={copy.form.companyPlaceholder}
-            className={fieldClass}
-            {...register("company")}
+            ok={fieldValid("company", companyValue)}
+            input={register("company")}
           />
-          </div>
-        </div>
-
         </Step>
 
-        <Step number={2} title={steps[1]} done={doneSteps[1]} current={stage === 1}>
-        <div className="contact-form-pair">
-        {/* The reason for getting in touch. Optional on purpose: making it
-            mandatory costs submissions from the people whose request fits no
-            entry, and they are the ones worth hearing from. Rendered only when
-            there are options — the list is CMS-editable and can be emptied. */}
-        {reasons.length > 0 && (
-          <div className={rowClass()} data-filled={filled(Boolean(subjectValue))}>
-            <label htmlFor="subject" className="contact-field-label">
-              {copy.reasonLabel}
+        <Step number={2} title={steps[1]} done={doneSteps[1]!} current={stage === 1}>
+          <ReasonFields
+            copy={copy}
+            reasons={reasons}
+            chosen={Boolean(subjectValue)}
+            input={register("subject")}
+            urgent={urgent}
+            onUrgent={setUrgent}
+          />
+        </Step>
+
+        <Step number={3} title={steps[2]} done={doneSteps[2]!} grow current={stage === 2}>
+          <ContactSummary
+            title={stepper.summary}
+            edit={stepper.edit}
+            rows={[
+              { step: steps[0], values: [nameValue, emailValue, companyValue] },
+              { step: steps[1], values: [subjectValue, urgent ? copy.urgentLabel : ""] },
+            ]}
+            onGo={goTo}
+          />
+          <div className={`${rowClass(Boolean(errors.message))} contact-field-row--message`} data-filled={filled(messageOk)}>
+            <label htmlFor="message" className="contact-field-label">
+              {copy.form.message}
             </label>
-            {/* The SAME `fieldClass` as the text fields (2026-09-21): the closed
-                control reads as one more row of the form — transparent, on
-                the row's underline, with the accent line growing on focus.
-                Only the OPEN list keeps its own frosted surface
-                (`::picker(select)` in Contact.astro). */}
-            <div className="contact-input">
-              <InputIcon name="subject" />
-            <select
-              id="subject"
-              className={`${fieldClass} contact-select`}
-              defaultValue=""
-              {...register("subject")}
-            >
-              <option value="">{copy.reasonEmpty}</option>
-              {reasons.map((reason) => (
-                <option key={reason} value={reason}>
-                  {reason}
-                </option>
-              ))}
-            </select>
-            </div>
-          </div>
-        )}
-
-        {/* Short-notice emergencies are taken (2026-10-11). The same round box
-            as the consent below, in a row that fills pink when ticked. Just the
-            word, no description (2026-10-12). */}
-        <label className="contact-urgent-toggle">
-          <input
-            type="checkbox"
-            className="contact-consent-input"
-            checked={urgent}
-            onChange={(event) => setUrgent(event.target.checked)}
-          />
-          <span className="contact-consent-box" aria-hidden="true" />
-          <span className="contact-urgent-toggle__title">{copy.urgentLabel}</span>
-        </label>
-        </div>
-        </Step>
-
-        <Step number={3} title={steps[2]} done={doneSteps[2]} grow current={stage === 2}>
-        {/* Everything entered so far, with a way back to each step: the
-            earlier steps are hidden, so the last one shows what will be sent. */}
-        <div className="contact-summary">
-          <p className="contact-summary__title">{stepper.summary}</p>
-          <dl className="contact-summary__list">
-            <div className="contact-summary__row">
-              <dt>{steps[0]}</dt>
-              <dd>
-                {[nameValue, emailValue, companyValue].map((value) => String(value ?? "").trim()).filter(Boolean).join(" · ")}
-              </dd>
-              <button type="button" className="contact-summary__edit" onClick={() => goTo(0)}>
-                {stepper.edit}
-              </button>
-            </div>
-            <div className="contact-summary__row">
-              <dt>{steps[1]}</dt>
-              <dd>{[subjectValue, urgent ? stepper.urgent : ""].filter(Boolean).join(" · ") || "–"}</dd>
-              <button type="button" className="contact-summary__edit" onClick={() => goTo(1)}>
-                {stepper.edit}
-              </button>
-            </div>
-          </dl>
-        </div>
-        <div className={`${rowClass("message")} contact-field-row--message`} data-filled={filled(messageOk)}>
-          <label htmlFor="message" className="contact-field-label">
-            {copy.form.message}
-          </label>
-          {/* The guidance is a real element, not the placeholder: a
-              placeholder vanishes with the first keystroke, which is when the
-              visitor still needs to know what to write. Tied to the field with
-              `aria-describedby`, alongside the error when there is one. */}
-          <p id="contact-message-hint" className="contact-field-hint">
-            {copy.messageHint}
-          </p>
-          <textarea
-            id="message"
-            rows={6}
-            required
-            className={`${fieldClass} resize-none`}
-            {...a11yFor("message")}
-            // Overrides the `aria-describedby` from `a11yFor` deliberately:
-            // the hint applies whether or not there is an error, so when there
-            // IS one the field has to point at both, in reading order.
-            aria-describedby={
-              errors.message
-                ? `contact-message-hint ${errorId("message")}`
-                : "contact-message-hint"
-            }
-            {...register("message")}
-          />
-          <Collapse open={Boolean(errors.message)}>
-            <p id={errorId("message")} className="contact-field-error text-xs mt-2">
-              {copy.errors.message}
+            {/* The guidance is a real element, not the placeholder: a
+                placeholder vanishes with the first keystroke, which is when the
+                visitor still needs to know what to write. Tied to the field with
+                `aria-describedby`, alongside the error when there is one. */}
+            <p id="contact-message-hint" className="contact-field-hint">
+              {copy.messageHint}
             </p>
-          </Collapse>
-        </div>
-
-        <div>
-          <label className="flex items-center gap-3 cursor-pointer">
-            {/* The native checkbox stays the control — focusable, in the tab
-                order, announced as a checkbox — and is only made invisible.
-                The round box beside it is a <span>, and that split is not
-                decoration: an `appearance: none` <input> painted its tick
-                background as a dark hole on this page, reproducibly. */}
-            <input
-              type="checkbox"
-              className="contact-consent-input"
+            <textarea
+              id="message"
+              rows={6}
               required
-              {...a11yFor("consent")}
-              {...register("consent")}
+              className={`${fieldClass} resize-none`}
+              {...a11yFor("message", Boolean(errors.message))}
+              // Overrides the `aria-describedby` from `a11yFor` deliberately:
+              // the hint applies whether or not there is an error, so when there
+              // IS one the field has to point at both, in reading order.
+              aria-describedby={
+                errors.message
+                  ? `contact-message-hint ${errorId("message")}`
+                  : "contact-message-hint"
+              }
+              {...register("message")}
             />
-            <span className="contact-consent-box" aria-hidden="true" />
-            <span className="text-xs text-white/75 leading-relaxed">
-              {copy.form.consent}{" "}
-              <a
-                href="/legal/datenschutz"
-                className="underline underline-offset-2 hover:no-underline"
-                style={{ color: "var(--color-accent-pink)" }}
-              >
-                {copy.form.consentLink}
-              </a>{" "}
-              {copy.form.consentSuffix}
-            </span>
-          </label>
-          <Collapse open={Boolean(errors.consent)}>
-            <p id={errorId("consent")} className="contact-field-error text-xs mt-2">
-              {copy.errors.consent}
+            <FieldError field="message" show={Boolean(errors.message)}>
+              {copy.errors.message}
+            </FieldError>
+          </div>
+
+          <ConsentField copy={copy} invalid={Boolean(errors.consent)} input={register("consent")} />
+
+          <Collapse open={submitState === "error"}>
+            <p id="contact-form-error" className="contact-field-error text-sm" role="alert">
+              {copy.failure}
+              <a href={`mailto:${copy.email}`} className="underline">
+                {copy.email}
+              </a>
             </p>
           </Collapse>
-        </div>
-
-        <Collapse open={submitState === "error"}>
-          <p id="contact-form-error" className="contact-field-error text-sm" role="alert">
-            {copy.failure}
-            <a href={`mailto:${copy.email}`} className="underline">
-              {copy.email}
-            </a>
-          </p>
-        </Collapse>
-
         </Step>
 
-        <div className="contact-stepper-actions">
-        {stage > 0 && (
-          <button type="button" className="contact-back" onClick={() => goTo(stage - 1)}>
-            <span aria-hidden="true"><Arrow dir="left" /></span> {stepper.back}
-          </button>
-        )}
-        {stage < last ? (
-          <button key="next" type="button" className="submit-button contact-next-button min-h-[3.25rem] px-8 py-4 text-[0.9375rem] font-semibold rounded-full inline-flex items-center justify-center gap-2 cursor-pointer" onClick={() => void next()}>
-            {stepper.next} <span aria-hidden="true"><Arrow dir="right" /></span>
-          </button>
-        ) : (
-        <button
-          // Its own key: React would otherwise reuse the "Weiter" element and
-          // flip its type to submit inside that very click, sending the form.
-          key="submit"
-          type="submit"
-          disabled={submitting}
-          className="submit-button group relative w-full sm:w-auto min-h-[3.25rem] px-8 py-4 text-[0.9375rem] font-semibold rounded-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
-        >
-          <span className="relative z-10 inline-flex items-center gap-2 transition-transform duration-200 group-hover:translate-x-0.5">
-            {submitting ? copy.form.submitting : copy.form.submit}
-            {submitting ? (
-              <span className="tds-spinner tds-spinner--sm" aria-hidden="true" />
-            ) : (
-              <svg
-                aria-hidden="true"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="transition-transform duration-200 group-hover:translate-x-1"
-              >
-                <polyline points="9 6 15 12 9 18" />
-              </svg>
-            )}
-          </span>
-        </button>
-        )}
-        </div>
+        <StepperActions
+          canGoBack={stage > 0}
+          isLast={stage === LAST_STEP}
+          submitting={submitting}
+          labels={{
+            back: stepper.back,
+            next: stepper.next,
+            submit: copy.form.submit,
+            submitting: copy.form.submitting,
+          }}
+          onBack={() => goTo(stage - 1)}
+          onNext={() => void next()}
+        />
 
         {/* Status only — the error above is its own `role="alert"`. */}
         <p className="sr-only" aria-live="polite">
@@ -740,7 +348,25 @@ export default function ContactForm({
   // form, never hidden (Presence does not animate its first mount).
   return (
     <Presence view={submitState === "success" ? "success" : "form"}>
-      {submitState === "success" ? success : form}
+      {submitState === "success" ? <ContactSuccess copy={copy} nextSteps={nextSteps} /> : form}
     </Presence>
   );
+}
+
+/** The 600ms shake after a failed send; a repeat restarts it. */
+function useShake() {
+  const [on, setOn] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
+  const start = () => {
+    if (timer.current) clearTimeout(timer.current);
+    setOn(true);
+    timer.current = setTimeout(() => setOn(false), 600);
+  };
+  return { on, start };
 }

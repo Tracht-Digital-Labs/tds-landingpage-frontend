@@ -147,7 +147,12 @@ Preise (`sections/Pricing.astro`, with the assistant's second button) → FAQ �
   variant for stored blocks but has no caller on the home page.
 - **Emergencies** (2026-10-11): an "Auch für Notfälle" badge beside the phone number and a "Notfall" checkbox in the form. The "Notfall?" row across the top of the card was removed in 0.101.0 (asked for). The checkbox is local state, not a form
   field (`ContactSchema` has no such key and zodResolver drops unknown ones): ticked, the request goes out with
-  `subject` = "Notfall – <reason>" (max 200). Copy in `lib/contactCopy.ts`.
+  `subject` = "Notfall: <reason>" (max 200). Copy in `lib/contactCopy.ts`.
+- **Code layout:** `islands/ContactForm.tsx` holds the state, the steps and the submit; its pieces (fields,
+  progress, summary, reason step, consent, actions, confirmation, the assistant-draft hook) live in
+  `islands/contact/`, the step and subject rules in `lib/contactSteps.ts`, all words in `lib/contactCopy.ts`.
+  `ContactForm.test.tsx` renders it (steps, payload, failure, drafts); source-level rules read the whole
+  island through `__tests__/contactIslandSource.ts`.
 - The card's grid (2026-11-03): the emergency row on top; the form and "Direkt erreichbar" (e-mail, landline,
   mobile, then "Messenger und Profile") side by side from `lg`; one row across the bottom (`.contact-foot`) with
   the map (`ui/PlaceBubble.astro` with `inline`: the drawn map, the live OSM map over it from the first hover,

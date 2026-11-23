@@ -46,6 +46,17 @@ export interface ContactFormCopy {
    */
   urgentLabel: string;
   urgentSubject: string;
+  /** The stepper (2026-11-03): one title per step, in order. */
+  steps: [string, string, string];
+  stepper: {
+    next: string;
+    back: string;
+    /** The progress list's accessible name. */
+    progress: (step: number, total: number) => string;
+    /** The heading over the earlier steps' answers on the last step. */
+    summary: string;
+    edit: string;
+  };
 }
 
 export function contactFormCopy(lang: Lang): ContactFormCopy {
@@ -62,6 +73,14 @@ export function contactFormCopy(lang: Lang): ContactFormCopy {
         "Two or three sentences are enough: what is not working, since when, and the address of the site.",
       urgentLabel: "Emergency",
       urgentSubject: "Emergency",
+      steps: ["Contact details", "Your request", "Message"],
+      stepper: {
+        next: "Next",
+        back: "Back",
+        progress: (step, total) => `Step ${step} of ${total}`,
+        summary: "Details so far",
+        edit: "Change",
+      },
     };
   }
   return {
@@ -76,6 +95,14 @@ export function contactFormCopy(lang: Lang): ContactFormCopy {
       "Zwei, drei Sätze genügen: was nicht funktioniert, seit wann, und die Adresse der Seite.",
     urgentLabel: "Notfall",
     urgentSubject: "Notfall",
+    steps: ["Kontaktdaten", "Anliegen", "Nachricht"],
+    stepper: {
+      next: "Weiter",
+      back: "Zurück",
+      progress: (step, total) => `Schritt ${step} von ${total}`,
+      summary: "Bisherige Angaben",
+      edit: "Ändern",
+    },
     errors: {
       ...t.errors,
       name: "Bitte einen Namen angeben.",

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { contactIslandSource } from "./contactIslandSource";
 
 /**
  * The motion rules for this site, held as a source contract. None of these
@@ -208,7 +209,7 @@ describe("motion on the landing page", () => {
   });
 
   it("animates the contact form only through the shared primitives", () => {
-    const form = src("components/islands/ContactForm.tsx");
+    const form = contactIslandSource();
     expect(form).toContain('from "@tracht-digital-labs/tds-shared/motion/react"');
     expect(form).not.toMatch(/from ["'](motion|framer-motion)/);
   });
@@ -216,7 +217,7 @@ describe("motion on the landing page", () => {
   it("focuses the thank-you as it mounts, not from an effect", () => {
     // The thank-you fades in AFTER the form has faded out; an effect keyed on
     // the submit state runs while the heading does not exist yet.
-    const form = src("components/islands/ContactForm.tsx");
+    const form = contactIslandSource();
     expect(form).toContain("ref={(el) => el?.focus()}");
     expect(form).not.toContain("successHeadingRef");
   });
