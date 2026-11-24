@@ -38,6 +38,7 @@ import DetailCta from "~/components/detail/DetailCta.astro";
 import { asGraph, breadcrumbNode, faqPageSchema, serviceNode, webPageNode } from "~/lib/jsonld";
 import { localizePath, type Lang } from "~/lib/i18n";
 import { stripEmphasis } from "~/lib/emphasis";
+import { PLATFORM_INTEREST, interestAttribute } from "~/lib/productInterestPages";
 import { siteConfig } from "~/lib/seo";
 import { getServiceById, serviceHref } from "~/lib/services";
 import { articleUrl, referencesForPlatform } from "~/lib/references";
@@ -147,7 +148,7 @@ const jsonLd = asGraph(
 >
   <Header />
 
-  <main id="main" class="bg-[var(--color-paper)]">
+  <main id="main" class="bg-[var(--color-paper)]" data-interest-products={interestAttribute(PLATFORM_INTEREST[platform.id])}>
     <DetailHero
       backHref={parentHref}
       backLabel={content.label}

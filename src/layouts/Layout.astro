@@ -137,10 +137,12 @@ const enAltUrl = alternates
  * not a content decision, and it is not one an unreachable API should make. The
  * same reasoning removed the equivalent gate on the journal and the tools site.
  *
- * One category: `analytics`, the site's own audience measurement
- * (tds-shared/analytics → the panel's Besucher-Statistik). Nothing else is
- * optional here — no advertising, no embeds. Without a "Statistik" consent the
- * beacon below sends nothing and stores nothing.
+ * Two categories: `analytics`, the site's own audience measurement
+ * (tds-shared/analytics → the panel's Besucher-Statistik), and `functional`
+ * ("Komfort"), which lets the browser remember the products a visitor looked
+ * at for the time-savings questionnaire (lib/productInterest.ts). No
+ * advertising, no embeds. Without a "Statistik" consent the beacon below sends
+ * nothing and stores nothing.
  */
 const showCookieNotice = !bare;
 ---
@@ -368,11 +370,19 @@ const showCookieNotice = !bare;
         mountConsentBanner({
           host,
           lang: document.documentElement.lang.startsWith("en") ? "en" : "de",
-          categories: ["analytics"],
+          categories: ["analytics", "functional"],
           privacyUrl: "/legal/datenschutz",
           imprintUrl: "/legal/impressum",
         });
       }
+    </script>
+
+    {/* The products this visit looked at, for the questionnaire's preselection.
+        Stays in the browser; stored only with the "Komfort" consent. */}
+    <script>
+      import { mountProductInterest } from "~/lib/productInterest";
+
+      mountProductInterest();
     </script>
 
     {/* Besucher-Statistik. Starts only once the visitor has agreed to

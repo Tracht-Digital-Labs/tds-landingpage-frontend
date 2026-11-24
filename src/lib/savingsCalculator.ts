@@ -113,6 +113,11 @@ export interface SavingsCopy {
   centre: string;
   chartLabel: string;
   note: string;
+  /** The product picker above the questions: label, its empty choice, the preselection note and the draft line. */
+  productLabel: string;
+  productOpen: string;
+  productHint: string;
+  productLine: string;
   cta: string;
   /** The CTA once an estimate stands, and the line that says what it carries. */
   ctaReady: string;
@@ -136,11 +141,15 @@ const copy: Record<Lang, SavingsCopy> = {
     centre: "Tage",
     chartLabel: "Etwa {year} Stunden oder {days} Arbeitstage gespart, von {work} Stunden Arbeitszeit im Jahr.",
     note: "Eine grobe Schätzung aus den Antworten, keine Zusage.",
+    productLabel: "Um welches Produkt geht es?",
+    productOpen: "Noch offen",
+    productHint: "Vorausgewählt nach den zuvor angesehenen Seiten.",
+    productLine: " Produkt: {title}.",
     cta: "Erstgespräch vereinbaren",
     ctaReady: "Diesen Ablauf besprechen",
-    handoff: "Die drei Antworten gehen als Entwurf ins Kontaktformular.",
+    handoff: "Die Antworten gehen als Entwurf ins Kontaktformular.",
     draft:
-      "Aus dem Zeitersparnis-Fragebogen: Dauer {minutes}, Häufigkeit {perWeek}, Routine {share}. Geschätzt etwa {year} Stunden pro Jahr.\n\nUm diesen Ablauf geht es: ",
+      "Aus dem Zeitersparnis-Fragebogen: Dauer {minutes}, Häufigkeit {perWeek}, Routine {share}. Geschätzt etwa {year} Stunden pro Jahr.{product}\n\nUm diesen Ablauf geht es: ",
   },
   en: {
     headline: "How much time",
@@ -156,11 +165,15 @@ const copy: Record<Lang, SavingsCopy> = {
     centre: "days",
     chartLabel: "About {year} hours or {days} working days saved, out of {work} working hours a year.",
     note: "A rough estimate from the answers, not a promise.",
+    productLabel: "Which product is it about?",
+    productOpen: "Not decided yet",
+    productHint: "Preselected from the pages viewed before.",
+    productLine: " Product: {title}.",
     cta: "Book a first conversation",
     ctaReady: "Talk this task through",
-    handoff: "The three answers go into the contact form as a draft.",
+    handoff: "The answers go into the contact form as a draft.",
     draft:
-      "From the time-savings questionnaire: duration {minutes}, frequency {perWeek}, routine {share}. Estimated at about {year} hours per year.\n\nThe task in question: ",
+      "From the time-savings questionnaire: duration {minutes}, frequency {perWeek}, routine {share}. Estimated at about {year} hours per year.{product}\n\nThe task in question: ",
   },
 };
 
@@ -174,12 +187,14 @@ export function answerLabel(id: QuestionId, value: number, lang: Lang): string {
   return question?.answers.find((answer) => answer.value === value)?.label[lang] ?? String(value);
 }
 
-export function savingsDraft(template: string, input: SavingsInput, lang: Lang): string {
+/** `product` is the chosen product's title; without one the draft names none. */
+export function savingsDraft(template: string, input: SavingsInput, lang: Lang, product = ""): string {
   const values: Record<string, string> = {
     minutes: answerLabel("minutes", input.minutes, lang),
     perWeek: answerLabel("perWeek", input.perWeek, lang),
     share: answerLabel("share", input.share, lang),
     year: formatSavings(savings(input).year, lang),
+    product: product ? copy[lang].productLine.replace("{title}", product) : "",
   };
   return template.replace(/\{(\w+)\}/g, (match, key: string) => values[key] ?? match);
 }

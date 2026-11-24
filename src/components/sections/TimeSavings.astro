@@ -8,6 +8,12 @@
  * (`lib/contactDraft.ts`). It sends nothing. Without JavaScript the questions
  * stay usable and the button still leads to the contact form.
  *
+ * Above them an optional product picker: the Shop's catalogue by category
+ * (`lib/serviceFinder.ts`). The script preselects the product this visit
+ * looked at most (`lib/productInterest.ts`) until the visitor picks one, and
+ * says so under the field. It does not change the estimate; it names the
+ * product in the draft and sets the contact reason.
+ *
  * Questions, answer values and copy live in `lib/savingsCalculator.ts`. No
  * measured figure, no promise: the note calls the result a rough estimate.
  *
@@ -38,6 +44,7 @@ import Arrow from "~/components/ui/Arrow.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import { resolveLang } from "~/lib/i18n";
 import { SAVINGS_QUESTIONS, WORK_YEAR_HOURS, getSavingsCopy } from "~/lib/savingsCalculator";
+import { CATALOGUE, CATALOGUE_PRODUCTS, CATEGORY_IDS } from "~/lib/serviceFinder";
 
 const lang = resolveLang(Astro.currentLocale);
 const copy = getSavingsCopy(lang);
@@ -56,6 +63,15 @@ const ICONS: Record<string, string> = {
   // Stacked layers: how much is routine.
   share: '<path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/>',
 };
+// A parcel: which product.
+const PRODUCT_ICON = '<path d="m21 8-9-5-9 5v8l9 5 9-5V8Z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/>';
+
+/** The Shop's catalogue by category, as the assistant offers it. */
+const productGroups = CATEGORY_IDS.map((id) => ({
+  name: CATALOGUE[id].name[lang],
+  contact: CATALOGUE[id].contact,
+  products: CATALOGUE_PRODUCTS.filter((product) => product.category === id),
+}));
 ---
 
 <section id="savings" class="section-spacing" aria-labelledby="savings-heading">
@@ -78,6 +94,28 @@ const ICONS: Record<string, string> = {
         data-pending-one={copy.pendingOne}
         data-pending-two={copy.pendingTwo}
       >
+        <div class="savings-product">
+          <label class="savings-product__label" for="savings-product">
+            <span class="savings-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={PRODUCT_ICON} />
+            </span>
+            {copy.productLabel}
+          </label>
+          <div class="savings-product__well">
+            <select id="savings-product" name="product" class="savings-product__select" aria-describedby="savings-product-hint" data-savings-product>
+              <option value="">{copy.productOpen}</option>
+              {productGroups.map((group) => (
+                <optgroup label={group.name}>
+                  {group.products.map((product) => (
+                    <option value={product.id} data-contact={group.contact}>{product.title[lang]}</option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+            <svg class="savings-product__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </div>
+          <p id="savings-product-hint" class="savings-product__hint" data-savings-product-hint hidden>{copy.productHint}</p>
+        </div>
         {
           SAVINGS_QUESTIONS.map((question) => (
             <fieldset class="savings-question" data-tone={TONES[question.id]}>
@@ -217,6 +255,75 @@ const ICONS: Record<string, string> = {
   .savings-form {
     display: grid;
     gap: 0.875rem;
+  }
+
+  /* The product row: optional, so it is tinted in the page's navy rather than
+     a question colour, and its native select sits in the same pressed-in
+     well as the answers. */
+  .savings-product {
+    --savings-tone: #050f68;
+    display: grid;
+    gap: 0.75rem;
+    padding: 1rem 1.125rem 1.125rem;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--savings-tone) 7%, var(--lp-surface-card));
+  }
+  .savings-product .savings-icon {
+    color: #fff;
+  }
+  .savings-product__label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--color-black);
+  }
+  .savings-product__well {
+    position: relative;
+    padding: 0.25rem;
+    border-radius: 1.625rem;
+    background: var(--color-paper);
+    box-shadow: var(--tds-shadow-inset);
+  }
+  .savings-product__select {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.5rem 2.75rem 0.5rem 0.875rem;
+    border: 0;
+    border-radius: 100px;
+    appearance: none;
+    background: transparent;
+    color: var(--color-black);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .savings-product__select:focus-visible {
+    outline: 2px solid var(--color-black);
+    outline-offset: 2px;
+  }
+  .savings-product__chevron {
+    position: absolute;
+    top: 50%;
+    right: 1.125rem;
+    translate: 0 -50%;
+    color: var(--color-black);
+    pointer-events: none;
+  }
+  .savings-product__hint {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+  @media (max-width: 40rem) {
+    .savings-product {
+      padding: 0.875rem 0.875rem 1rem;
+    }
+    .savings-product__label {
+      font-size: 1rem;
+    }
   }
   /* Each question is a tinted row in its brand colour: coral, gold,
      periwinkle. The tints mix into the card, so they follow the theme; a
