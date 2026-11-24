@@ -82,8 +82,8 @@ const imageLang = resolveLang(Astro.currentLocale);
      This used to be a marketing-surface card: 6px radius, a soft shadow
      that deepened on hover, a 1.5px lift and a 6% image zoom. The blog
      draws the same articles flat, with no lift and no shadow, and marks
-     hover with a 2px accent bar growing down the leading edge. Two
-     properties, two pictures of the same article.
+     hover with a deeper fill. Two properties, two pictures of the same
+     article.
 
      It is a LOCAL rebuild, not the blog's stylesheet: `.post-card` lives in
      tds-blog-frontend's own `global.css`, and its hover fill reads
@@ -120,26 +120,6 @@ const imageLang = resolveLang(Astro.currentLocale);
     background: var(--lp-card-bg-hover);
   }
 
-  /* The whole hover affordance. Grows from the top down on the leading
-     edge — `:focus-within` as well, so it is reachable from the keyboard
-     and not only from a pointer. */
-  .post-card::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--color-accent);
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform 320ms var(--lp-ease-bounce);
-    z-index: 2;
-  }
-  .post-card:hover::before,
-  .post-card:focus-within::before {
-    transform: scaleY(1);
-  }
 
   .post-card:focus-visible {
     outline: 2px solid var(--color-accent);
@@ -290,7 +270,6 @@ const imageLang = resolveLang(Astro.currentLocale);
 
   @media (prefers-reduced-motion: reduce) {
     .post-card,
-    .post-card::before,
     .post-card__art,
     .post-card .card-title,
     .post-card__more,
