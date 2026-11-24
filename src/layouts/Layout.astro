@@ -360,8 +360,10 @@ const showCookieNotice = !bare;
 
     {/* Consent banner (plain DOM, tds-shared ≥ 0.64.8). A top-level script: one
         inside `{!bare && …}` would ship unbundled. It mounts at idle, only
-        where the host exists (not on bare pages), and asks only when no
-        decision is stored — `client:when="consent"` semantics. */}
+        where the host exists (not on bare pages), and asks when no decision
+        is stored or the stored one was not asked about "Komfort"
+        (`functional`, added 2026-11-24 for the product picker; tds-shared
+        ≥ 0.68.4). */}
     <script>
       import { mountConsentBanner } from "@tracht-digital-labs/tds-shared/dom";
 
@@ -371,6 +373,7 @@ const showCookieNotice = !bare;
           host,
           lang: document.documentElement.lang.startsWith("en") ? "en" : "de",
           categories: ["analytics", "functional"],
+          askAgainFor: ["functional"],
           privacyUrl: "/legal/datenschutz",
           imprintUrl: "/legal/impressum",
         });
