@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
+import { contactIslandSource } from "../__tests__/contactIslandSource";
 import { contactFormCopy } from "./contactCopy";
 
 /**
@@ -17,7 +18,7 @@ import { contactFormCopy } from "./contactCopy";
  * panel with no subject, exactly as it did before the field existed.
  */
 const read = (path: string) => readFileSync(resolve(process.cwd(), path), "utf8");
-const form = read("src/components/islands/ContactForm.tsx");
+const form = contactIslandSource();
 const section = read("src/components/sections/Contact.astro");
 
 /** Comments explain these rules, so a grep over them finds its own prose. */
@@ -91,7 +92,7 @@ describe("the next steps moved behind the send button", () => {
   });
 
   it("fills the confirmation instead", () => {
-    const success = form.slice(form.indexOf("const success ="), form.indexOf("const submitting"));
+    const success = read("src/components/islands/contact/ContactSuccess.tsx");
     expect(success).toMatch(/nextSteps/);
     expect(success).toMatch(/nextSteps\.items\.map/);
     // Still focused as it mounts, not from an effect keyed on the state: the

@@ -1,0 +1,139 @@
+/* === Contact form: field + focus state ============================ */
+
+/* Each field sits in a `.contact-field-row`: label above, the pressed-in
+   well below (2026-10-11). The underline rules that used to run along each
+   well's bottom are gone — a well with a line under it drew a second edge
+   that read as a misaligned border. */
+.contact-field-row {
+  position: relative;
+}
+
+/* Two fields side by side from `sm`. */
+.contact-form-pair {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 40rem) {
+  .contact-form-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem 1.5rem;
+  }
+}
+
+/* The label: the site's eyebrow on navy. */
+.contact-field-label {
+  display: block;
+  font-size: 0.6875rem;
+  line-height: 1;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgb(255 255 255 / 0.65);
+  margin-bottom: 0.625rem;
+  transition: color 200ms ease;
+}
+.contact-field-row:hover .contact-field-label {
+  color: rgb(255 255 255 / 0.8);
+}
+.contact-field-row:focus-within .contact-field-label {
+  color: var(--color-accent-pink);
+}
+
+/* The field is PRESSED INTO the block (2026-09-29, asked for).
+
+   It used to be a transparent strip that only warmed up on focus. Now it is a
+   recessed trough: a darker ground with a hard inset shadow on the top and
+   left edges — the same shadow language as everything else on these sites,
+   just pointing inwards. `--tds-shadow-inset` from tds-shared is tuned for a
+   light surface (13% black), which is invisible on navy, so the ink is spelled
+   out here for this one dark ground.
+
+   The wash is now DARKER on focus, not lighter. A field that brightens as it
+   is pressed in is two opposite cues at once; going deeper says the same thing
+   as the shadow.
+
+   `!important` throughout: the element carries Tailwind's `bg-transparent`,
+   which is a utility and would otherwise win. */
+.contact-field {
+  position: relative;
+  z-index: 1;
+  border-radius: 10px;
+  padding: 1rem 1.125rem !important;
+  background-color: rgb(0 0 0 / 0.2) !important;
+  box-shadow: inset 2px 2px 0 0 rgb(0 0 0 / 0.32);
+  transition:
+    background-color 220ms ease,
+    box-shadow 220ms ease;
+}
+.contact-field-row:hover .contact-field:not(:focus) {
+  background-color: rgb(0 0 0 / 0.22) !important;
+}
+.contact-field:focus {
+  background-color: rgb(0 0 0 / 0.28) !important;
+  /* Deeper, so focus reads as pressed further in. On keyboard and click
+     focus tds-shared's field rule takes over the well and colours it (coral
+     on this navy tone) in place of a focus ring; this value is the
+     fallback for a programmatic focus that is not `:focus-visible`. */
+  box-shadow: inset 3px 3px 0 0 rgb(0 0 0 / 0.38);
+}
+
+/* Error variant — solid pink baseline so the broken field reads
+   immediately. The accent line still grows on focus, but it sits
+   on top of the same colour so the underline keeps depth. */
+.contact-field-row--error .contact-field {
+  box-shadow:
+    inset 2px 2px 0 0 rgb(0 0 0 / 0.32),
+    inset 0 0 0 1.5px var(--color-accent-pink);
+}
+.contact-field-row--error .contact-field-label {
+  color: var(--color-accent-pink);
+}
+
+/* Text and caret on the dark well (its fill is the rule above, which also
+   keeps Safari / Firefox-on-macOS from painting a light UA background). */
+.contact-field {
+  caret-color: var(--color-accent-pink);
+  color-scheme: dark;
+}
+.contact-field::placeholder {
+  opacity: 1;
+  color: rgb(255 255 255 / 0.4);
+  transition: color 200ms ease;
+}
+.contact-field-row:focus-within .contact-field::placeholder {
+  color: rgb(255 255 255 / 0.25);
+}
+
+/* Browser autofill paints its own background + text colour, which
+   clashes with the dark section. Neutralise both via the WebKit
+   autofill pseudo (the 9999s transition trick stops Chrome from
+   re-applying the background on focus). */
+.contact-field:-webkit-autofill,
+.contact-field:-webkit-autofill:hover,
+.contact-field:-webkit-autofill:focus,
+.contact-field:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  box-shadow: 0 0 0 1000px transparent inset;
+  transition: background-color 9999s ease-in-out 0s;
+  caret-color: var(--color-accent-pink);
+}
+
+/* The custom page scrollbar is brand-primary over paper; inside
+   the textarea (which sits on the dark Contact section) that
+   same primary thumb is invisible against the section bg. Reskin
+   the local scrollbar in white so it reads. */
+.contact-field::-webkit-scrollbar-thumb {
+  background-color: rgb(255 255 255 / 0.35);
+}
+.contact-field::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(255 255 255 / 0.55);
+}
+
+/* The line under the message label that says what belongs in the field. */
+#contact .contact-field-hint {
+  margin: -0.25rem 0 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.55);
+}

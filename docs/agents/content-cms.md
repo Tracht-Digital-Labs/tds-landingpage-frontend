@@ -85,7 +85,7 @@ vocabulary in anonymous cases, no URLs in prose, `disclosure` ↔ `siteUrl` both
 origins). Screenshots of a customer site need `previewAllowed` (see IMAGES.md).
 
 While a named case is published, no surface may promise that references are always anonymised; that sentence
-lives in `homeContent.ts` (`referencesHome.label`) and in `services.ts` (`referencesLabel`, 4 services × 2
+lives in `homeContent.ts` (`referencesHome.label`) and in `services/*.ts` (`referencesLabel`, 5 services × 2
 languages). A test ties the copy to the catalog.
 
 Asymmetries:

@@ -42,7 +42,8 @@ import { releasedSlugs, shopProductHref, shopServicesHref } from "~/lib/serviceP
  * `.finder` rule below is `:global`, anchored on the `.finder` root.
  */
 import { localizePath, resolveLang } from "~/lib/i18n";
-import { CATALOGUE, CATALOGUE_PRODUCTS, FINDER_SECTION, savingsLevel, type FinderProduct } from "~/lib/serviceFinder";
+import { CATALOGUE, CATALOGUE_PRODUCTS, savingsLevel, type FinderProduct } from "~/lib/serviceFinder";
+import { FINDER_SECTION } from "~/lib/serviceFinderCopy";
 import ServiceFinderIsland from "~/components/islands/ServiceFinder";
 
 const lang = resolveLang(Astro.currentLocale);

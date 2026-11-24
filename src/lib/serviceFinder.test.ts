@@ -1,10 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { FINDER_COPY, FINDER_SECTION } from "./serviceFinderCopy";
 import {
   CATALOGUE,
   CATALOGUE_PRODUCTS,
   CATEGORY_IDS,
-  FINDER_COPY,
-  FINDER_SECTION,
   MAX_MATCHES,
   STAGE_IDS,
   TOPIC_IDS,
@@ -141,7 +140,7 @@ describe("the finder's copy", () => {
 
 describe("estimated time saved", () => {
   it("gives every product a band and calls it an estimate", async () => {
-    const { CATALOGUE_PRODUCTS, FINDER_COPY, SAVINGS_LEVELS, savingsLevel } = await import("./serviceFinder");
+    const { CATALOGUE_PRODUCTS, SAVINGS_LEVELS, savingsLevel } = await import("./serviceFinder");
     for (const product of CATALOGUE_PRODUCTS) expect(SAVINGS_LEVELS).toContain(savingsLevel(product.id));
     expect(savingsLevel("einen-ablauf-automatisieren")).toBe("high");
     expect(FINDER_COPY.de.savingsNote).toMatch(/Schätzung.*keine Zusage/);

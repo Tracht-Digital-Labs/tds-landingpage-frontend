@@ -1,0 +1,174 @@
+/* === The contact card ==============================================
+
+   Four labelled groups on one surface (2026-10-11): the ways to reach a
+   person, the town, the two things to take away, the profiles. One label
+   style, one icon disc, one hairline between groups — the earlier card mixed
+   rows, pills and loose icons and read as unfinished.
+
+   Its surface is shared with the form card (`layout.css`). */
+
+#contact .contact-card__title {
+  margin: 0 0 0.75rem;
+  color: rgb(255 255 255 / 0.55);
+}
+
+/* The round disc every row starts with. White at 8 % on the card; it turns
+   pink with a navy glyph when its row is hovered or focused. */
+#contact .contact-disc {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.08);
+  color: rgb(255 255 255 / 0.8);
+  transition:
+    background-color 200ms var(--tds-ease-out),
+    color 200ms var(--tds-ease-out);
+}
+
+/* The three ways. A SEAM between rows rather than a gap: the rows are one
+   list of one kind of thing, and air between them would make three cards
+   inside a card. */
+#contact .contact-ways {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The whole row is the link — not just the value on it. A 2px-tall text
+   target inside a 3rem row is the most common way a contact block loses a
+   tap on a phone. */
+#contact .contact-way {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 0.625rem 0.5rem 0.5rem;
+  margin-inline: -0.5rem;
+  border-radius: 10px;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 200ms var(--tds-ease-out);
+}
+#contact .contact-way:hover {
+  background: rgb(255 255 255 / 0.06);
+}
+#contact .contact-way:focus-visible {
+  outline: 2px solid var(--color-accent-pink);
+  outline-offset: 2px;
+}
+#contact .contact-way:is(:hover, :focus-visible) .contact-disc {
+  background: var(--color-accent-pink);
+  color: var(--color-surface-navy);
+}
+#contact .contact-way__text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+#contact .contact-way__label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.55);
+}
+#contact .contact-way__value-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+}
+/* "Auch für Notfälle" beside the number. Pink on navy, measured ≥ 6:1 like
+   the form's other pink cues. */
+#contact .contact-way__badge {
+  white-space: nowrap;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  /* White on a deeper pink: the pink type on its own tint failed axe at 390 px. */
+  background: color-mix(in srgb, var(--color-accent-pink) 34%, transparent);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+/* The value can be a long address on a narrow column; it wraps rather than
+   pushing the arrow out of the row. */
+#contact .contact-way__value {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+#contact .contact-way__go {
+  margin-left: auto;
+  flex: none;
+  color: rgb(255 255 255 / 0.4);
+  transition:
+    transform 200ms var(--tds-ease-out),
+    color 200ms var(--tds-ease-out);
+}
+#contact .contact-way:hover .contact-way__go {
+  color: #fff;
+  transform: translateX(2px);
+}
+
+/* The groups under the ways, each with its label, separated by one hairline. */
+#contact .contact-card__group {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+#contact .contact-card__group-label {
+  margin: 0 0 0.75rem;
+}
+/* WhatsApp and the profile icons on one line where they fit. */
+#contact .contact-card__social-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+#contact .contact-action--whatsapp {
+  flex: none;
+  width: 2.75rem;
+  padding: 0;
+}
+#contact .contact-action--whatsapp:hover {
+  color: #25d366;
+}
+
+#contact .contact-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border-radius: var(--tds-radius-pill);
+  background: rgb(255 255 255 / 0.1);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background-color 200ms var(--tds-ease-out),
+    color 200ms var(--tds-ease-out);
+}
+#contact .contact-action:hover {
+  background: #fff;
+  color: var(--color-surface-navy);
+}
+#contact .contact-action:focus-visible {
+  outline: 2px solid var(--color-accent-pink);
+  outline-offset: 3px;
+}

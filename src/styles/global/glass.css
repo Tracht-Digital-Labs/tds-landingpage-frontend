@@ -1,0 +1,85 @@
+/* === Glass (2026-09-29) ======================================================
+
+   Asked for: the CTAs, the contact form and the bookmarks should read like the
+   site header — a translucent fill over a blur — and the shadow ink should be
+   translucent too, so the page shows through it.
+
+   `backdrop-filter` is authored UNPREFIXED, and only unprefixed. lightningcss
+   adds the `-webkit-` form at build time from `vite.build.cssTarget` (set by
+   `tdsViteBuild`); a hand-written pair gets collapsed to the `-webkit-` form
+   ALONE and the blur dies in Firefox. Same contract as `.brand-header`.
+
+   ### What the buttons get, and the one thing they cannot
+
+   A BLURRED BACKDROP: yes, on the button itself. A blurred SHADOW: no, and the
+   reason is structural rather than a choice. A hard shadow you can see through
+   has to be a plate — a copy of the shape offset behind the element — because a
+   `box-shadow` paints a colour and cannot filter what is behind it. A plate has
+   to be a child. And every CTA is `:where([data-cta])`, which sets
+   `overflow: hidden` so its arrival sweep (`.cta-shine`, a real element that
+   travels across the button on `translateX`) stays inside the pill. A clip that
+   holds the sweep in holds an `::after` in as well, so the plate would be
+   invisible.
+
+   So a button's shadow stays a `box-shadow` and becomes TRANSLUCENT ink: the
+   page is visible through it, just not blurred. The elements that do not clip
+   their own children — the header, the contact cards, the bookmarks — take a
+   real blurred plate. Moving the sweep off a child element (onto an animated
+   `background-position`, say) would remove the restriction; that is a change to
+   `lib/motion/cta.ts` and a separate decision.
+
+   `--tds-shadow-ink` is opaque `#050f68` on the marketing surface. Overriding
+   it here reaches every hard shadow on the page — cards included — which is the
+   intent: one ink, so a card and a button do not disagree about how solid a
+   shadow is. The dark theme's own value is already translucent (0.32), so it is
+   left alone. */
+[data-surface="marketing"] {
+  --tds-shadow-ink: rgb(5 15 104 / 0.6);
+}
+
+/* ### The blur goes on the CTA LIST, not on `.btn`
+
+   This site's CTAs are almost never `.btn` components — they are anchors with
+   utilities and component classes (`.hero-cta--primary`, `.first-call__cta`,
+   `.submit-button`, …), which is why the hard-shadow block further down matches
+   them by that hand-kept list rather than by a class. The glass has to match the
+   same set or it reaches nothing: a first pass that styled `.btn-primary` hit
+   one button on the whole home page (the service pages' `DetailHero`) and the
+   probe found the hero CTAs missing entirely.
+
+   A `backdrop-filter` on an OPAQUE fill does nothing at all, so this half only
+   pays off where the fill is translucent — and each fill is made translucent
+   where it is declared, in the component that owns it, because the fills differ
+   (navy, bordeaux, white, card) and no rule here can know which. */
+:where(
+  .hero-cta,
+  [data-cta],
+  a[class*="rounded-[100px]"],
+  a[class*="rounded-full"][class*="px-5"],
+  a[class*="rounded-full"][class*="px-7"],
+  .first-call__cta,
+  .faq-cta-pill,
+  .submit-button,
+  .showcase-nav__btn
+) {
+  backdrop-filter: blur(10px);
+}
+
+/* The `.btn` components that do exist (the service pages' hero CTA). 88% and
+   not the header's 62%: these fills carry WHITE type, and below roughly 85% a
+   light photo behind them bleeds through far enough to take the contrast with
+   it. `npm run audit:contrast` measures that from real pixels — axe cannot,
+   because it files a translucent background as "incomplete" rather than as a
+   violation. */
+[data-surface="marketing"] .btn-primary:not(.tds-menu-toggle) {
+  background-color: color-mix(in oklab, var(--color-primary) 88%, transparent);
+}
+[data-surface="marketing"] .btn-accent:not(.tds-menu-toggle) {
+  background-color: color-mix(in oklab, var(--color-accent) 88%, transparent);
+}
+/* tds-shared fades a button to `opacity: .92` on hover, which would fade the
+   blurred fill and the type with it. The fill already carries the state. */
+[data-surface="marketing"]
+  :is(.btn-primary, .btn-accent):hover:not(:disabled):not(.tds-menu-toggle) {
+  opacity: 1;
+}

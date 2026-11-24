@@ -1,0 +1,9 @@
+/* The site's arrow (`components/ui/Arrow.astro`): a chevron without a shaft,
+   sized by the text it stands in and sitting on its middle. */
+.lp-arrow {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+}

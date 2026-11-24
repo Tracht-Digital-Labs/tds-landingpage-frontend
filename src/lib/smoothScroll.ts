@@ -1,4 +1,5 @@
 import Lenis from "lenis";
+import { anchorJumpTarget } from "~/lib/anchorJump";
 import { JUMP_MAX_MS, jumpDuration, planJump } from "~/lib/scrollJump";
 import {
   classifyWheel,
@@ -23,13 +24,6 @@ declare global {
     tdsScrollTo?: (target: ScrollTarget, opts?: { immediate?: boolean }) => void;
   }
 }
-
-/** How long a click-jump takes, both paths. */
-/**
- * The longest a jump may take. The actual duration follows the distance
- * (`jumpDuration`) — a flat 1200 ms made a short jump crawl.
- */
-const JUMP_DURATION_MS = JUMP_MAX_MS;
 
 /**
  * Clearance for the fixed floating header, read back off `<html>`'s
@@ -133,10 +127,11 @@ export function mountSmoothScroll(): () => void {
   // The page belongs to the tween while a jump is running: wheel, touch
   // and the scroll keys are swallowed until it lands. See ~/lib/scrollLock
   // for what stays live (zoom, typing, Tab/Escape) and why. The safety
-  // window is the jump's own duration plus a margin, so even a jump that
-  // never reports completion cannot leave the page frozen.
+  // window is the longest jump (`JUMP_MAX_MS`; the actual duration follows
+  // the distance) plus a margin, so even a jump that never reports
+  // completion cannot leave the page frozen.
   const inputLock = createScrollLock({
-    maxDurationMs: JUMP_DURATION_MS + 600,
+    maxDurationMs: JUMP_MAX_MS + 600,
   });
 
   /**
@@ -173,42 +168,16 @@ export function mountSmoothScroll(): () => void {
     window.removeEventListener("pointercancel", onPointerUp, true);
   };
 
-  // Delegated handler factory: in-page anchor links (nav, footer, CTAs)
-  // bounce-jump through `scrollTo` instead of the browser's instant/native
-  // scroll. Shared by both the desktop (Lenis) and touch (rAF) paths.
+  // In-page anchor links (nav, footer, CTAs) bounce-jump through `scrollTo`
+  // instead of the browser's instant scroll; `lib/anchorJump.ts` decides
+  // which clicks qualify. Shared by the desktop (Lenis) and touch (rAF) paths.
   const makeAnchorClickHandler =
     (scrollTo: NonNullable<Window["tdsScrollTo"]>) => (event: MouseEvent) => {
-      if (
-        event.defaultPrevented ||
-        event.button !== 0 ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey
-      ) {
-        return;
-      }
-      const link = (event.target as Element | null)?.closest("a[href]");
-      if (!(link instanceof HTMLAnchorElement)) return;
-      if (link.target && link.target !== "_self") return;
-
-      const url = new URL(link.href, location.href);
-      if (url.origin !== location.origin) return;
-      const samePath =
-        url.pathname.replace(/\/+$/, "") === location.pathname.replace(/\/+$/, "");
-      if (!samePath || !url.hash || url.hash === "#") return;
-
-      let el: Element | null = null;
-      try {
-        el = document.querySelector(url.hash);
-      } catch {
-        el = document.getElementById(decodeURIComponent(url.hash.slice(1)));
-      }
-      if (!(el instanceof HTMLElement)) return;
-
+      const jump = anchorJumpTarget(event);
+      if (!jump) return;
       event.preventDefault();
-      scrollTo(el);
-      history.pushState(null, "", url.hash);
+      scrollTo(jump.element);
+      history.pushState(null, "", jump.hash);
     };
 
   const isCoarsePointer =

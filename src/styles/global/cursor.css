@@ -1,0 +1,114 @@
+/* Custom cursor — an additive dot + trailing ring layered over the native
+   pointer (see lib/customCursor.ts). Both start hidden and fade in on
+   first pointer move. */
+.tds-cursor-ring,
+.tds-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  will-change: transform;
+  /* Brand accent over light surfaces; the JS flips this to a light pink
+     over dark surfaces (see lib/customCursor.ts → .is-on-dark). */
+  --cursor-tint: var(--color-accent);
+}
+.tds-cursor-ring.is-on-dark,
+.tds-cursor-dot.is-on-dark {
+  --cursor-tint: #ff9ab6;
+}
+.tds-cursor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--cursor-tint);
+  transition:
+    opacity 200ms ease,
+    background-color 200ms ease;
+}
+.tds-cursor-ring {
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  /* Flat design — a solid, borderless translucent fill (no outline, no
+     shadow). The rAF loop drives transform every frame, so no transform
+     transition here. */
+  background-color: color-mix(in srgb, var(--cursor-tint) 20%, transparent);
+  transition:
+    opacity 200ms ease,
+    width 180ms var(--lp-ease-bounce),
+    height 180ms var(--lp-ease-bounce),
+    background-color 200ms ease;
+}
+.tds-cursor-ring.is-hover {
+  width: 54px;
+  height: 54px;
+  background-color: color-mix(in srgb, var(--cursor-tint) 30%, transparent);
+}
+.tds-cursor-ring.is-down {
+  width: 24px;
+  height: 24px;
+  background-color: color-mix(in srgb, var(--cursor-tint) 42%, transparent);
+}
+/* The drawn cursor IS the cursor (2026-10-05): while the drawn cursor (`lib/customCursor.ts`) runs,
+   the native pointer is hidden on the whole page, descendants and
+   pseudo-elements included — `!important` because components set their own
+   `cursor` (grab, pointer, text) and every one of them would bring the
+   arrow back. Over an action control the drawn cursor turns white or blue
+   by the control's brightness (lib/cursorAbsorb.ts). Without popover support the drawn cursor cannot
+   rise above a modal, so there the native pointer stays while one is open. */
+html[data-cursor-absorb],
+html[data-cursor-absorb] *,
+html[data-cursor-absorb] *::before,
+html[data-cursor-absorb] *::after {
+  cursor: none !important;
+}
+@supports not selector(:popover-open) {
+  html[data-cursor-absorb]:has(dialog:modal),
+  html[data-cursor-absorb]:has(dialog:modal) * {
+    cursor: auto !important;
+  }
+}
+/* The two cursor parts are manual popovers (top layer). Undo the UA popover
+   box — centred, bordered, padded, painted — so they stay what they were. */
+.tds-cursor-ring[popover],
+.tds-cursor-dot[popover] {
+  inset: 0 auto auto 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  color: inherit;
+}
+.tds-cursor-ring[popover] {
+  background-color: color-mix(in srgb, var(--cursor-tint) 20%, transparent);
+}
+.tds-cursor-ring[popover].is-hover {
+  background-color: color-mix(in srgb, var(--cursor-tint) 30%, transparent);
+}
+.tds-cursor-ring[popover].is-down {
+  background-color: color-mix(in srgb, var(--cursor-tint) 42%, transparent);
+}
+.tds-cursor-dot[popover] {
+  background-color: var(--cursor-tint);
+}
+/* Over an action control the tint is white (dark control) or the brand blue
+   (light control), set inline by lib/customCursor.ts, and the ring is fuller so
+   it reads against the button instead of washing out at 30 %. */
+.tds-cursor-ring[popover].is-action {
+  background-color: color-mix(in srgb, var(--cursor-tint) 55%, transparent);
+}
+/* No custom cursor where there's no fine pointer or motion is reduced. */
+@media (pointer: coarse) {
+  .tds-cursor-ring,
+  .tds-cursor-dot {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tds-cursor-ring,
+  .tds-cursor-dot {
+    display: none;
+  }
+}

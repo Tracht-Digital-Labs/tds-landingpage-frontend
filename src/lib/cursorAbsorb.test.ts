@@ -1,10 +1,9 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
+import { readStylesheet } from "../__tests__/stylesheet";
 
 import { CURSOR_ON_DARK, CURSOR_ON_LIGHT, tintForFill } from "./cursorAbsorb";
 
-const css = readFileSync(resolve(process.cwd(), "src/styles/global.css"), "utf8");
+const css = readStylesheet("global");
 
 describe("the drawn cursor over controls (2026-10-05)", () => {
   it("hides the native pointer on the whole page while the drawn cursor runs", () => {

@@ -85,6 +85,9 @@ describe("the demo card's markup", () => {
 });
 
 describe("the lightbox script", () => {
+  // `lib/previewLightbox.ts`, mounted from the component's <script>.
+  const lightbox = readFileSync(resolve(process.cwd(), "src/lib/previewLightbox.ts"), "utf8");
+
   it("reveals the magnifiers only after confirming dialog support", () => {
     const guard = lightbox.indexOf("typeof dialog.showModal");
     const reveal = lightbox.indexOf("button.hidden = false");

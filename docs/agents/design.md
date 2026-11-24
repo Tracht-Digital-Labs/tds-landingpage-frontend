@@ -37,7 +37,7 @@ or photo ground; the navy contact block (`.tds-tone-navy`) paints over it.
   on `<body>` hides the ground silently).
 - Check every borderless card's fill against `--color-paper`.
 - `--lp-surface-card` is the card fill; both numbers in it are measured (see the comment in
-  `styles/global.css`): it must separate from paper **and** keep `--color-muted` above 4.5:1. Re-measure both and
+  `styles/global/color.css`): it must separate from paper **and** keep `--color-muted` above 4.5:1. Re-measure both and
   run `npm run audit:ux` before touching it.
 
 ## Full width
@@ -71,14 +71,14 @@ alternating left/right order was tried and dropped the same day; don't bring it 
 ## Hard 2D shadows (tds-shared ≥ 0.42)
 
 - Boxes take `--tds-shadow-hard`, controls `--tds-shadow-hard-sm` and press into it with `translate`. The tokens
-  come from the marketing surface; `global.css` applies them through a zero-specificity `:where()` list (cards by
+  come from the marketing surface; `global/shadows.css` applies them through a zero-specificity `:where()` list (cards by
   class and `rounded-[6px]`, pill links, CTAs).
 - A scroll track keeps padding for the offset (showcase, packages); a seam mosaic takes **one** shadow on its
   container.
 - Hover and keyboard focus lift an interactive element 2 px up-left while the offset grows
   (`--tds-shadow-hard(-sm)-hover`, tds-shared ≥ 0.42.2). FAQ rows are round cards that lift the same way.
 - **A control's hard shadow is a dark shade of its own fill:** each control names its fill `--lp-fill` (rest and
-  hover), and the `:where()` list at the end of `global.css` re-declares the shadow tokens on it. A new control
+  hover), and the `:where()` list in `global/shadow-colour.css` re-declares the shadow tokens on it. A new control
   joins that list (or takes `.lp-ink`). Twins over dark bands keep black ink.
 - **No navy shadow under a navy fill** (0.73.0): navy 45 % into black is still navy. Every navy-family
   `--lp-fill` (surface-navy, primary and its mixes) sets `--lp-shade: var(--color-accent-pink)`; every other

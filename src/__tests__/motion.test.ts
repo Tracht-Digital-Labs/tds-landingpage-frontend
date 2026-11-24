@@ -1,6 +1,8 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { contactIslandSource } from "./contactIslandSource";
+import { readStylesheet } from "./stylesheet";
 
 /**
  * The motion rules for this site, held as a source contract. None of these
@@ -92,7 +94,7 @@ describe("motion on the landing page", () => {
     expect(faq).toContain('class="faq-item tds-disclosure"');
     expect(faq).not.toContain("::details-content {");
     // Scoped by .tds-disclosure now; a document-wide switch is not needed.
-    expect(src("styles/global.css")).not.toMatch(/^\s*interpolate-size:/m);
+    expect(readStylesheet("global")).not.toMatch(/^\s*interpolate-size:/m);
   });
 
   /**
@@ -101,7 +103,7 @@ describe("motion on the landing page", () => {
    * navigation would play two animations.
    */
   it("animates page changes with Motion, not a native View Transition", () => {
-    const css = src("styles/global.css");
+    const css = readStylesheet("global");
     expect(css).not.toContain("page-transitions.css");
     expect(css.replace(/\/\*[\s\S]*?\*\//g, "")).not.toMatch(/view-transition/);
     const layout = src("layouts/Layout.astro");
@@ -115,7 +117,7 @@ describe("motion on the landing page", () => {
   it("never leaves the incoming page hidden", () => {
     // The start state exists only under the attribute, and a failsafe
     // keyframe shows <main> whatever happens to the script.
-    const css = src("styles/global.css");
+    const css = readStylesheet("global");
     expect(css).toMatch(/html\[data-page-enter\] #main \{[^}]*animation: lp-enter-failsafe/);
     expect(css).toMatch(/@keyframes lp-enter-failsafe \{\s*to \{\s*opacity: 1;/);
     // The flag is set only after an internal click, and never under reduced motion.
@@ -128,11 +130,17 @@ describe("motion on the landing page", () => {
    * flat colour behind it, and closes with a bare cross.
    */
   it("animates every modal through lib/motion/dialog.ts", () => {
-    for (const file of ["components/ServiceAssistant.astro", "components/ui/PreviewLightbox.astro"]) {
+    // Each modal with the file its script lives in.
+    const modals = [
+      ["components/ServiceAssistant.astro", "components/ServiceAssistant.astro"],
+      ["components/ui/PreviewLightbox.astro", "lib/previewLightbox.ts"],
+    ] as const;
+    for (const [file, scriptFile] of modals) {
       const code = src(file);
-      expect(code, file).toContain('import { animatedDialog } from "~/lib/motion/dialog"');
+      const source = src(scriptFile);
+      expect(source, scriptFile).toContain('import { animatedDialog } from "~/lib/motion/dialog"');
       // No raw open/close left that would skip the animation.
-      const script = code.slice(code.indexOf("<script>"));
+      const script = source.slice(Math.max(0, source.indexOf("<script>")));
       expect(script, file).not.toMatch(/dialog\.(showModal|close)\(\)/);
       // The cross has no chip behind it.
       expect(code, file).toMatch(/__close \{[^}]*background: none;/);
@@ -208,7 +216,7 @@ describe("motion on the landing page", () => {
   });
 
   it("animates the contact form only through the shared primitives", () => {
-    const form = src("components/islands/ContactForm.tsx");
+    const form = contactIslandSource();
     expect(form).toContain('from "@tracht-digital-labs/tds-shared/motion/react"');
     expect(form).not.toMatch(/from ["'](motion|framer-motion)/);
   });
@@ -216,7 +224,7 @@ describe("motion on the landing page", () => {
   it("focuses the thank-you as it mounts, not from an effect", () => {
     // The thank-you fades in AFTER the form has faded out; an effect keyed on
     // the submit state runs while the heading does not exist yet.
-    const form = src("components/islands/ContactForm.tsx");
+    const form = contactIslandSource();
     expect(form).toContain("ref={(el) => el?.focus()}");
     expect(form).not.toContain("successHeadingRef");
   });

@@ -3,6 +3,14 @@
 ## Application shape
 
 - Prefer `.astro` components; add a React island only for state, browser APIs or event-driven interaction.
+- A component's bundled `<script>` of more than a few lines lives in `src/lib/<name>.ts` as a `mount…()`
+  function the script imports and calls (`heroCarousel`, `floatingCta`, `timeSavings`, `previewLightbox`,
+  `propertyTabs`, `pageScrollbar`). Source-level tests about that behaviour read the lib file.
+- A large global stylesheet (one that styles a React island, whose markup carries no Astro scope) lives in
+  `src/styles/<name>.css`, an index of `@import`s of partials under `src/styles/<name>/` in cascade order,
+  imported from the component's frontmatter (`contact.css` for `sections/Contact.astro`). `global.css` keeps
+  the same shape: the Tailwind and tds-shared imports, then `global/*.css`, then `@source`. Tests read a split
+  sheet through `readStylesheet()` (`src/__tests__/stylesheet.ts`).
 - `src/layouts/Layout.astro` owns fonts, theme bootstrap, metadata, canonical/hreflang, optional JSON-LD and
   global islands.
 - Locales: resolve copy with `resolveLang()` / `tFor()` and build internal links with `localizePath()`
@@ -91,7 +99,7 @@ Preise (`sections/Pricing.astro`, with the assistant's second button) → FAQ �
   "— Tracht Digital" last, ≤ 65 characters, distinct) and `updatedAt` (visible "Stand" and JSON-LD
   `dateModified`; raise it only when content changes).
 - **Platform pages** (WooCommerce, Shopware 6, WordPress, TYPO3, STRATO) at `/leistungen/<system>` and
-  `/en/services/<system>` are code-owned in `lib/platforms.ts`, rendered by
+  `/en/services/<system>` are code-owned in `lib/platforms.ts` (one file per system under `lib/platforms/`), rendered by
   `components/platforms/PlatformDetailPage.astro` from the `components/detail/` bands. One page per system
   with anchored offer sections. Rules (`platforms.test.ts`): no amount (the cost box links to `/#preise`; no
   JSON-LD `offers`); an answer-first paragraph naming Tracht Digital Solutions, Julian Tracht and Schwarzenbek;
@@ -102,7 +110,8 @@ Preise (`sections/Pricing.astro`, with the assistant's second button) → FAQ �
 ## Leistungsassistent (button + dialog)
 
 `components/ServiceAssistant.astro` renders one native `<dialog id="leistungsassistent">` around
-`islands/ServiceFinder.tsx`; questions, weights and copy live in `lib/serviceFinder.ts`.
+`islands/ServiceFinder.tsx` (answer cards and the result in `islands/finder/`); catalogue, questions and weights
+live in `lib/serviceFinder.ts`, its words in `lib/serviceFinderCopy.ts`. `ServiceFinder.test.tsx` renders it.
 
 - Way in: the last tile of the services row (`ui/AssistantCard.astro`). Questions and results follow the Shop's categories and
   products (`lib/serviceFinder.ts`); a new Shop product it should recommend is added there. Cards marked `[data-assistant-open]` ship `hidden` until `showModal` exists. `/#leistungsassistent`
@@ -147,7 +156,12 @@ Preise (`sections/Pricing.astro`, with the assistant's second button) → FAQ �
   variant for stored blocks but has no caller on the home page.
 - **Emergencies** (2026-10-11): an "Auch für Notfälle" badge beside the phone number and a "Notfall" checkbox in the form. The "Notfall?" row across the top of the card was removed in 0.101.0 (asked for). The checkbox is local state, not a form
   field (`ContactSchema` has no such key and zodResolver drops unknown ones): ticked, the request goes out with
-  `subject` = "Notfall – <reason>" (max 200). Copy in `lib/contactCopy.ts`.
+  `subject` = "Notfall: <reason>" (max 200). Copy in `lib/contactCopy.ts`.
+- **Code layout:** `islands/ContactForm.tsx` holds the state, the steps and the submit; its pieces (fields,
+  progress, summary, reason step, consent, actions, confirmation, the assistant-draft hook) live in
+  `islands/contact/`, the step and subject rules in `lib/contactSteps.ts`, all words in `lib/contactCopy.ts`.
+  `ContactForm.test.tsx` renders it (steps, payload, failure, drafts); source-level rules read the whole
+  island through `__tests__/contactIslandSource.ts`.
 - The card's grid (2026-11-03): the emergency row on top; the form and "Direkt erreichbar" (e-mail, landline,
   mobile, then "Messenger und Profile") side by side from `lg`; one row across the bottom (`.contact-foot`) with
   the map (`ui/PlaceBubble.astro` with `inline`: the drawn map, the live OSM map over it from the first hover,

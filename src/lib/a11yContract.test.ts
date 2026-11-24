@@ -1,6 +1,8 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
+import { contactIslandSource } from "../__tests__/contactIslandSource";
+import { readStylesheet } from "../__tests__/stylesheet";
 
 /**
  * The accessibility contract of the 2026-09 redesign, as source rules.
@@ -100,7 +102,7 @@ describe("the page frame", () => {
   it("keeps focused elements clear of the fixed bottom chrome", () => {
     // WCAG 2.4.11: 11 of 80 focus stops sat completely behind the cookie
     // notice or the floating bar on a phone.
-    const css = read("src/styles/global.css");
+    const css = readStylesheet("global");
     expect(css).toMatch(
       /scroll-padding-bottom:\s*calc\(\s*var\(--tds-bottom-lane[^;]*--lp-floating-lane/,
     );
@@ -170,12 +172,11 @@ describe("the rest of the home page", () => {
   });
 
   it("does not render the contact form invisible before hydration", () => {
-    const form = read("src/components/islands/ContactForm.tsx");
-    expect(form).not.toMatch(/from "motion/);
+    expect(contactIslandSource()).not.toMatch(/from "motion/);
   });
 
   it("ties every contact form error to its field", () => {
-    const form = read("src/components/islands/ContactForm.tsx");
+    const form = contactIslandSource();
     expect(form).toMatch(/"aria-describedby": errorId\(field\)/);
     expect(form).toMatch(/"aria-invalid": true/);
     expect(form).toMatch(/role="alert"/);
@@ -293,7 +294,7 @@ describe("the service assistant", () => {
   it("sends nothing itself and hands its result to the contact form", () => {
     expect(island).not.toMatch(/fetch\(/);
     expect(island).toMatch(/handOffContactDraft\(/);
-    expect(read("src/components/islands/ContactForm.tsx")).toMatch(/CONTACT_DRAFT_EVENT/);
+    expect(contactIslandSource()).toMatch(/CONTACT_DRAFT_EVENT/);
   });
 
   it("is on the home page exactly once, and no longer a section", () => {
