@@ -1,10 +1,11 @@
 import Arrow from "~/components/ui/Arrow";
-import { useCallback, useId, useMemo, useRef, useState, type SyntheticEvent } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type SyntheticEvent } from "react";
 import { AnimatePresence, MotionScope, m } from "@tracht-digital-labs/tds-shared/motion/react";
 import FinderOption from "./finder/FinderOption";
 import FinderResult from "./finder/FinderResult";
 import type { Lang } from "~/lib/i18n";
 import { handOffContactDraft } from "~/lib/contactDraft";
+import { recordAssistantResult } from "~/lib/productInterest";
 import { FINDER_COPY } from "~/lib/serviceFinderCopy";
 import {
   STAGE_IDS,
@@ -80,6 +81,11 @@ export default function ServiceFinder({ lang = "de", products, contactHref, cata
     () => (step === STEP_COUNT ? recommend({ topics, situations, stage }, lang) : []),
     [step, topics, situations, stage, lang],
   );
+  // A result shown is the visit's clearest product interest (the time-savings
+  // questionnaire preselects from it).
+  useEffect(() => {
+    if (matches.length > 0) recordAssistantResult(matches.map((match) => match.productId));
+  }, [matches]);
 
   /** Focus a freshly mounted question or result — never on hydration. */
   // Stable identity: an inline callback ref runs again on every render, and

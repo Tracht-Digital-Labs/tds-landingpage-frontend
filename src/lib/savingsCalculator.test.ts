@@ -40,6 +40,15 @@ describe("time-savings questionnaire", () => {
     expect(draft).not.toMatch(/\{\w+\}/);
   });
 
+  it("names the chosen product in the draft, and none when no product was chosen", () => {
+    const input = { minutes: 10, perWeek: 20, share: 50 };
+    const withProduct = savingsDraft(getSavingsCopy("de").draft, input, "de", "Online-Formular statt Papier");
+    expect(withProduct).toContain("Stunden pro Jahr. Produkt: Online-Formular statt Papier.\n\n");
+    const without = savingsDraft(getSavingsCopy("en").draft, input, "en");
+    expect(without).toContain("hours per year.\n\n");
+    expect(without).not.toMatch(/Product|\{\w+\}/);
+  });
+
   it("calls the result an estimate and makes no promise in both languages", () => {
     expect(getSavingsCopy("de").note).toMatch(/Schätzung.*keine Zusage/);
     expect(getSavingsCopy("en").note).toMatch(/estimate.*not a promise/);

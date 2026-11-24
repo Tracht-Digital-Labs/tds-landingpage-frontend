@@ -6,6 +6,7 @@
 import { lessMotion } from "~/lib/a11yPrefs";
 import { handOffContactDraft } from "~/lib/contactDraft";
 import { PHONE_QUERY, keepInView } from "~/lib/keepInView";
+import { likeliestProduct, onProductInterest, readProductInterest, type InterestWeights } from "~/lib/productInterest";
 import { formatSavings, savings, savingsDraft, type SavingsInput } from "~/lib/savingsCalculator";
 
 export function mountTimeSavings(): void {
@@ -157,11 +158,35 @@ export function mountTimeSavings(): void {
       }
       wasReady = true;
     };
+    // The product picker: preselected from this visit until the visitor picks
+    // one. A choice the browser restored counts as theirs.
+    const productSelect = form.querySelector<HTMLSelectElement>("[data-savings-product]");
+    const productHint = form.querySelector<HTMLElement>("[data-savings-product-hint]");
+    let productChosen = !productSelect || productSelect.value !== "";
+    const preselect = (weights: InterestWeights) => {
+      const id = likeliestProduct(weights);
+      if (productChosen || !productSelect || !id) return;
+      if (![...productSelect.options].some((option) => option.value === id)) return;
+      productSelect.value = id;
+      if (productHint) productHint.hidden = false;
+    };
+    productSelect?.addEventListener("change", () => {
+      productChosen = true;
+      if (productHint) productHint.hidden = true;
+    });
+    preselect(readProductInterest());
+    onProductInterest(preselect);
+
     form.addEventListener("change", update);
     form.addEventListener("submit", (event) => event.preventDefault());
     section.querySelector("[data-savings-cta]")?.addEventListener("click", () => {
       const input = read();
-      if (input) handOffContactDraft({ message: savingsDraft(form.dataset.draft ?? "", input, lang), service: "process" });
+      if (!input) return;
+      const product = productSelect?.value ? productSelect.selectedOptions[0] : undefined;
+      handOffContactDraft({
+        message: savingsDraft(form.dataset.draft ?? "", input, lang, product?.textContent?.trim() ?? ""),
+        service: product?.dataset.contact ?? "process",
+      });
     });
     // Answers the browser restored (back navigation) show at once, no count.
     for (const track of tracks) place(track, true);

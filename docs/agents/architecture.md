@@ -65,6 +65,18 @@ Preise (`sections/Pricing.astro`, with the assistant's second button) → FAQ �
   the line counts down the missing answers), and once the estimate stands the CTA turns from quiet to full,
   reads "Diesen Ablauf besprechen" and says that the answers go into the contact form. The plate's
   `data-state` (pending/ready) is written by the script only, so the page without it keeps the full button.
+- **Product picker in the Zeitersparnis** (asked for): an optional native `<select>` above the questions with the
+  Shop catalogue by category (`CATALOGUE_PRODUCTS`). It does not change the estimate; the chosen product goes into
+  the draft ("Produkt: …") and sets the contact reason (`CATALOGUE[category].contact`). The script preselects the
+  product this visit looked at most, until the visitor picks one, and shows "Vorausgewählt nach den zuvor
+  angesehenen Seiten." The weights are `lib/productInterest.ts`, mounted on every page from `Layout.astro`:
+  - a service or platform page's products (`data-interest-products` on `<main>`, mapped in
+    `lib/productInterestPages.ts`) count 1, or 3 when the visit arrived on it from a search engine;
+  - a followed product tile (`data-interest-product`) counts 2; the assistant's result 3 for its strongest match,
+    1 for the others.
+  - **Only with the "Komfort" (`functional`) consent** is anything stored (localStorage `tds-product-interest`,
+    ≤ 12 products); without it the weights last for the page, and withdrawing deletes the record. Nothing is sent,
+    and the server-rendered page stays the same for everyone (cache). The banner offers `functional` for this.
 - **Vorgehen** (0.97.0): the step title sits in the navy head. From 40rem all four steps show; on a phone
   the heads are buttons of an accordion, one open at a time (`hidden` only set by the script; on desktop the
   heads are disabled buttons, no tab stop). No "Schritt n" label; an arrow points from step to step (right in

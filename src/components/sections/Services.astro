@@ -40,7 +40,7 @@ const ui =
       {
         products.map((product) => (
           <li class="product-tile" data-reveal>
-            <a class="product-tile__link" href={product.href} data-track="service-product">
+            <a class="product-tile__link" href={product.href} data-track="service-product" data-interest-product={product.slug.de}>
               <span class="product-tile__media">
                 <picture class="product-tile__picture">
                   {avifSrcSet(product.image, lang) && (

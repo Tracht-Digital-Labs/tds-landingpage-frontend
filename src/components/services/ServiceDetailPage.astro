@@ -31,6 +31,7 @@ import { asGraph, breadcrumbNode, faqPageSchema, serviceNode, webPageNode } from
 import { localizePath, type Lang } from "~/lib/i18n";
 import { siteConfig } from "~/lib/seo";
 import { businessCardCopy } from "~/lib/businessCard";
+import { SERVICE_INTEREST, interestAttribute } from "~/lib/productInterestPages";
 import { platformDefinitions, platformHref } from "~/lib/platforms";
 import {
   serviceHref,
@@ -127,7 +128,7 @@ const jsonLd = asGraph(
 >
   <Header />
 
-  <main id="main" class="bg-[var(--color-paper)]">
+  <main id="main" class="bg-[var(--color-paper)]" data-interest-products={interestAttribute(SERVICE_INTEREST[service.id])}>
     <DetailHero
       backHref={servicesHref}
       backLabel={content.label}
